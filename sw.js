@@ -1,5 +1,5 @@
 /* Kira Sale PWA — кэш статики для установки как приложения */
-const CACHE = "kira-sale-v1";
+const CACHE = "kira-sale-v2";
 const ASSETS = [
   "./",
   "./index.html",

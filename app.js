@@ -447,6 +447,9 @@
     if (typeof syncLeadBtn === "function") syncLeadBtn();
     // Аватары «Вы/You/…» в уже открытом чате
     $$(".avatar.user").forEach((el) => { el.textContent = t("chat.you"); });
+    // Логотип: RU — logo_top.png, остальные языки — eng_logo.jpg
+    const logoSrc = lang === "ru" ? "logo_top.png" : "eng_logo.jpg";
+    $$(".brand-logo, .chat-logo").forEach((el) => { if (el.getAttribute("src") !== logoSrc) el.setAttribute("src", logoSrc); });
   }
   // Инициализировать переводы при загрузке (язык — сохранённый выбор или автоопределение)
   applyLang(currentLang);
@@ -664,8 +667,20 @@
   $("#obClose").addEventListener("click", () => closeSheet(onboarding));
 
   // ═══════════ ЧАТ ═══════════
-  function openChatUI() { chatWrap.classList.add("open"); chatWrap.setAttribute("aria-hidden", "false"); lock(); }
-  function closeChat() { chatWrap.classList.remove("open"); chatWrap.setAttribute("aria-hidden", "true"); document.body.classList.remove("locked"); closeDrawer(); }
+  function openChatUI() { chatWrap.classList.add("open"); chatWrap.setAttribute("aria-hidden", "false"); lock(); fitViewport(); }
+  function closeChat() { chatWrap.classList.remove("open"); chatWrap.setAttribute("aria-hidden", "true"); document.body.classList.remove("locked"); closeDrawer(); chatWrap.style.height = ""; }
+
+  // Клавиатура на мобиле: держим композер над клавиатурой (как у Gemini)
+  function fitViewport() {
+    const vv = window.visualViewport;
+    if (!vv || !chatWrap.classList.contains("open")) return;
+    chatWrap.style.height = vv.height + "px";
+    if (chatScroll) chatScroll.scrollTop = chatScroll.scrollHeight;
+  }
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", fitViewport);
+    window.visualViewport.addEventListener("scroll", fitViewport);
+  }
 
   function openChat(fresh) {
     openChatUI();
@@ -819,7 +834,7 @@
     if (text) b.innerHTML = role === "user" ? `<p>${esc(text).replace(/\n/g, "<br>")}</p>` : markup(text);
     wrap.append(av, b); messagesEl.append(wrap); stick(); return b;
   }
-  function typing() { const b = addMessage("kira", ""); b.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>'; return b; }
+  function typing() { const b = addMessage("kira", ""); b.innerHTML = '<div class="aurora"><span></span><span></span><span></span></div>'; return b; }
   function stick(force = false) {
     const el = chatScroll;
     const nearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 140;

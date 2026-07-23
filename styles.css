@@ -317,6 +317,19 @@ a { color: inherit; }
 .typing span { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-faint); animation: blink 1.3s infinite ease-in-out; }
 .typing span:nth-child(2) { animation-delay: 0.18s; } .typing span:nth-child(3) { animation-delay: 0.36s; }
 
+/* «Аврора» — переливающийся индикатор ожидания ответа Киры */
+.aurora { display: inline-flex; gap: 6px; padding: 6px 2px; }
+.aurora span {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: linear-gradient(120deg, #7b8cff, #46c8ff, #a06bff, #7b8cff);
+  background-size: 300% 300%;
+  animation: aurora-flow 1.6s ease-in-out infinite, aurora-bob 1.3s ease-in-out infinite;
+}
+.aurora span:nth-child(2) { animation-delay: 0s, 0.18s; }
+.aurora span:nth-child(3) { animation-delay: 0s, 0.36s; }
+@keyframes aurora-flow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+@keyframes aurora-bob { 0%, 60%, 100% { transform: translateY(0); opacity: 0.55; } 30% { transform: translateY(-4px); opacity: 1; } }
+
 .composer { flex: none; padding: 8px 16px calc(14px + env(safe-area-inset-bottom)); background: linear-gradient(to top, #f7f7f8 68%, transparent); }
 .chips { max-width: var(--maxw); margin: 0 auto 12px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
 .chip { font: inherit; font-size: 13.5px; font-weight: 500; cursor: pointer; color: var(--ink-soft); background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 9px 15px; transition: transform 0.14s ease, border-color 0.2s, color 0.2s; }

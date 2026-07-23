@@ -850,7 +850,14 @@
     try {
       const resp = await fetch(`${BACKEND}/api/chat`, {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: msgs, profile, mode: "school", deviceId: DEVICE, lang: currentLang }),
+        body: JSON.stringify({
+          messages: msgs,
+          profile,
+          mode: "school",
+          deviceId: DEVICE,
+          lang: currentLang,
+          conversationId: currentId,
+        }),
       });
       if (!resp.ok || !resp.body) throw new Error("bad");
       const reader = resp.body.getReader(), dec = new TextDecoder(); let buf = "";
@@ -931,7 +938,11 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name, phone, callTime, consent,
-          lang: currentLang, profile, deviceId: DEVICE, notes: "",
+          lang: currentLang,
+          profile,
+          deviceId: DEVICE,
+          conversationId: currentId,
+          notes: "",
         }),
       });
       const data = await resp.json().catch(() => ({}));

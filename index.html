@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
+  <title data-i18n-attr="title" data-i18n-attr-content="meta.title">Кира — подбор помощи | Школа доктора Шурова</title>
+  <meta name="description" data-i18n-attr="description" data-i18n-attr-content="meta.description" content="Кира подберёт формат помощи в школе и клинике доктора Шурова: консультации, программы, VIP. Анонимно, 24/7, на 5 языках." />
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+  <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=clash-display@600,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- ═══════════ ФОНОВАЯ АТМОСФЕРА ═══════════ -->
+  <div class="ambient" aria-hidden="true"></div>
+
+  <!-- ═══════════ ПЛАВАЮЩАЯ GLASS-ШАПКА ═══════════ -->
+  <header class="nav" id="nav">
+    <div class="nav-pill glass">
+      <a class="brand" href="#top"><img class="brand-logo" src="logo_top.png" alt="Школа доктора Шурова" /></a>
+      <nav class="nav-links">
+        <a href="#doctor" data-i18n="nav.doctor">Доктор</a>
+        <a href="#benefits" data-i18n="nav.benefits">Возможности</a>
+      </nav>
+      <div class="nav-right">
+        <div class="lang" id="lang">
+          <button class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false">
+            <span id="langFlag" class="lang-flag" aria-hidden="true">🇷🇺</span>
+            <span id="langCur">RU</span>
+            <svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+          </button>
+          <div class="lang-menu glass" id="langMenu" role="menu">
+            <button role="menuitem" data-lang="ru"><span class="lang-flag">🇷🇺</span><span class="lang-name">Русский</span><svg class="lang-check" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M9 16.2l-3.5-3.5-1.4 1.4L9 19 20 8l-1.4-1.4z"/></svg></button>
+            <button role="menuitem" data-lang="en"><span class="lang-flag">🇬🇧</span><span class="lang-name">English</span><svg class="lang-check" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M9 16.2l-3.5-3.5-1.4 1.4L9 19 20 8l-1.4-1.4z"/></svg></button>
+            <button role="menuitem" data-lang="uk"><span class="lang-flag">🇺🇦</span><span class="lang-name">Українська</span><svg class="lang-check" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M9 16.2l-3.5-3.5-1.4 1.4L9 19 20 8l-1.4-1.4z"/></svg></button>
+            <button role="menuitem" data-lang="pl"><span class="lang-flag">🇵🇱</span><span class="lang-name">Polski</span><svg class="lang-check" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M9 16.2l-3.5-3.5-1.4 1.4L9 19 20 8l-1.4-1.4z"/></svg></button>
+            <button role="menuitem" data-lang="es"><span class="lang-flag">🇪🇸</span><span class="lang-name">Español</span><svg class="lang-check" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M9 16.2l-3.5-3.5-1.4 1.4L9 19 20 8l-1.4-1.4z"/></svg></button>
+          </div>
+        </div>
+        <button class="nav-cta" id="navStart" data-i18n="nav.start">Подобрать помощь</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- ═══════════ ГЕРОЙ ═══════════ -->
+    <section class="hero" id="hero">
+      <div class="hero-inner">
+        <p class="hero-eyebrow" data-i18n="hero.eyebrow">Подбор помощи · школа доктора Шурова</p>
+        <h1 class="hero-title" data-i18n="hero.title">Здравствуйте,<br>я&nbsp;Кира</h1>
+        <p class="hero-sub" data-i18n="hero.sub">Подберу подходящий формат помощи — консультацию, программу или VIP — по вашей ситуации. Анонимно, без осуждения, на связи 24/7. Как в Telegram-боте, но на сайте и на разных языках.</p>
+        <div class="hero-cta">
+          <button class="btn btn-dark" id="heroStart" data-i18n="hero.cta.start">Подобрать помощь</button>
+          <a class="btn btn-soft" href="#ways" data-i18n="hero.cta.pricing">С чего начать</a>
+        </div>
+        <div class="hero-visual">
+          <img src="kira_background.jpg" alt="Кира — ИИ-помощник доктора Шурова" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ С ЧЕГО НАЧАТЬ ═══════════ -->
+    <section class="ways" id="ways">
+      <p class="eyebrow" data-i18n="ways.eyebrow">С чего начать</p>
+      <div class="ways-grid">
+        <button class="way" data-topic="self">
+          <span class="way-l" data-i18n="ways.self.title">Я зависим</span>
+          <span class="way-d" data-i18n="ways.self.desc">Разберёмся, что происходит, и наметим первый шаг.</span>
+          <span class="way-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </button>
+        <button class="way" data-topic="relative">
+          <span class="way-l" data-i18n="ways.relative.title">Мой близкий употребляет</span>
+          <span class="way-d" data-i18n="ways.relative.desc">Поддержка для родственников и созависимых.</span>
+          <span class="way-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </button>
+        <button class="way" data-topic="psychiatry">
+          <span class="way-l" data-i18n="ways.psychiatry.title">Тревога, депрессия, состояние</span>
+          <span class="way-d" data-i18n="ways.psychiatry.desc">Психиатрия: помогу понять и подобрать формат помощи.</span>
+          <span class="way-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ═══════════ ДОКТОР ═══════════ -->
+    <section class="doctor" id="doctor">
+      <div class="doctor-intro">
+        <img class="doctor-photo" id="doctorPhoto" src="shurovv11.jpg" alt="Василий Александрович Шуров" />
+        <h3 data-i18n="doctor.name">Василий Александрович Шуров</h3>
+        <p class="doctor-role" data-i18n="doctor.role">Врач психиатр-нарколог · более 20 лет практики</p>
+        <ul class="doctor-facts">
+          <li data-i18n="doctor.facts.1">Основатель клиники «Первый шаг», реабилитационных центров и Онлайн-школы</li>
+          <li data-i18n="doctor.facts.2">Помог более чем 10 000 семьям</li>
+          <li data-i18n="doctor.facts.3">Создатель специальных БАДов Bioiboro</li>
+          <li data-i18n="doctor.facts.4">Основатель благотворительного фонда «Выбери жизнь»</li>
+          <li data-i18n="doctor.facts.5">Спикер форумов, эксперт в СМИ</li>
+          <li data-i18n="doctor.facts.6">Ведущий проекта «Звёзды под капельницей»</li>
+        </ul>
+      </div>
+
+      <div class="doctor-video">
+        <p class="eyebrow eyebrow-left" data-i18n="doctor.video.eyebrow">Видеообращение</p>
+        <div class="video" id="video" data-video-url="">
+          <div class="video-ph">
+            <button class="video-play" id="videoPlay" aria-label="Смотреть видеообращение">
+              <svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+            </button>
+            <span class="video-cap" data-i18n="doctor.video.cap">Личное видеообращение доктора Шурова</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ ЧТО ВЫ ПОЛУЧАЕТЕ ═══════════ -->
+    <section class="benefits" id="benefits">
+      <h2 class="sec-h" data-i18n="benefits.title">Что вы получаете</h2>
+      <div class="benefits-grid">
+        <div class="benefit" data-i18n="benefits.1">Подбор формата под вашу ситуацию</div>
+        <div class="benefit" data-i18n="benefits.2">Точные цены и ссылки на программы</div>
+        <div class="benefit" data-i18n="benefits.3">Для себя или близкого — без стыда</div>
+        <div class="benefit" data-i18n="benefits.4">Зависимость, созависимость, тревога</div>
+        <div class="benefit" data-i18n="benefits.5">Переход к куратору и клиникам Шурова</div>
+        <div class="benefit" data-i18n="benefits.6">Работает на 5 языках</div>
+        <div class="benefit" data-i18n="benefits.7">Анонимно, 24/7</div>
+        <div class="benefit" data-i18n="benefits.8">Тот же подход, что у Telegram-Киры</div>
+      </div>
+      <p class="benefits-quote" data-i18n="benefits.quote">
+        Иногда самый сложный шаг — не лечение, а первый честный разговор.
+        Кира поможет понять, какой формат подходит именно вам.
+      </p>
+      <button class="btn-primary btn-lg" id="benefitsCta" data-i18n="benefits.cta">Подобрать помощь</button>
+    </section>
+
+    <!-- ═══════════ ЮР. ДИСКЛЕЙМЕР ═══════════ -->
+    <section class="legal" id="legal">
+      <p data-i18n="legal.text">
+        Кира не является заменой врача, не ставит диагнозы и не оказывает медицинскую услугу.
+        Информация носит справочный и поддерживающий характер. При угрозе жизни, передозировке,
+        психозе, суицидальных мыслях или резком ухудшении состояния необходимо срочно обратиться
+        за медицинской помощью по телефонам <b>112</b> или <b>103</b>.
+      </p>
+    </section>
+
+    <!-- ═══════════ ФУТЕР ═══════════ -->
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="#" data-i18n="footer.privacy">Политика конфиденциальности</a>
+        <a href="#" data-i18n="footer.terms">Пользовательское соглашение</a>
+        <a href="#" data-i18n="footer.consent">Согласие на обработку персональных данных</a>
+        <a href="#" data-i18n="footer.refund">Правила оплаты и возврата</a>
+        <a href="#" data-i18n="footer.legal">Юридическая информация</a>
+        <a href="#" data-i18n="footer.contacts">Контакты</a>
+        <a href="#" data-i18n="footer.disclaimer">Медицинский дисклеймер</a>
+      </div>
+      <p class="footer-sos" data-i18n="footer.sos">Экстренная помощь: <b>112</b> или <b>103</b></p>
+      <p class="footer-copy" data-i18n="footer.copy">© Онлайн-школа доктора Шурова</p>
+    </footer>
+  </main>
+
+  <!-- ═══════════ МОБИЛЬНЫЙ ТАБ-БАР (glass) ═══════════ -->
+  <nav class="tabbar glass" id="tabbar" aria-label="Навигация">
+    <button class="tabbar-item active" data-go="top">
+      <svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true"><path fill="currentColor" d="M12 3l9 8h-3v9h-4v-6h-4v6H6v-9H3z"/></svg>
+      <span data-i18n="tabbar.home">Главная</span>
+    </button>
+    <button class="tabbar-item" data-go="doctor">
+      <svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true"><path fill="currentColor" d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.4 0-8 2.7-8 6v2h16v-2c0-3.3-3.6-6-8-6Z"/></svg>
+      <span data-i18n="tabbar.doctor">Доктор</span>
+    </button>
+    <button class="tabbar-item" data-go="benefits">
+      <svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true"><path fill="currentColor" d="M12 2l2.5 5.5L20 8l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg>
+      <span data-i18n="tabbar.pricing">Возможности</span>
+    </button>
+    <button class="tabbar-item" data-go="chat">
+      <svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true"><path fill="currentColor" d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H8l-4 4V5a1 1 0 0 1 1-1Z"/></svg>
+      <span data-i18n="tabbar.chat">Подбор</span>
+    </button>
+  </nav>
+
+  <!-- ═══════════ ОНБОРДИНГ (iOS-стиль) ═══════════ -->
+  <div class="sheet" id="onboarding" aria-hidden="true">
+    <div class="sheet-card">
+      <button class="sheet-close" id="obClose" aria-label="Закрыть">✕</button>
+      <div class="ob-progress" id="obProgress"></div>
+      <div class="ob-body" id="obBody"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════ ЧАТ ═══════════ -->
+  <div class="chat-wrap" id="chatWrap" aria-hidden="true">
+
+    <!-- Боковая панель (десктоп) / шторка (мобайл) -->
+    <aside class="chat-side" id="chatSide">
+      <div class="side-head">
+        <img class="chat-logo" src="logo_top.png" alt="Школа доктора Шурова" />
+        <button class="side-close" id="sideClose" aria-label="Закрыть">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <button class="side-new" id="chatNew">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        <span data-i18n="chat.newChat">Новый разговор</span>
+      </button>
+      <div class="side-list" id="chatList"></div>
+      <div class="side-foot">
+        <span class="side-status"><span class="status-dot" id="statusDot"></span> <span data-i18n="chat.online">Кира на связи</span></span>
+        <a href="#" id="chatToSite" data-i18n="chat.toSite">На сайт →</a>
+      </div>
+    </aside>
+    <div class="chat-backdrop" id="chatBackdrop"></div>
+
+    <!-- Основная область -->
+    <div class="chat-main">
+      <header class="chat-head">
+        <button class="chat-menu" id="chatMenu" aria-label="Меню">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+        <span class="chat-title" id="chatTitle">Кира</span>
+        <button class="chat-newtop" id="chatNewTop" aria-label="Новый разговор">
+          <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+      </header>
+      <div class="chat-scroll" id="chatScroll">
+        <div class="messages" id="messages"></div>
+      </div>
+      <div class="composer">
+        <div class="chips" id="chips"></div>
+        <div class="composer-inner">
+          <textarea id="input" class="composer-input" rows="1" autocomplete="off" data-i18n-placeholder="chat.placeholder"></textarea>
+          <div class="composer-row composer-row-sale">
+            <span class="sale-mode-label" data-i18n="chat.mode.school">Подбор помощи</span>
+            <button id="send" class="send-btn" aria-label="Отправить">
+              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M4.4 12 3 4.3c-.2-1 .8-1.8 1.7-1.4l15.6 7.3c1 .5 1 1.9 0 2.4L4.7 20.1c-.9.4-1.9-.4-1.7-1.4L4.4 12Zm1.7-.9h6.2c.5 0 .9.4.9.9s-.4.9-.9.9H6.1l-.9 5 12.9-6-12.9-6 .9 5.2Z"/></svg>
+            </button>
+          </div>
+        </div>
+        <p class="composer-note" data-i18n="chat.note">Кира — ИИ и не заменяет врача. При угрозе жизни — 103 или 112.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- заглушка для совместимости со скриптом (подписка в Sale не используется) -->
+  <div class="modal" id="subModal" aria-hidden="true" hidden></div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

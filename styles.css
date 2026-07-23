@@ -344,36 +344,56 @@ a { color: inherit; }
 .chip-accent:hover { border-color: var(--accent); color: var(--accent); }
 .stream-cursor { display: inline-block; width: 2px; height: 1.05em; margin-left: 2px; vertical-align: text-bottom; background: var(--accent); animation: cursor-blink 0.85s step-end infinite; }
 @keyframes cursor-blink { 50% { opacity: 0; } }
-.composer-inner { max-width: var(--maxw); margin: 0 auto; display: flex; flex-direction: column; gap: 6px; border-radius: 24px; padding: 12px 14px 10px; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-md); transition: border-color 0.2s, box-shadow 0.2s; }
-.composer-inner:focus-within { border-color: rgba(0, 0, 0, 0.22); box-shadow: 0 10px 34px rgba(0, 0, 0, 0.10); }
-.composer-input { width: 100%; border: none; outline: none; resize: none; background: transparent; color: var(--ink); font: inherit; font-size: 16px; line-height: 1.5; max-height: 168px; padding: 4px 4px 2px; }
-.composer-input::placeholder { color: var(--ink-faint); }
-.composer-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.composer-row-sale { justify-content: flex-end; }
-.sale-mode-label {
-  margin-right: auto;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: var(--ink-soft);
-  background: rgba(0, 0, 0, 0.04);
-  border: 1px solid var(--line-2);
-  border-radius: 999px;
-  padding: 6px 12px;
+/* Чистый композер: текст слева, отправка справа — без бейджей внутри поля */
+.composer-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  border-radius: 26px;
+  padding: 8px 8px 8px 18px;
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-md);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
+.composer-inner:focus-within { border-color: rgba(0, 0, 0, 0.22); box-shadow: 0 10px 34px rgba(0, 0, 0, 0.10); }
+.composer-input {
+  flex: 1;
+  min-width: 0;
+  width: auto;
+  border: none;
+  outline: none;
+  resize: none;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 16px;
+  line-height: 1.45;
+  max-height: 168px;
+  min-height: 28px;
+  padding: 10px 0;
+  caret-color: var(--ink);
+}
+.composer-input::placeholder { color: var(--ink-faint); opacity: 1; }
 .lead-open-btn {
+  display: block;
+  width: fit-content;
+  max-width: var(--maxw);
+  margin: 0 auto 10px;
   font: inherit;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  color: var(--ink);
+  color: var(--ink-soft);
   background: #fff;
-  border: 1px solid var(--line-2);
+  border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 7px 14px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 8px 14px;
+  transition: transform 0.14s ease, border-color 0.2s, color 0.2s;
 }
-.lead-open-btn:hover { background: rgba(0, 0, 0, 0.03); }
+.lead-open-btn:hover { transform: translateY(-1px); border-color: rgba(0, 0, 0, 0.2); color: var(--ink); }
 .lead-open-btn[hidden] { display: none !important; }
 .lead-hint { color: var(--ink-soft); font-size: 14px; line-height: 1.45; margin: 0 0 16px; }
 .lead-label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: var(--ink-soft); margin-bottom: 12px; }
@@ -401,7 +421,7 @@ a { color: inherit; }
 .lead-status.ok { color: #1a7f37; }
 .lead-status.err { color: #b42318; }
 .doctor-intro { max-width: 640px; margin: 0 auto; }
-.send-btn { flex: none; width: 40px; height: 40px; border: none; border-radius: 13px; cursor: pointer; color: #fff; background: var(--ink); display: grid; place-items: center; transition: transform 0.15s ease, opacity 0.2s, background 0.2s; }
+.send-btn { flex: none; width: 40px; height: 40px; border: none; border-radius: 50%; cursor: pointer; color: #fff; background: var(--ink); display: grid; place-items: center; transition: transform 0.15s ease, opacity 0.2s, background 0.2s; }
 .send-btn:hover:not(:disabled) { transform: translateY(-1px) scale(1.03); background: #000; }
 .send-btn:disabled { opacity: 0.35; cursor: default; }
 .composer-note { max-width: var(--maxw); margin: 12px auto 0; text-align: center; font-size: 12px; color: var(--ink-faint); }
@@ -491,7 +511,8 @@ a { color: inherit; }
   .chat-head { height: 54px; padding: 0 8px; }
   .chat-scroll { padding: 14px 10px 6px; }
   .composer { padding: 6px 10px calc(12px + env(safe-area-inset-bottom)); }
-  .composer-inner { border-radius: 20px; padding: 10px 12px 8px; }
+  .composer-inner { border-radius: 22px; padding: 6px 6px 6px 14px; gap: 8px; }
+  .composer-input { padding: 9px 0; }
   .composer-note { font-size: 11.5px; margin-top: 8px; }
 
   /* Сег на мобиле — сжать, чтобы не выходило за ширину */

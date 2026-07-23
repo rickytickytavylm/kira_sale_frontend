@@ -863,13 +863,15 @@
   function setBusy(v) { busy = v; sendBtn.disabled = v || !input.value.trim(); }
 
   // ═══════════ LEAD STUB (EU / не-ru) → позже amo ═══════════
-  const leadSheet = $("#leadSheet");
-  const leadOpen = $("#leadOpen");
+  // Важно: syncLeadBtn вызывается из applyLang ещё до этого блока —
+  // поэтому только $("#…"), без const leadOpen (иначе TDZ и мёртвый весь app.js).
   function syncLeadBtn() {
-    if (!leadOpen) return;
-    leadOpen.hidden = currentLang === "ru";
+    const btn = $("#leadOpen");
+    if (!btn) return;
+    btn.hidden = currentLang === "ru";
   }
   syncLeadBtn();
+  const leadSheet = $("#leadSheet");
   function openLead() {
     if (!leadSheet) return;
     const st = $("#leadStatus");
@@ -877,7 +879,8 @@
     if (profile && profile.name && $("#leadName") && !$("#leadName").value) $("#leadName").value = profile.name;
     openSheet(leadSheet);
   }
-  if (leadOpen) leadOpen.addEventListener("click", openLead);
+  const leadOpenBtn = $("#leadOpen");
+  if (leadOpenBtn) leadOpenBtn.addEventListener("click", openLead);
   const leadClose = $("#leadClose");
   if (leadClose) leadClose.addEventListener("click", () => closeSheet(leadSheet));
   if (leadSheet) leadSheet.addEventListener("click", (e) => { if (e.target === leadSheet) closeSheet(leadSheet); });

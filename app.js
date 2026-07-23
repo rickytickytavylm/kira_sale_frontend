@@ -38,6 +38,7 @@
       "footer.consent": "Согласие на обработку персональных данных", "footer.refund": "Правила оплаты и возврата",
       "footer.legal": "Юридическая информация", "footer.contacts": "Контакты", "footer.disclaimer": "Медицинский дисклеймер",
       "footer.sos": "Экстренная помощь: <b>112</b> или <b>103</b>", "footer.copy": "© Онлайн-школа доктора Шурова",
+      "legal.close": "Закрыть", "lead.consent.link": "Текст согласия и политика",
       "tabbar.home": "Главная", "tabbar.doctor": "Доктор", "tabbar.pricing": "Возможности", "tabbar.chat": "Подбор",
       "chat.name": "Кира", "chat.newChat": "Новый разговор", "chat.conversation": "Разговор",
       "chat.delete": "Удалить", "chat.quickStart": "Быстрый старт",
@@ -119,6 +120,7 @@
       "footer.consent": "Data processing consent", "footer.refund": "Payment & Refund Policy",
       "footer.legal": "Legal information", "footer.contacts": "Contacts", "footer.disclaimer": "Medical disclaimer",
       "footer.sos": "Emergency: <b>112</b> or <b>103</b>", "footer.copy": "© Dr. Shurov Online School",
+      "legal.close": "Close", "lead.consent.link": "Consent text and privacy policy",
       "tabbar.home": "Home", "tabbar.doctor": "Doctor", "tabbar.pricing": "Features", "tabbar.chat": "Chat",
       "chat.name": "Kira", "chat.newChat": "New conversation", "chat.conversation": "Conversation",
       "chat.delete": "Delete", "chat.quickStart": "Quick start",
@@ -200,6 +202,7 @@
       "footer.consent": "Згода на обробку персональних даних", "footer.refund": "Правила оплати та повернення",
       "footer.legal": "Юридична інформація", "footer.contacts": "Контакти", "footer.disclaimer": "Медичний дисклеймер",
       "footer.sos": "Екстрена допомога: <b>112</b> або <b>103</b>", "footer.copy": "© Онлайн-школа доктора Шурова",
+      "legal.close": "Закрити", "lead.consent.link": "Текст згоди та політика",
       "tabbar.home": "Головна", "tabbar.doctor": "Лікар", "tabbar.pricing": "Можливості", "tabbar.chat": "Чат",
       "chat.name": "Кіра", "chat.newChat": "Нова розмова", "chat.conversation": "Розмова",
       "chat.delete": "Видалити", "chat.quickStart": "Швидкий старт",
@@ -281,6 +284,7 @@
       "footer.consent": "Zgoda na przetwarzanie danych", "footer.refund": "Zasady płatności i zwrotów",
       "footer.legal": "Informacje prawne", "footer.contacts": "Kontakt", "footer.disclaimer": "Zastrzeżenie medyczne",
       "footer.sos": "Pomoc doraźna: <b>112</b> lub <b>103</b>", "footer.copy": "© Szkoła Online doktora Szurowa",
+      "legal.close": "Zamknij", "lead.consent.link": "Tekst zgody i polityka prywatności",
       "tabbar.home": "Strona główna", "tabbar.doctor": "Lekarz", "tabbar.pricing": "Możliwości", "tabbar.chat": "Czat",
       "chat.name": "Kira", "chat.newChat": "Nowa rozmowa", "chat.conversation": "Rozmowa",
       "chat.delete": "Usuń", "chat.quickStart": "Szybki start",
@@ -362,6 +366,7 @@
       "footer.consent": "Consentimiento de datos", "footer.refund": "Política de pago y devolución",
       "footer.legal": "Información legal", "footer.contacts": "Contacto", "footer.disclaimer": "Aviso médico",
       "footer.sos": "Emergencias: <b>112</b> o <b>103</b>", "footer.copy": "© Escuela Online del Dr. Shurov",
+      "legal.close": "Cerrar", "lead.consent.link": "Texto de consentimiento y política",
       "tabbar.home": "Inicio", "tabbar.doctor": "Doctor", "tabbar.pricing": "Funciones", "tabbar.chat": "Chat",
       "chat.name": "Kira", "chat.newChat": "Nueva conversación", "chat.conversation": "Conversación",
       "chat.delete": "Eliminar", "chat.quickStart": "Inicio rápido",
@@ -585,7 +590,10 @@
 
   // ─── Оверлеи ───
   const lock = () => document.body.classList.add("locked");
-  const unlock = () => { if (!chatWrap.classList.contains("open")) document.body.classList.remove("locked"); };
+  const unlock = () => {
+    const sheetOpen = document.querySelector(".sheet.open");
+    if (!chatWrap.classList.contains("open") && !sheetOpen) document.body.classList.remove("locked");
+  };
   function openSheet(el) { el.classList.add("open"); el.setAttribute("aria-hidden", "false"); lock(); }
   function closeSheet(el) { el.classList.remove("open"); el.setAttribute("aria-hidden", "true"); unlock(); }
 
@@ -928,14 +936,22 @@
       .replace(/\n{3,}/g, "\n\n")
       .trim();
   }
+  const PRODUCT_HOSTS = new Set([
+    "tvoi-shag.online", "www.tvoi-shag.online",
+    "shurovhelp.com", "www.shurovhelp.com",
+    "shurovsos.ru", "www.shurovsos.ru",
+    "school.shurovhelp.ru",
+  ]);
   function findProductByUrl(url) {
     const list = window.KIRA_PRODUCTS || [];
     let href = String(url || "").trim().replace(/[),.;!?]+$/g, "");
     let parsed;
     try { parsed = new URL(href); } catch { return null; }
+    if (parsed.protocol !== "https:" && parsed.protocol !== "http:") return null;
     const path = parsed.pathname || "";
     const host = (parsed.hostname || "").toLowerCase();
-    // Более длинные match первыми (4session раньше vip_terapia)
+    // Только наши домены — иначе phishing-карточка с чужого URL.
+    if (!PRODUCT_HOSTS.has(host)) return null;
     const ranked = list.slice().sort((a, b) => {
       const al = Math.max(0, ...(a.match || []).map((m) => m.length));
       const bl = Math.max(0, ...(b.match || []).map((m) => m.length));
@@ -1169,8 +1185,79 @@
 
   autoGrow();
 
+  // ═══════════ ЮР. ДОКУМЕНТЫ (legal.js) ═══════════
+  const legalSheet = $("#legalSheet");
+  const legalTitle = $("#legalTitle");
+  const legalBody = $("#legalBody");
+  let openLegalId = null;
+
+  function legalPack() {
+    return window.KIRA_LEGAL || null;
+  }
+  function legalTitleFor(id) {
+    const pack = legalPack();
+    const titles = pack && pack.titles && pack.titles[id];
+    if (titles && titles[currentLang]) return titles[currentLang];
+    if (titles && titles.ru) return titles.ru;
+    return t(`footer.${id}`) || id;
+  }
+  function legalBodyHtml(id) {
+    const pack = legalPack();
+    const bodies = pack && pack.bodies && pack.bodies[id];
+    const parts = (bodies && (bodies[currentLang] || bodies.ru)) || [];
+    return Array.isArray(parts) ? parts.join("") : String(parts || "");
+  }
+  function renderLegalDoc(id) {
+    if (!legalTitle || !legalBody || !id) return;
+    openLegalId = id;
+    legalTitle.textContent = legalTitleFor(id);
+    legalBody.innerHTML = legalBodyHtml(id);
+  }
+  function openLegal(id) {
+    if (!legalSheet || !id || !legalPack()) return;
+    renderLegalDoc(id);
+    openSheet(legalSheet);
+    try {
+      const hash = `#legal-${id}`;
+      if (location.hash !== hash) history.replaceState(null, "", hash);
+    } catch { /* ignore */ }
+  }
+  function closeLegal() {
+    if (!legalSheet) return;
+    closeSheet(legalSheet);
+    openLegalId = null;
+    try {
+      if (/^#legal-/.test(location.hash || "")) history.replaceState(null, "", location.pathname + location.search);
+    } catch { /* ignore */ }
+  }
+  function wireLegalLinks(root) {
+    (root || document).querySelectorAll("[data-legal]").forEach((a) => {
+      if (a.dataset.legalBound) return;
+      a.dataset.legalBound = "1";
+      a.addEventListener("click", (e) => {
+        const id = a.getAttribute("data-legal");
+        if (!id) return;
+        e.preventDefault();
+        openLegal(id);
+      });
+    });
+  }
+  wireLegalLinks(document);
+  const legalClose = $("#legalClose");
+  if (legalClose) legalClose.addEventListener("click", closeLegal);
+  if (legalSheet) legalSheet.addEventListener("click", (e) => { if (e.target === legalSheet) closeLegal(); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && legalSheet && legalSheet.classList.contains("open")) closeLegal();
+  });
+  const prevOnLang = onLangApplied;
+  onLangApplied = () => {
+    if (typeof prevOnLang === "function") prevOnLang();
+    if (openLegalId && legalSheet && legalSheet.classList.contains("open")) renderLegalDoc(openLegalId);
+  };
   // После перезагрузки сразу вернуть в чат, если уже был профиль / диалоги
   if (chats.length || profile) {
     openChat(false);
   }
+  const hashMatch = /^#legal-([a-z]+)$/.exec(location.hash || "");
+  if (hashMatch) openLegal(hashMatch[1]);
 })();

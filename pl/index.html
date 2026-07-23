@@ -36,7 +36,7 @@
 
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
   <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=clash-display@600,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/styles.css?v=7" />
+  <link rel="stylesheet" href="/styles.css?v=8" />
 </head>
 <body>
   <!-- ═══════════ ФОНОВАЯ АТМОСФЕРА ═══════════ -->
@@ -166,13 +166,13 @@
     <!-- ═══════════ ФУТЕР ═══════════ -->
     <footer class="footer">
       <div class="footer-links">
-        <a href="#" data-i18n="footer.privacy">Политика конфиденциальности</a>
-        <a href="#" data-i18n="footer.terms">Пользовательское соглашение</a>
-        <a href="#" data-i18n="footer.consent">Согласие на обработку персональных данных</a>
-        <a href="#" data-i18n="footer.refund">Правила оплаты и возврата</a>
-        <a href="#" data-i18n="footer.legal">Юридическая информация</a>
-        <a href="#" data-i18n="footer.contacts">Контакты</a>
-        <a href="#" data-i18n="footer.disclaimer">Медицинский дисклеймер</a>
+        <a href="#legal-privacy" data-legal="privacy" data-i18n="footer.privacy">Политика конфиденциальности</a>
+        <a href="#legal-terms" data-legal="terms" data-i18n="footer.terms">Пользовательское соглашение</a>
+        <a href="#legal-consent" data-legal="consent" data-i18n="footer.consent">Согласие на обработку персональных данных</a>
+        <a href="#legal-refund" data-legal="refund" data-i18n="footer.refund">Правила оплаты и возврата</a>
+        <a href="#legal-legal" data-legal="legal" data-i18n="footer.legal">Юридическая информация</a>
+        <a href="#legal-contacts" data-legal="contacts" data-i18n="footer.contacts">Контакты</a>
+        <a href="#legal-disclaimer" data-legal="disclaimer" data-i18n="footer.disclaimer">Медицинский дисклеймер</a>
       </div>
       <p class="footer-sos" data-i18n="footer.sos">Экстренная помощь: <b>112</b> или <b>103</b></p>
       <p class="footer-copy" data-i18n="footer.copy">© Онлайн-школа доктора Шурова</p>
@@ -281,14 +281,27 @@
         <input id="leadConsent" type="checkbox" />
         <span data-i18n="lead.consent">Согласен(на), что менеджер может позвонить по этому номеру</span>
       </label>
+      <p class="lead-legal-link">
+        <a href="#legal-consent" data-legal="consent" data-i18n="lead.consent.link">Текст согласия и политика</a>
+      </p>
       <button class="btn-primary btn-lg" id="leadSubmit" data-i18n="lead.submit">Отправить</button>
       <p class="lead-status" id="leadStatus" hidden></p>
     </div>
   </div>
 
+  <!-- ═══════════ ЮР. ДОКУМЕНТЫ ═══════════ -->
+  <div class="sheet" id="legalSheet" aria-hidden="true">
+    <div class="sheet-card legal-card">
+      <button class="sheet-close" id="legalClose" aria-label="Закрыть" data-i18n-aria="legal.close">✕</button>
+      <h3 class="legal-doc-title" id="legalTitle"></h3>
+      <div class="legal-doc-body" id="legalBody"></div>
+    </div>
+  </div>
+
   <script src="/config.js?v=2"></script>
   <script src="/products.js?v=1"></script>
-  <script src="/app.js?v=10"></script>
+  <script src="/legal.js?v=1"></script>
+  <script src="/app.js?v=11"></script>
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {

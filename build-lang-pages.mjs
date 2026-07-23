@@ -49,6 +49,7 @@ function rootAssets(html) {
     "shurovv11.jpg",
     "config.js",
     "products.js",
+    "legal.js",
     "app.js",
     "sw.js",
   ];
@@ -107,8 +108,9 @@ ${hreflangBlock()}
     );
   }
 
-  out = out.replace(/styles\.css\?v=\d+/, "styles.css?v=7");
-  out = out.replace(/app\.js\?v=\d+/, "app.js?v=10");
+  out = out.replace(/styles\.css\?v=\d+/, "styles.css?v=8");
+  out = out.replace(/legal\.js\?v=\d+/, "legal.js?v=1");
+  out = out.replace(/app\.js\?v=\d+/, "app.js?v=11");
   return out;
 }
 

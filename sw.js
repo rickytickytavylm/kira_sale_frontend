@@ -1,11 +1,13 @@
 /* Kira Sale PWA — кэш статики для установки как приложения */
-const CACHE = "kira-sale-v3";
+const CACHE = "kira-sale-v4";
 const ASSETS = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
   "./config.js",
+  "./products.js",
+  "./legal.js",
   "./logo_top.png",
   "./kira_background.jpg",
   "./shurovv11.jpg",

@@ -39,12 +39,17 @@
       "footer.legal": "Юридическая информация", "footer.contacts": "Контакты", "footer.disclaimer": "Медицинский дисклеймер",
       "footer.sos": "Экстренная помощь: <b>112</b> или <b>103</b>", "footer.copy": "© Онлайн-школа доктора Шурова",
       "tabbar.home": "Главная", "tabbar.doctor": "Доктор", "tabbar.pricing": "Возможности", "tabbar.chat": "Подбор",
-      "chat.newChat": "Новый разговор", "chat.quickStart": "Быстрый старт",
+      "chat.name": "Кира", "chat.newChat": "Новый разговор", "chat.conversation": "Разговор",
+      "chat.delete": "Удалить", "chat.quickStart": "Быстрый старт",
       "chat.quick.self": "Мне сложно с зависимостью", "chat.quick.relative": "Переживаю за близкого",
       "chat.quick.psychiatry": "Тревога, депрессия, сон", "chat.quick.pricing": "С чего начать",
       "chat.online": "Кира на связи", "chat.toSite": "На сайт →",
       "chat.mode.expert": "Разговор", "chat.mode.school": "Подбор помощи",
       "chat.placeholder": "Напишите Кире…", "chat.note": "Кира — ИИ и не заменяет врача. При угрозе жизни — 103 или 112.",
+      "chat.err.retry": "Не удалось получить ответ. Попробуйте ещё раз чуть позже.",
+      "chat.err.generic": "Что-то пошло не так. Попробуйте ещё раз.",
+      "chat.err.server": "Не удалось связаться с сервером Киры. Проверьте бэкенд и адрес в config.js.",
+      "chat.err.nobackend": "Не задан адрес бэкенда в config.js.",
       "sub.badge": "Пробный день бесплатно", "sub.title": "Полный доступ к Кире", "sub.period": "/ месяц",
       "sub.features.1": "Безлимитный анонимный разговор 24/7",
       "sub.features.2": "Экспертный разбор как у психолога-аддиктолога",
@@ -114,12 +119,17 @@
       "footer.legal": "Legal information", "footer.contacts": "Contacts", "footer.disclaimer": "Medical disclaimer",
       "footer.sos": "Emergency: <b>112</b> or <b>103</b>", "footer.copy": "© Dr. Shurov Online School",
       "tabbar.home": "Home", "tabbar.doctor": "Doctor", "tabbar.pricing": "Features", "tabbar.chat": "Chat",
-      "chat.newChat": "New conversation", "chat.quickStart": "Quick start",
+      "chat.name": "Kira", "chat.newChat": "New conversation", "chat.conversation": "Conversation",
+      "chat.delete": "Delete", "chat.quickStart": "Quick start",
       "chat.quick.self": "I struggle with addiction", "chat.quick.relative": "Worried about a loved one",
       "chat.quick.psychiatry": "Anxiety, depression, sleep", "chat.quick.pricing": "Where to begin",
       "chat.online": "Kira is online", "chat.toSite": "Back to site →",
       "chat.mode.expert": "Conversation", "chat.mode.school": "Find help",
       "chat.placeholder": "Write to Kira…", "chat.note": "Kira is AI and doesn't replace a doctor. Emergency — 103 or 112.",
+      "chat.err.retry": "Couldn't get a reply. Please try again in a moment.",
+      "chat.err.generic": "Something went wrong. Please try again.",
+      "chat.err.server": "Couldn't reach Kira's server. Check the backend and config.js.",
+      "chat.err.nobackend": "Backend URL is not set in config.js.",
       "sub.badge": "First day free", "sub.title": "Full access to Kira", "sub.period": "/ month",
       "sub.features.1": "Unlimited anonymous conversation 24/7",
       "sub.features.2": "Expert analysis like a psychologist-addictologist",
@@ -189,12 +199,17 @@
       "footer.legal": "Юридична інформація", "footer.contacts": "Контакти", "footer.disclaimer": "Медичний дисклеймер",
       "footer.sos": "Екстрена допомога: <b>112</b> або <b>103</b>", "footer.copy": "© Онлайн-школа доктора Шурова",
       "tabbar.home": "Головна", "tabbar.doctor": "Лікар", "tabbar.pricing": "Можливості", "tabbar.chat": "Чат",
-      "chat.newChat": "Нова розмова", "chat.quickStart": "Швидкий старт",
+      "chat.name": "Кіра", "chat.newChat": "Нова розмова", "chat.conversation": "Розмова",
+      "chat.delete": "Видалити", "chat.quickStart": "Швидкий старт",
       "chat.quick.self": "Мені важко із залежністю", "chat.quick.relative": "Переживаю за близького",
       "chat.quick.psychiatry": "Тривога, депресія, сон", "chat.quick.pricing": "З чого почати",
       "chat.online": "Кіра на зв'язку", "chat.toSite": "На сайт →",
       "chat.mode.expert": "Розмова", "chat.mode.school": "Підбір допомоги",
       "chat.placeholder": "Напишіть Кірі…", "chat.note": "Кіра — ІІ і не замінює лікаря. При загрозі — 103 або 112.",
+      "chat.err.retry": "Не вдалося отримати відповідь. Спробуйте ще раз трохи пізніше.",
+      "chat.err.generic": "Щось пішло не так. Спробуйте ще раз.",
+      "chat.err.server": "Не вдалося зв'язатися із сервером Кіри. Перевірте бекенд і адресу в config.js.",
+      "chat.err.nobackend": "Не задано адресу бекенду в config.js.",
       "sub.badge": "Пробний день безкоштовно", "sub.title": "Повний доступ до Кіри", "sub.period": "/ місяць",
       "sub.features.1": "Безлімітна анонімна розмова 24/7",
       "sub.features.2": "Експертний розбір як у психолога-аддиктолога",
@@ -264,12 +279,17 @@
       "footer.legal": "Informacje prawne", "footer.contacts": "Kontakt", "footer.disclaimer": "Zastrzeżenie medyczne",
       "footer.sos": "Pomoc doraźna: <b>112</b> lub <b>103</b>", "footer.copy": "© Szkoła Online doktora Szurowa",
       "tabbar.home": "Strona główna", "tabbar.doctor": "Lekarz", "tabbar.pricing": "Możliwości", "tabbar.chat": "Czat",
-      "chat.newChat": "Nowa rozmowa", "chat.quickStart": "Szybki start",
+      "chat.name": "Kira", "chat.newChat": "Nowa rozmowa", "chat.conversation": "Rozmowa",
+      "chat.delete": "Usuń", "chat.quickStart": "Szybki start",
       "chat.quick.self": "Mam problem z uzależnieniem", "chat.quick.relative": "Martwię się o bliską osobę",
       "chat.quick.psychiatry": "Lęk, depresja, sen", "chat.quick.pricing": "Od czego zacząć",
       "chat.online": "Kira jest online", "chat.toSite": "Wróć do strony →",
       "chat.mode.expert": "Rozmowa", "chat.mode.school": "Znajdź pomoc",
       "chat.placeholder": "Napisz do Kiry…", "chat.note": "Kira to AI i nie zastępuje lekarza. W nagłych przypadkach — 103 lub 112.",
+      "chat.err.retry": "Nie udało się uzyskać odpowiedzi. Spróbuj ponownie za chwilę.",
+      "chat.err.generic": "Coś poszło nie tak. Spróbuj ponownie.",
+      "chat.err.server": "Nie udało się połączyć z serwerem Kiry. Sprawdź backend i adres w config.js.",
+      "chat.err.nobackend": "Nie ustawiono adresu backendu w config.js.",
       "sub.badge": "Pierwszy dzień bezpłatnie", "sub.title": "Pełny dostęp do Kiry", "sub.period": "/ miesiąc",
       "sub.features.1": "Nieograniczona anonimowa rozmowa 24/7",
       "sub.features.2": "Ekspercka analiza jak u psychologa-addyktologa",
@@ -339,12 +359,17 @@
       "footer.legal": "Información legal", "footer.contacts": "Contacto", "footer.disclaimer": "Aviso médico",
       "footer.sos": "Emergencias: <b>112</b> o <b>103</b>", "footer.copy": "© Escuela Online del Dr. Shurov",
       "tabbar.home": "Inicio", "tabbar.doctor": "Doctor", "tabbar.pricing": "Funciones", "tabbar.chat": "Chat",
-      "chat.newChat": "Nueva conversación", "chat.quickStart": "Inicio rápido",
+      "chat.name": "Kira", "chat.newChat": "Nueva conversación", "chat.conversation": "Conversación",
+      "chat.delete": "Eliminar", "chat.quickStart": "Inicio rápido",
       "chat.quick.self": "Tengo dificultades con la adicción", "chat.quick.relative": "Me preocupa un ser querido",
       "chat.quick.psychiatry": "Ansiedad, depresión, sueño", "chat.quick.pricing": "Por dónde empezar",
       "chat.online": "Kira está en línea", "chat.toSite": "Volver al sitio →",
       "chat.mode.expert": "Conversación", "chat.mode.school": "Encontrar ayuda",
       "chat.placeholder": "Escríbele a Kira…", "chat.note": "Kira es IA y no reemplaza a un médico. Emergencias — 103 o 112.",
+      "chat.err.retry": "No se pudo obtener respuesta. Inténtalo de nuevo en un momento.",
+      "chat.err.generic": "Algo salió mal. Inténtalo de nuevo.",
+      "chat.err.server": "No se pudo contactar el servidor de Kira. Revisa el backend y config.js.",
+      "chat.err.nobackend": "No hay dirección del backend en config.js.",
       "sub.badge": "Primer día gratis", "sub.title": "Acceso completo a Kira", "sub.period": "/ mes",
       "sub.features.1": "Conversación anónima ilimitada 24/7",
       "sub.features.2": "Análisis experto como psicóloga-adictóloga",
@@ -456,6 +481,18 @@
   if (!SUPPORTED_LANGS.includes(currentLang)) currentLang = "en";
 
   function t(key) { return (TRANSLATIONS[currentLang] || TRANSLATIONS.ru)[key] || (TRANSLATIONS.ru[key] || key); }
+  const NEW_CHAT_MARKER = "__new__";
+  function defaultTitleVariants() {
+    return SUPPORTED_LANGS.map((l) => (TRANSLATIONS[l] || {})["chat.newChat"]).filter(Boolean)
+      .concat(["Новый разговор", NEW_CHAT_MARKER]);
+  }
+  function isDefaultChatTitle(title) {
+    return !title || defaultTitleVariants().includes(title);
+  }
+  function displayChatTitle(chat) {
+    if (!chat || isDefaultChatTitle(chat.title)) return t("chat.newChat");
+    return chat.title;
+  }
   function applyLang(lang, manual) {
     if (!SUPPORTED_LANGS.includes(lang)) lang = "en";
     // Смена языка в меню → переходим на /en/, /pl/… чтобы в буфере была «правильная» ссылка для OG.
@@ -473,6 +510,11 @@
       const key = el.dataset.i18nPlaceholder; const val = t(key);
       if (val !== undefined) el.placeholder = val;
     });
+    // aria-label с переводом
+    $$("[data-i18n-aria]").forEach((el) => {
+      const key = el.dataset.i18nAria; const val = t(key);
+      if (val !== undefined) el.setAttribute("aria-label", val);
+    });
     // Meta title / description (для вкладки; OG у краулера берётся из статичного HTML URL)
     const titleEl = document.querySelector("title");
     if (titleEl) titleEl.textContent = t("meta.title");
@@ -487,6 +529,8 @@
     // Логотип: RU — logo_top.png, остальные языки — eng_logo.jpg
     const logoSrc = lang === "ru" ? "logo_top.png" : "eng_logo.jpg";
     $$(".brand-logo, .chat-logo").forEach((el) => { if (el.getAttribute("src") !== logoSrc) el.setAttribute("src", logoSrc); });
+    // Заголовки чатов / шапка тоже зависят от языка
+    if (typeof renderChatList === "function") renderChatList();
   }
   // Инициализировать переводы при загрузке (язык — URL / сохранённый выбор / автоопределение)
   applyLang(currentLang);
@@ -509,7 +553,7 @@
     chats = [];
     if (old && old.length) {
       const fu = old.find((m) => m.role === "user");
-      chats.push({ id: uid(), title: fu ? fu.content.slice(0, 42) : "Разговор", mode: mode, profile: profile, messages: old, ts: Date.now() });
+      chats.push({ id: uid(), title: fu ? fu.content.slice(0, 42) : NEW_CHAT_MARKER, mode: mode, profile: profile, messages: old, ts: Date.now() });
       currentId = chats[0].id;
     }
     save("kira_sale_chats", chats); save("kira_sale_current", currentId);
@@ -748,7 +792,7 @@
     if (seed) profile = Object.assign({ who: "self", category: "addiction", concern: null, name: (profile && profile.name) || "" }, seed);
     if (!profile) profile = { who: "self", category: "addiction", concern: null, name: "" };
     save(LS.profile, profile);
-    const c = { id: uid(), title: "Новый разговор", mode: mode, profile: profile, messages: [], ts: Date.now() };
+    const c = { id: uid(), title: NEW_CHAT_MARKER, mode: mode, profile: profile, messages: [], ts: Date.now() };
     chats.unshift(c); currentId = c.id;
     messagesEl.innerHTML = "";
     setMode(mode);
@@ -779,12 +823,13 @@
   }
 
   function renderChatList() {
-    const t = $("#chatTitle"); if (t) t.textContent = (curChat() && curChat().title) || "Кира";
+    const titleEl = $("#chatTitle");
+    if (titleEl) titleEl.textContent = curChat() ? displayChatTitle(curChat()) : t("chat.name");
     if (!chatList) return;
     chatList.innerHTML = chats.map((c) => `
       <div class="chat-item ${c.id === currentId ? "active" : ""}" data-id="${c.id}" role="button" tabindex="0">
-        <span class="chat-item-t">${esc(c.title || "Разговор")}</span>
-        <span class="chat-item-del" data-del="${c.id}" title="Удалить" aria-label="Удалить">✕</span>
+        <span class="chat-item-t">${esc(displayChatTitle(c) || t("chat.conversation"))}</span>
+        <span class="chat-item-del" data-del="${c.id}" title="${esc(t("chat.delete"))}" aria-label="${esc(t("chat.delete"))}">✕</span>
       </div>`).join("");
     chatList.querySelectorAll(".chat-item").forEach((el) => el.addEventListener("click", (e) => {
       if (e.target.closest("[data-del]")) return; switchChat(el.dataset.id);
@@ -911,7 +956,7 @@
     chipsEl.style.display = "none";
     addMessage("user", text);
     const msgs = curMsgs(); msgs.push({ role: "user", content: text });
-    const ch = curChat(); if (ch && (!ch.title || ch.title === "Новый разговор")) ch.title = text.slice(0, 42);
+    const ch = curChat(); if (ch && isDefaultChatTitle(ch.title)) ch.title = text.slice(0, 42);
     saveChats(); renderChatList();
     const bubble = typing(); let acc = "", started = false;
     try {
@@ -942,13 +987,13 @@
             paintStream(bubble, acc, true);
           } else if (ev === "error") {
             if (streamRaf) cancelAnimationFrame(streamRaf);
-            bubble.innerHTML = markup(data.message || "Что-то пошло не так. Попробуйте ещё раз.");
+            bubble.innerHTML = markup(data.message || t("chat.err.generic"));
           } else if (ev === "done") {
             if (acc) paintStream(bubble, acc, false);
           }
         }
       }
-      if (!acc) bubble.innerHTML = markup("Не удалось получить ответ. Попробуйте ещё раз чуть позже.");
+      if (!acc) bubble.innerHTML = markup(t("chat.err.retry"));
       else {
         if (streamRaf) cancelAnimationFrame(streamRaf);
         bubble.innerHTML = markup(acc);
@@ -956,7 +1001,7 @@
       }
     } catch {
       if (streamRaf) cancelAnimationFrame(streamRaf);
-      bubble.innerHTML = markup(BACKEND ? "Не удалось связаться с сервером Киры. Проверьте бэкенд и адрес в config.js." : "Не задан адрес бэкенда в config.js.");
+      bubble.innerHTML = markup(BACKEND ? t("chat.err.server") : t("chat.err.nobackend"));
     } finally { setBusy(false); input.focus(); }
   }
   function setBusy(v) { busy = v; sendBtn.disabled = v || !input.value.trim(); }

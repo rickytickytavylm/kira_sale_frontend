@@ -445,8 +445,6 @@
     $("#langCur").textContent = lang.toUpperCase();
     $$("#langMenu button[data-lang]").forEach((b) => b.classList.toggle("active", b.dataset.lang === lang));
     if (typeof syncLeadBtn === "function") syncLeadBtn();
-    // Аватары «Вы/You/…» в уже открытом чате
-    $$(".avatar.user").forEach((el) => { el.textContent = t("chat.you"); });
     // Логотип: RU — logo_top.png, остальные языки — eng_logo.jpg
     const logoSrc = lang === "ru" ? "logo_top.png" : "eng_logo.jpg";
     $$(".brand-logo, .chat-logo").forEach((el) => { if (el.getAttribute("src") !== logoSrc) el.setAttribute("src", logoSrc); });
@@ -667,14 +665,30 @@
   $("#obClose").addEventListener("click", () => closeSheet(onboarding));
 
   // ═══════════ ЧАТ ═══════════
-  function openChatUI() { chatWrap.classList.add("open"); chatWrap.setAttribute("aria-hidden", "false"); lock(); fitViewport(); }
-  function closeChat() { chatWrap.classList.remove("open"); chatWrap.setAttribute("aria-hidden", "true"); document.body.classList.remove("locked"); closeDrawer(); chatWrap.style.height = ""; }
+  function openChatUI() {
+    chatWrap.classList.add("open");
+    chatWrap.setAttribute("aria-hidden", "false");
+    document.body.classList.add("chat-open");
+    lock();
+    fitViewport();
+  }
+  function closeChat() {
+    chatWrap.classList.remove("open");
+    chatWrap.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("locked", "chat-open");
+    closeDrawer();
+    chatWrap.style.top = "";
+    chatWrap.style.height = "";
+    chatWrap.style.bottom = "";
+  }
 
-  // Клавиатура на мобиле: держим композер над клавиатурой (как у Gemini)
+  // Клавиатура iOS: чат ровно в видимой области (над клавиатурой), без щели снизу
   function fitViewport() {
     const vv = window.visualViewport;
     if (!vv || !chatWrap.classList.contains("open")) return;
+    chatWrap.style.top = (vv.offsetTop || 0) + "px";
     chatWrap.style.height = vv.height + "px";
+    chatWrap.style.bottom = "auto";
     if (chatScroll) chatScroll.scrollTop = chatScroll.scrollHeight;
   }
   if (window.visualViewport) {
@@ -829,10 +843,9 @@
   }
   function addMessage(role, text) {
     const wrap = document.createElement("div"); wrap.className = `msg ${role}`;
-    const av = document.createElement("div"); av.className = `avatar ${role === "user" ? "user" : "kira"}`; av.textContent = role === "user" ? t("chat.you") : "K";
     const b = document.createElement("div"); b.className = "bubble";
     if (text) b.innerHTML = role === "user" ? `<p>${esc(text).replace(/\n/g, "<br>")}</p>` : markup(text);
-    wrap.append(av, b); messagesEl.append(wrap); stick(); return b;
+    wrap.append(b); messagesEl.append(wrap); stick(); return b;
   }
   function typing() { const b = addMessage("kira", ""); b.innerHTML = '<div class="aurora"><span></span><span></span><span></span></div>'; return b; }
   function stick(force = false) {
@@ -977,4 +990,9 @@
   });
 
   autoGrow();
+
+  // После перезагрузки сразу вернуть в чат, если уже был профиль / диалоги
+  if (chats.length || profile) {
+    openChat(false);
+  }
 })();

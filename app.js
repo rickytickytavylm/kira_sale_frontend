@@ -82,6 +82,7 @@
       "lead.submit": "Отправить", "lead.ok": "Спасибо! Менеджер свяжется в указанное время.",
       "lead.err": "Не удалось отправить. Проверьте номер и согласие.",
       "lead.err.phone": "Укажите номер телефона", "lead.err.consent": "Нужно согласие на звонок",
+      "chat.you": "Вы",
     },
     en: {
       "meta.title": "Kira — AI assistant of Dr. Shurov",
@@ -156,6 +157,7 @@
       "lead.submit": "Send", "lead.ok": "Thank you! A manager will call at the time you chose.",
       "lead.err": "Could not send. Check phone and consent.",
       "lead.err.phone": "Enter a phone number", "lead.err.consent": "Consent to call is required",
+      "chat.you": "You",
     },
     uk: {
       "meta.title": "Кіра — ІІ-помічник доктора Шурова",
@@ -230,6 +232,7 @@
       "lead.submit": "Надіслати", "lead.ok": "Дякуємо! Менеджер звʼяжеться у вказаний час.",
       "lead.err": "Не вдалося надіслати. Перевірте номер і згоду.",
       "lead.err.phone": "Вкажіть номер телефону", "lead.err.consent": "Потрібна згода на дзвінок",
+      "chat.you": "Ви",
     },
     pl: {
       "meta.title": "Kira — asystent AI doktora Szurowa",
@@ -304,6 +307,7 @@
       "lead.submit": "Wyślij", "lead.ok": "Dziękujemy! Menedżer oddzwoni w podanym czasie.",
       "lead.err": "Nie udało się wysłać. Sprawdź numer i zgodę.",
       "lead.err.phone": "Podaj numer telefonu", "lead.err.consent": "Wymagana zgoda na telefon",
+      "chat.you": "Ty",
     },
     es: {
       "meta.title": "Kira — asistente IA del Dr. Shurov",
@@ -378,6 +382,7 @@
       "lead.submit": "Enviar", "lead.ok": "¡Gracias! Un manager llamará a la hora indicada.",
       "lead.err": "No se pudo enviar. Revisa el teléfono y el consentimiento.",
       "lead.err.phone": "Indica un teléfono", "lead.err.consent": "Se requiere consentimiento para llamar",
+      "chat.you": "Tú",
     },
   };
 
@@ -440,6 +445,8 @@
     $("#langCur").textContent = lang.toUpperCase();
     $$("#langMenu button[data-lang]").forEach((b) => b.classList.toggle("active", b.dataset.lang === lang));
     if (typeof syncLeadBtn === "function") syncLeadBtn();
+    // Аватары «Вы/You/…» в уже открытом чате
+    $$(".avatar.user").forEach((el) => { el.textContent = t("chat.you"); });
   }
   // Инициализировать переводы при загрузке (язык — сохранённый выбор или автоопределение)
   applyLang(currentLang);
@@ -783,13 +790,31 @@
   sendBtn.addEventListener("click", submit);
 
   const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-  function markup(t) {
+  /** Убрать markdown-маркеры из ответа модели (часто сыплет **, #, - ). */
+  function stripMd(s) {
+    return String(s || "")
+      .replace(/\r\n/g, "\n")
+      .replace(/```[\s\S]*?```/g, (m) => m.replace(/```\w*\n?/g, "").replace(/```/g, ""))
+      .replace(/`([^`]+)`/g, "$1")
+      .replace(/\*\*([^*]+)\*\*/g, "$1")
+      .replace(/__([^_]+)__/g, "$1")
+      .replace(/(^|\s)\*([^*\n]+)\*(?=\s|$)/g, "$1$2")
+      .replace(/(^|\s)_([^_\n]+)_(?=\s|$)/g, "$1$2")
+      .replace(/^#{1,6}\s+/gm, "")
+      .replace(/^\s*[-*•]\s+/gm, "")
+      .replace(/^\s*\d+\.\s+/gm, "")
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, "$1 $2")
+      .replace(/\n{3,}/g, "\n\n")
+      .trim();
+  }
+  function markup(raw) {
+    const t = stripMd(raw);
     return esc(t).replace(/(https?:\/\/[^\s<]+)/g, (u) => `<a href="${u}" target="_blank" rel="noopener">${u}</a>`)
       .split(/\n{2,}/).map((p) => `<p>${p.replace(/\n/g, "<br>")}</p>`).join("");
   }
   function addMessage(role, text) {
     const wrap = document.createElement("div"); wrap.className = `msg ${role}`;
-    const av = document.createElement("div"); av.className = `avatar ${role === "user" ? "user" : "kira"}`; av.textContent = role === "user" ? "Вы" : "K";
+    const av = document.createElement("div"); av.className = `avatar ${role === "user" ? "user" : "kira"}`; av.textContent = role === "user" ? t("chat.you") : "K";
     const b = document.createElement("div"); b.className = "bubble";
     if (text) b.innerHTML = role === "user" ? `<p>${esc(text).replace(/\n/g, "<br>")}</p>` : markup(text);
     wrap.append(av, b); messagesEl.append(wrap); stick(); return b;

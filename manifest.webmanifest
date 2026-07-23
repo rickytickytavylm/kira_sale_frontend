@@ -1,0 +1,26 @@
+{
+  "name": "Kira — help matching",
+  "short_name": "Kira",
+  "description": "Kira helps choose a format of care. Anonymous, 24/7, multiple languages.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f7f7f8",
+  "theme_color": "#ffffff",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "logo_top.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "kira_background.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}

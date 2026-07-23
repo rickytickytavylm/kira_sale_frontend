@@ -6,7 +6,7 @@
  *
  * Запуск: node build-lang-pages.mjs
  */
-import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync, unlinkSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -14,12 +14,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const SITE = "https://kira-ai.online";
 const meta = JSON.parse(readFileSync(join(__dirname, "share-meta.json"), "utf8"));
 const langs = Object.keys(meta.langs);
-
-// Старый шаблон больше не нужен — источник всегда index.html
-const legacyTemplate = join(__dirname, "index.template.html");
-if (existsSync(legacyTemplate)) {
-  try { unlinkSync(legacyTemplate); } catch { /* ignore */ }
-}
 
 let template = readFileSync(join(__dirname, "index.html"), "utf8");
 template = template
@@ -44,13 +38,38 @@ function escapeHtml(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+/** Ассеты с корня — без <base>, чтобы #якоря не сбрасывали /pl/ → / */
+function rootAssets(html) {
+  const files = [
+    "manifest.webmanifest",
+    "logo_top.png",
+    "eng_logo.jpg",
+    "styles.css",
+    "kira_background.jpg",
+    "shurovv11.jpg",
+    "config.js",
+    "app.js",
+    "sw.js",
+  ];
+  let out = html;
+  for (const f of files) {
+    const re = new RegExp(`(href|src)="(${f.replace(".", "\\.")}[^"]*)"`, "g");
+    out = out.replace(re, `$1="/$2"`);
+  }
+  out = out.replace(
+    /navigator\.serviceWorker\.register\(["']\.\/sw\.js["']\)/,
+    'navigator.serviceWorker.register("/sw.js")'
+  );
+  return out;
+}
+
 function injectHead(html, lang) {
   const m = meta.langs[lang];
   const url = lang === "ru" ? `${SITE}/` : `${SITE}/${lang}/`;
   const image = `${SITE}/${m.image}`;
 
-  let out = html.replace(/<html\s+lang="[^"]*"/, `<html lang="${lang}"`);
-  out = out.replace(/<head>/, `<head>\n  <base href="/" />`);
+  let out = rootAssets(html);
+  out = out.replace(/<html\s+lang="[^"]*"/, `<html lang="${lang}"`);
 
   out = out.replace(
     /<title[^>]*>[\s\S]*?<\/title>/,
@@ -88,7 +107,7 @@ ${hreflangBlock()}
   }
 
   out = out.replace(/styles\.css\?v=\d+/, "styles.css?v=6");
-  out = out.replace(/app\.js\?v=\d+/, "app.js?v=8");
+  out = out.replace(/app\.js\?v=\d+/, "app.js?v=9");
   return out;
 }
 

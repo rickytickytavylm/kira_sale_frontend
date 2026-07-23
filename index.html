@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <base href="/" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#ffffff" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Kira" />
-  <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="apple-touch-icon" href="logo_top.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="/logo_top.png" />
   <title data-i18n-attr="title" data-i18n-attr-content="meta.title">Кира — подбор помощи | Школа доктора Шурова</title>
   <meta name="description" data-i18n-attr="description" data-i18n-attr-content="meta.description" content="Кира подберёт формат помощи: консультации, программы, VIP. Анонимно, 24/7, на 5 языках." />
 
@@ -37,7 +36,7 @@
 
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
   <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=clash-display@600,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=6" />
+  <link rel="stylesheet" href="/styles.css?v=6" />
 </head>
 <body>
   <!-- ═══════════ ФОНОВАЯ АТМОСФЕРА ═══════════ -->
@@ -46,7 +45,7 @@
   <!-- ═══════════ ПЛАВАЮЩАЯ GLASS-ШАПКА ═══════════ -->
   <header class="nav" id="nav">
     <div class="nav-pill glass">
-      <a class="brand" href="#top"><img class="brand-logo" src="logo_top.png" alt="Школа доктора Шурова" /></a>
+      <a class="brand" href="#top"><img class="brand-logo" src="/logo_top.png" alt="Школа доктора Шурова" /></a>
       <nav class="nav-links">
         <a href="#doctor" data-i18n="nav.doctor">Доктор</a>
         <a href="#benefits" data-i18n="nav.benefits">Возможности</a>
@@ -83,7 +82,7 @@
           <a class="btn btn-soft" href="#ways" data-i18n="hero.cta.pricing">С чего начать</a>
         </div>
         <div class="hero-visual">
-          <img src="kira_background.jpg" alt="Кира — ИИ-помощник доктора Шурова" />
+          <img src="/kira_background.jpg" alt="Кира — ИИ-помощник доктора Шурова" />
         </div>
       </div>
     </section>
@@ -119,7 +118,7 @@
     <!-- ═══════════ ДОКТОР ═══════════ -->
     <section class="doctor" id="doctor">
       <div class="doctor-intro">
-        <img class="doctor-photo" id="doctorPhoto" src="shurovv11.jpg" alt="Василий Александрович Шуров" />
+        <img class="doctor-photo" id="doctorPhoto" src="/shurovv11.jpg" alt="Василий Александрович Шуров" />
         <h3 data-i18n="doctor.name">Василий Александрович Шуров</h3>
         <p class="doctor-role" data-i18n="doctor.role">Врач психиатр-нарколог · более 20 лет практики</p>
         <ul class="doctor-facts">
@@ -215,7 +214,7 @@
     <!-- Боковая панель (десктоп) / шторка (мобайл) -->
     <aside class="chat-side" id="chatSide">
       <div class="side-head">
-        <img class="chat-logo" src="logo_top.png" alt="Школа доктора Шурова" />
+        <img class="chat-logo" src="/logo_top.png" alt="Школа доктора Шурова" />
         <button class="side-close" id="sideClose" aria-label="Закрыть">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
         </button>
@@ -287,12 +286,12 @@
     </div>
   </div>
 
-  <script src="config.js?v=2"></script>
-  <script src="app.js?v=8"></script>
+  <script src="/config.js?v=2"></script>
+  <script src="/app.js?v=9"></script>
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./sw.js").catch(() => {});
+        navigator.serviceWorker.register("/sw.js").catch(() => {});
       });
     }
   </script>

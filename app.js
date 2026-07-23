@@ -523,15 +523,17 @@
     // Обновить метку и флаг в кнопке языка + активный пункт в меню
     const meta = LANG_META[lang] || LANG_META.ru;
     const flagEl = $("#langFlag"); if (flagEl) flagEl.textContent = meta.flag;
-    $("#langCur").textContent = lang.toUpperCase();
+    const langCur = $("#langCur"); if (langCur) langCur.textContent = lang.toUpperCase();
     $$("#langMenu button[data-lang]").forEach((b) => b.classList.toggle("active", b.dataset.lang === lang));
     if (typeof syncLeadBtn === "function") syncLeadBtn();
-    // Логотип: RU — logo_top.png, остальные языки — eng_logo.jpg
-    const logoSrc = lang === "ru" ? "logo_top.png" : "eng_logo.jpg";
+    // Логотип с корня сайта (языковые URL /pl/ не должны ломать пути)
+    const logoSrc = lang === "ru" ? "/logo_top.png" : "/eng_logo.jpg";
     $$(".brand-logo, .chat-logo").forEach((el) => { if (el.getAttribute("src") !== logoSrc) el.setAttribute("src", logoSrc); });
-    // Заголовки чатов / шапка тоже зависят от языка
-    if (typeof renderChatList === "function") renderChatList();
+    // Нельзя звать renderChatList здесь напрямую: при первом applyLang chatList ещё в TDZ.
+    if (typeof onLangApplied === "function") onLangApplied();
   }
+  // Хук после готовности UI чата (назначается ниже). Пока — no-op.
+  let onLangApplied = () => {};
   // Инициализировать переводы при загрузке (язык — URL / сохранённый выбор / автоопределение)
   applyLang(currentLang);
 
@@ -838,6 +840,7 @@
       e.stopPropagation(); deleteChat(el.dataset.del);
     }));
   }
+  onLangApplied = () => { renderChatList(); };
 
   // ─── Шторка / сайдбар ───
   function openDrawer() { chatSide.classList.add("open"); chatBackdrop.classList.add("show"); }

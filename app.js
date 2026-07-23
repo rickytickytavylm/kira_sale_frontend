@@ -41,7 +41,7 @@
       "tabbar.home": "Главная", "tabbar.doctor": "Доктор", "tabbar.pricing": "Возможности", "tabbar.chat": "Подбор",
       "chat.newChat": "Новый разговор", "chat.quickStart": "Быстрый старт",
       "chat.quick.self": "Мне сложно с зависимостью", "chat.quick.relative": "Переживаю за близкого",
-      "chat.quick.psychiatry": "Тревога, депрессия, сон", "chat.quick.pricing": "Тарифы · 990 ₽",
+      "chat.quick.psychiatry": "Тревога, депрессия, сон", "chat.quick.pricing": "С чего начать",
       "chat.online": "Кира на связи", "chat.toSite": "На сайт →",
       "chat.mode.expert": "Разговор", "chat.mode.school": "Подбор помощи",
       "chat.placeholder": "Напишите Кире…", "chat.note": "Кира — ИИ и не заменяет врача. При угрозе жизни — 103 или 112.",
@@ -86,10 +86,10 @@
     en: {
       "meta.title": "Kira — AI assistant of Dr. Shurov",
       "meta.description": "Kira is an anonymous AI psychologist-addictologist trained by Dr. Vasily Shurov. Available 24/7 to help with addiction, anxiety and depression.",
-      "nav.doctor": "Doctor", "nav.benefits": "Features", "nav.pricing": "Pricing", "nav.start": "Start",
-      "hero.eyebrow": "AI assistant of Dr. Shurov", "hero.title": "Hello,<br>I'm&nbsp;Kira",
-      "hero.sub": "An anonymous AI psychologist-addictologist trained by Dr. Vasily Shurov. I'll help you honestly and without judgment with addiction, co-dependency, anxiety and depression — available 24/7.",
-      "hero.cta.start": "Start conversation", "hero.cta.pricing": "Pricing&nbsp;·&nbsp;990&nbsp;₽",
+      "nav.doctor": "Doctor", "nav.benefits": "Features", "nav.pricing": "Features", "nav.start": "Find help",
+      "hero.eyebrow": "Help matching · Dr. Shurov's school", "hero.title": "Hello,<br>I'm&nbsp;Kira",
+      "hero.sub": "I'll help you choose a suitable format of care — consultation, program or clinic support. Anonymous, without judgment, 24/7. Same approach as the Telegram bot, on the web and in multiple languages.",
+      "hero.cta.start": "Find help", "hero.cta.pricing": "Where to begin",
       "ways.eyebrow": "Where to begin",
       "ways.self.title": "I have an addiction", "ways.self.desc": "We'll understand what's happening and plan the first step.",
       "ways.relative.title": "My loved one is using", "ways.relative.desc": "Support for family members and co-dependents.",
@@ -115,7 +115,7 @@
       "tabbar.home": "Home", "tabbar.doctor": "Doctor", "tabbar.pricing": "Pricing", "tabbar.chat": "Chat",
       "chat.newChat": "New conversation", "chat.quickStart": "Quick start",
       "chat.quick.self": "I struggle with addiction", "chat.quick.relative": "Worried about a loved one",
-      "chat.quick.psychiatry": "Anxiety, depression, sleep", "chat.quick.pricing": "Pricing · 990 ₽",
+      "chat.quick.psychiatry": "Anxiety, depression, sleep", "chat.quick.pricing": "Where to begin",
       "chat.online": "Kira is online", "chat.toSite": "Back to site →",
       "chat.mode.expert": "Conversation", "chat.mode.school": "Find help",
       "chat.placeholder": "Write to Kira…", "chat.note": "Kira is AI and doesn't replace a doctor. Emergency — 103 or 112.",
@@ -160,10 +160,10 @@
     uk: {
       "meta.title": "Кіра — ІІ-помічник доктора Шурова",
       "meta.description": "Кіра — анонімний ІІ-психолог-аддиктолог, навчений доктором Василем Шуровим. Допоможе з залежністю, тривогою та депресією. Анонімно, 24/7.",
-      "nav.doctor": "Лікар", "nav.benefits": "Можливості", "nav.pricing": "Тарифи", "nav.start": "Почати",
-      "hero.eyebrow": "ІІ-помічник доктора Шурова", "hero.title": "Добрий день,<br>я&nbsp;Кіра",
-      "hero.sub": "Анонімний ІІ-психолог-аддиктолог, навчений доктором Василем Шуровим. Допоможу чесно і без осуду розібратися із залежністю, тривогою та депресією — на зв'язку 24/7.",
-      "hero.cta.start": "Почати розмову", "hero.cta.pricing": "Тарифи&nbsp;· 990&nbsp;₽",
+      "nav.doctor": "Лікар", "nav.benefits": "Можливості", "nav.pricing": "Можливості", "nav.start": "Підібрати допомогу",
+      "hero.eyebrow": "Підбір допомоги · школа доктора Шурова", "hero.title": "Добрий день,<br>я&nbsp;Кіра",
+      "hero.sub": "Підберу формат допомоги — консультацію, програму чи підтримку клініки. Анонімно, без осуду, 24/7. Як у Telegram-боті, але на сайті й різними мовами.",
+      "hero.cta.start": "Підібрати допомогу", "hero.cta.pricing": "З чого почати",
       "ways.eyebrow": "З чого почати",
       "ways.self.title": "Я залежний", "ways.self.desc": "Розберемося, що відбувається, і намітимо перший крок.",
       "ways.relative.title": "Мій близький вживає", "ways.relative.desc": "Підтримка для родичів і созалежних.",
@@ -189,7 +189,7 @@
       "tabbar.home": "Головна", "tabbar.doctor": "Лікар", "tabbar.pricing": "Тарифи", "tabbar.chat": "Чат",
       "chat.newChat": "Нова розмова", "chat.quickStart": "Швидкий старт",
       "chat.quick.self": "Мені важко із залежністю", "chat.quick.relative": "Переживаю за близького",
-      "chat.quick.psychiatry": "Тривога, депресія, сон", "chat.quick.pricing": "Тарифи · 990 ₽",
+      "chat.quick.psychiatry": "Тривога, депресія, сон", "chat.quick.pricing": "З чого почати",
       "chat.online": "Кіра на зв'язку", "chat.toSite": "На сайт →",
       "chat.mode.expert": "Розмова", "chat.mode.school": "Підбір допомоги",
       "chat.placeholder": "Напишіть Кірі…", "chat.note": "Кіра — ІІ і не замінює лікаря. При загрозі — 103 або 112.",
@@ -234,10 +234,10 @@
     pl: {
       "meta.title": "Kira — asystent AI doktora Szurowa",
       "meta.description": "Kira to anonimowy asystent AI psychologa-addyktologa, wyszkolony przez doktora Wasilija Szurowa. Pomoc z uzależnieniami, lękiem i depresją. Anonimowo, 24/7.",
-      "nav.doctor": "Lekarz", "nav.benefits": "Możliwości", "nav.pricing": "Cennik", "nav.start": "Zacznij",
-      "hero.eyebrow": "Asystent AI doktora Szurowa", "hero.title": "Cześć,<br>jestem&nbsp;Kirą",
-      "hero.sub": "Anonimowy asystent AI psychologa-addyktologa, wyszkolony przez doktora Szurowa. Pomogę szczerze i bez oceniania z uzależnieniem, współuzależnieniem, lękiem i depresją — dostępna 24/7.",
-      "hero.cta.start": "Rozpocznij rozmowę", "hero.cta.pricing": "Cennik&nbsp;·&nbsp;990&nbsp;₽",
+      "nav.doctor": "Lekarz", "nav.benefits": "Możliwości", "nav.pricing": "Możliwości", "nav.start": "Dobierz pomoc",
+      "hero.eyebrow": "Dobór pomocy · szkoła doktora Szurowa", "hero.title": "Cześć,<br>jestem&nbsp;Kirą",
+      "hero.sub": "Pomogę dobrać format pomocy — konsultację, program lub wsparcie kliniki. Anonimowo, bez oceniania, 24/7. Jak bot Telegram, ale na stronie i w kilku językach.",
+      "hero.cta.start": "Dobierz pomoc", "hero.cta.pricing": "Od czego zacząć",
       "ways.eyebrow": "Od czego zacząć",
       "ways.self.title": "Mam uzależnienie", "ways.self.desc": "Razem zrozumiemy, co się dzieje, i zaplanujemy pierwszy krok.",
       "ways.relative.title": "Mój bliski zażywa", "ways.relative.desc": "Wsparcie dla rodzin i współuzależnionych.",
@@ -263,7 +263,7 @@
       "tabbar.home": "Strona główna", "tabbar.doctor": "Lekarz", "tabbar.pricing": "Cennik", "tabbar.chat": "Czat",
       "chat.newChat": "Nowa rozmowa", "chat.quickStart": "Szybki start",
       "chat.quick.self": "Mam problem z uzależnieniem", "chat.quick.relative": "Martwię się o bliską osobę",
-      "chat.quick.psychiatry": "Lęk, depresja, sen", "chat.quick.pricing": "Cennik · 990 ₽",
+      "chat.quick.psychiatry": "Lęk, depresja, sen", "chat.quick.pricing": "Od czego zacząć",
       "chat.online": "Kira jest online", "chat.toSite": "Wróć do strony →",
       "chat.mode.expert": "Rozmowa", "chat.mode.school": "Znajdź pomoc",
       "chat.placeholder": "Napisz do Kiry…", "chat.note": "Kira to AI i nie zastępuje lekarza. W nagłych przypadkach — 103 lub 112.",
@@ -308,10 +308,10 @@
     es: {
       "meta.title": "Kira — asistente IA del Dr. Shurov",
       "meta.description": "Kira es una asistente IA anónima, psicóloga-adictóloga entrenada por el Dr. Vasily Shurov. Ayuda con adicciones, ansiedad y depresión. Anónimo, 24/7.",
-      "nav.doctor": "Doctor", "nav.benefits": "Funciones", "nav.pricing": "Precios", "nav.start": "Empezar",
-      "hero.eyebrow": "Asistente IA del Dr. Shurov", "hero.title": "Hola,<br>soy&nbsp;Kira",
-      "hero.sub": "Una asistente IA anónima, psicóloga-adictóloga entrenada por el Dr. Vasily Shurov. Te ayudaré con honestidad y sin juicios con la adicción, codependencia, ansiedad y depresión — disponible 24/7.",
-      "hero.cta.start": "Iniciar conversación", "hero.cta.pricing": "Precios&nbsp;·&nbsp;990&nbsp;₽",
+      "nav.doctor": "Doctor", "nav.benefits": "Funciones", "nav.pricing": "Funciones", "nav.start": "Encontrar ayuda",
+      "hero.eyebrow": "Selección de ayuda · escuela del Dr. Shurov", "hero.title": "Hola,<br>soy&nbsp;Kira",
+      "hero.sub": "Te ayudo a elegir el formato de ayuda — consulta, programa o apoyo de la clínica. Anónimo, sin juicios, 24/7. Como el bot de Telegram, pero en la web y en varios idiomas.",
+      "hero.cta.start": "Encontrar ayuda", "hero.cta.pricing": "Por dónde empezar",
       "ways.eyebrow": "Por dónde empezar",
       "ways.self.title": "Tengo una adicción", "ways.self.desc": "Entenderemos qué pasa y planificaremos el primer paso.",
       "ways.relative.title": "Mi ser querido consume", "ways.relative.desc": "Apoyo para familias y codependientes.",
@@ -337,7 +337,7 @@
       "tabbar.home": "Inicio", "tabbar.doctor": "Doctor", "tabbar.pricing": "Precios", "tabbar.chat": "Chat",
       "chat.newChat": "Nueva conversación", "chat.quickStart": "Inicio rápido",
       "chat.quick.self": "Tengo dificultades con la adicción", "chat.quick.relative": "Me preocupa un ser querido",
-      "chat.quick.psychiatry": "Ansiedad, depresión, sueño", "chat.quick.pricing": "Precios · 990 ₽",
+      "chat.quick.psychiatry": "Ansiedad, depresión, sueño", "chat.quick.pricing": "Por dónde empezar",
       "chat.online": "Kira está en línea", "chat.toSite": "Volver al sitio →",
       "chat.mode.expert": "Conversación", "chat.mode.school": "Encontrar ayuda",
       "chat.placeholder": "Escríbele a Kira…", "chat.note": "Kira es IA y no reemplaza a un médico. Emergencias — 103 o 112.",
@@ -531,11 +531,24 @@
 
   // Язык
   const langBtn = $("#langBtn"), langMenu = $("#langMenu");
-  langBtn.addEventListener("click", () => { langMenu.classList.toggle("open"); langBtn.setAttribute("aria-expanded", langMenu.classList.contains("open")); });
-  document.addEventListener("click", (e) => { if (!$("#lang").contains(e.target)) langMenu.classList.remove("open"); });
-  $$("#langMenu button").forEach((b) => b.addEventListener("click", () => {
+  langBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const open = !langMenu.classList.contains("open");
+    langMenu.classList.toggle("open", open);
+    langBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  document.addEventListener("click", (e) => {
+    if (!$("#lang") || $("#lang").contains(e.target)) return;
+    langMenu.classList.remove("open");
+    langBtn.setAttribute("aria-expanded", "false");
+  });
+  $$("#langMenu button[data-lang]").forEach((b) => b.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     applyLang(b.dataset.lang, true);
     langMenu.classList.remove("open");
+    langBtn.setAttribute("aria-expanded", "false");
   }));
 
   // Подписка в Sale не используется — CTA ведут сразу в онбординг/чат.

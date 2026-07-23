@@ -74,6 +74,14 @@
       "concern.label.behavior": "зависимое поведение", "concern.label.anxiety": "тревога",
       "concern.label.depression": "подавленное состояние", "concern.label.sleep": "сон",
       "concern.label.panic": "панические атаки", "concern.label.other": "ваше состояние",
+      "lead.open": "Оставить номер", "lead.title": "Оставить номер",
+      "lead.hint": "Менеджер позвонит в удобное время. Ссылок на оплату нет — сначала разберём ситуацию.",
+      "lead.name": "Имя", "lead.phone": "Телефон", "lead.time": "Когда удобно позвонить",
+      "lead.time.ph": "Например: сегодня после 18:00",
+      "lead.consent": "Согласен(на), что менеджер может позвонить по этому номеру",
+      "lead.submit": "Отправить", "lead.ok": "Спасибо! Менеджер свяжется в указанное время.",
+      "lead.err": "Не удалось отправить. Проверьте номер и согласие.",
+      "lead.err.phone": "Укажите номер телефона", "lead.err.consent": "Нужно согласие на звонок",
     },
     en: {
       "meta.title": "Kira — AI assistant of Dr. Shurov",
@@ -140,6 +148,14 @@
       "concern.label.behavior": "addictive behaviour", "concern.label.anxiety": "anxiety",
       "concern.label.depression": "depressed mood", "concern.label.sleep": "sleep",
       "concern.label.panic": "panic attacks", "concern.label.other": "your condition",
+      "lead.open": "Leave number", "lead.title": "Leave your number",
+      "lead.hint": "A manager will call at a convenient time. No payment links — first we clarify the situation.",
+      "lead.name": "Name", "lead.phone": "Phone", "lead.time": "Best time to call",
+      "lead.time.ph": "e.g. today after 6pm",
+      "lead.consent": "I agree that a manager may call this number",
+      "lead.submit": "Send", "lead.ok": "Thank you! A manager will call at the time you chose.",
+      "lead.err": "Could not send. Check phone and consent.",
+      "lead.err.phone": "Enter a phone number", "lead.err.consent": "Consent to call is required",
     },
     uk: {
       "meta.title": "Кіра — ІІ-помічник доктора Шурова",
@@ -206,6 +222,14 @@
       "concern.label.behavior": "залежна поведінка", "concern.label.anxiety": "тривога",
       "concern.label.depression": "пригнічений стан", "concern.label.sleep": "сон",
       "concern.label.panic": "панічні атаки", "concern.label.other": "ваш стан",
+      "lead.open": "Залишити номер", "lead.title": "Залишити номер",
+      "lead.hint": "Менеджер зателефонує у зручний час. Без посилань на оплату — спочатку розберемо ситуацію.",
+      "lead.name": "Імʼя", "lead.phone": "Телефон", "lead.time": "Коли зручно зателефонувати",
+      "lead.time.ph": "Наприклад: сьогодні після 18:00",
+      "lead.consent": "Погоджуюсь, що менеджер може зателефонувати на цей номер",
+      "lead.submit": "Надіслати", "lead.ok": "Дякуємо! Менеджер звʼяжеться у вказаний час.",
+      "lead.err": "Не вдалося надіслати. Перевірте номер і згоду.",
+      "lead.err.phone": "Вкажіть номер телефону", "lead.err.consent": "Потрібна згода на дзвінок",
     },
     pl: {
       "meta.title": "Kira — asystent AI doktora Szurowa",
@@ -272,6 +296,14 @@
       "concern.label.behavior": "zachowanie uzależniające", "concern.label.anxiety": "lęk",
       "concern.label.depression": "obniżony nastrój", "concern.label.sleep": "sen",
       "concern.label.panic": "ataki paniki", "concern.label.other": "Twój stan",
+      "lead.open": "Zostaw numer", "lead.title": "Zostaw numer",
+      "lead.hint": "Menedżer zadzwoni w dogodnym czasie. Bez linków do płatności — najpierw wyjaśnimy sytuację.",
+      "lead.name": "Imię", "lead.phone": "Telefon", "lead.time": "Kiedy wygodnie zadzwonić",
+      "lead.time.ph": "np. dziś po 18:00",
+      "lead.consent": "Wyrażam zgodę na telefon od menedżera na ten numer",
+      "lead.submit": "Wyślij", "lead.ok": "Dziękujemy! Menedżer oddzwoni w podanym czasie.",
+      "lead.err": "Nie udało się wysłać. Sprawdź numer i zgodę.",
+      "lead.err.phone": "Podaj numer telefonu", "lead.err.consent": "Wymagana zgoda na telefon",
     },
     es: {
       "meta.title": "Kira — asistente IA del Dr. Shurov",
@@ -338,6 +370,14 @@
       "concern.label.behavior": "la conducta adictiva", "concern.label.anxiety": "la ansiedad",
       "concern.label.depression": "el estado de ánimo deprimido", "concern.label.sleep": "el sueño",
       "concern.label.panic": "los ataques de pánico", "concern.label.other": "tu estado",
+      "lead.open": "Dejar número", "lead.title": "Dejar número",
+      "lead.hint": "Un manager llamará a una hora conveniente. Sin enlaces de pago — primero aclaramos la situación.",
+      "lead.name": "Nombre", "lead.phone": "Teléfono", "lead.time": "Mejor hora para llamar",
+      "lead.time.ph": "p. ej. hoy después de las 18:00",
+      "lead.consent": "Acepto que un manager pueda llamar a este número",
+      "lead.submit": "Enviar", "lead.ok": "¡Gracias! Un manager llamará a la hora indicada.",
+      "lead.err": "No se pudo enviar. Revisa el teléfono y el consentimiento.",
+      "lead.err.phone": "Indica un teléfono", "lead.err.consent": "Se requiere consentimiento para llamar",
     },
   };
 
@@ -370,10 +410,14 @@
     return "en";
   }
 
-  let currentLang = load("kira_sale_lang", null) || detectLang();
+  // Язык браузера на входе; ручной выбор в меню сохраняется отдельно.
+  let currentLang = load("kira_sale_lang_manual", false)
+    ? (load("kira_sale_lang", null) || detectLang())
+    : detectLang();
   function t(key) { return (TRANSLATIONS[currentLang] || TRANSLATIONS.ru)[key] || (TRANSLATIONS.ru[key] || key); }
-  function applyLang(lang) {
+  function applyLang(lang, manual) {
     currentLang = lang; save("kira_sale_lang", lang);
+    if (manual) save("kira_sale_lang_manual", true);
     document.documentElement.lang = lang;
     // Обновить тексты data-i18n
     $$("[data-i18n]").forEach((el) => {
@@ -395,6 +439,7 @@
     const flagEl = $("#langFlag"); if (flagEl) flagEl.textContent = meta.flag;
     $("#langCur").textContent = lang.toUpperCase();
     $$("#langMenu button[data-lang]").forEach((b) => b.classList.toggle("active", b.dataset.lang === lang));
+    if (typeof syncLeadBtn === "function") syncLeadBtn();
   }
   // Инициализировать переводы при загрузке (язык — сохранённый выбор или автоопределение)
   applyLang(currentLang);
@@ -489,19 +534,9 @@
   langBtn.addEventListener("click", () => { langMenu.classList.toggle("open"); langBtn.setAttribute("aria-expanded", langMenu.classList.contains("open")); });
   document.addEventListener("click", (e) => { if (!$("#lang").contains(e.target)) langMenu.classList.remove("open"); });
   $$("#langMenu button").forEach((b) => b.addEventListener("click", () => {
-    applyLang(b.dataset.lang);
+    applyLang(b.dataset.lang, true);
     langMenu.classList.remove("open");
   }));
-
-  // Видео
-  $("#videoPlay").addEventListener("click", () => {
-    const url = $("#video").dataset.videoUrl;
-    if (url) {
-      $("#video").innerHTML = `<iframe src="${url}" style="position:absolute;inset:0;width:100%;height:100%;border:0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-    } else {
-      $(".video-cap").textContent = "Видеообращение появится здесь";
-    }
-  });
 
   // Подписка в Sale не используется — CTA ведут сразу в онбординг/чат.
   function openSub() { startOnboarding(null); }
@@ -813,6 +848,66 @@
     } finally { setBusy(false); input.focus(); }
   }
   function setBusy(v) { busy = v; sendBtn.disabled = v || !input.value.trim(); }
+
+  // ═══════════ LEAD STUB (EU / не-ru) → позже amo ═══════════
+  const leadSheet = $("#leadSheet");
+  const leadOpen = $("#leadOpen");
+  function syncLeadBtn() {
+    if (!leadOpen) return;
+    leadOpen.hidden = currentLang === "ru";
+  }
+  syncLeadBtn();
+  function openLead() {
+    if (!leadSheet) return;
+    const st = $("#leadStatus");
+    if (st) { st.hidden = true; st.textContent = ""; st.className = "lead-status"; }
+    if (profile && profile.name && $("#leadName") && !$("#leadName").value) $("#leadName").value = profile.name;
+    openSheet(leadSheet);
+  }
+  if (leadOpen) leadOpen.addEventListener("click", openLead);
+  const leadClose = $("#leadClose");
+  if (leadClose) leadClose.addEventListener("click", () => closeSheet(leadSheet));
+  if (leadSheet) leadSheet.addEventListener("click", (e) => { if (e.target === leadSheet) closeSheet(leadSheet); });
+  const leadSubmit = $("#leadSubmit");
+  if (leadSubmit) leadSubmit.addEventListener("click", async () => {
+    const phone = (($("#leadPhone") && $("#leadPhone").value) || "").trim();
+    const name = (($("#leadName") && $("#leadName").value) || "").trim();
+    const callTime = (($("#leadTime") && $("#leadTime").value) || "").trim();
+    const consent = !!( $("#leadConsent") && $("#leadConsent").checked );
+    const st = $("#leadStatus");
+    if (!phone || phone.replace(/\D/g, "").length < 7) {
+      if (st) { st.hidden = false; st.className = "lead-status err"; st.textContent = t("lead.err.phone"); }
+      return;
+    }
+    if (!consent) {
+      if (st) { st.hidden = false; st.className = "lead-status err"; st.textContent = t("lead.err.consent"); }
+      return;
+    }
+    leadSubmit.disabled = true;
+    try {
+      const resp = await fetch(`${BACKEND}/api/lead`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name, phone, callTime, consent,
+          lang: currentLang, profile, deviceId: DEVICE, notes: "",
+        }),
+      });
+      const data = await resp.json().catch(() => ({}));
+      if (!resp.ok) throw new Error(data.message || "err");
+      if (st) { st.hidden = false; st.className = "lead-status ok"; st.textContent = t("lead.ok"); }
+      if (typeof addMessage === "function") {
+        addMessage("kira", t("lead.ok"));
+        const msgs = curMsgs();
+        if (msgs) { msgs.push({ role: "assistant", content: t("lead.ok") }); saveChats(); }
+      }
+      setTimeout(() => closeSheet(leadSheet), 1200);
+    } catch {
+      if (st) { st.hidden = false; st.className = "lead-status err"; st.textContent = t("lead.err"); }
+    } finally {
+      leadSubmit.disabled = false;
+    }
+  });
 
   autoGrow();
 })();

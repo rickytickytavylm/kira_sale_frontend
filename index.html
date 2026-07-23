@@ -103,17 +103,6 @@
         </ul>
       </div>
 
-      <div class="doctor-video">
-        <p class="eyebrow eyebrow-left" data-i18n="doctor.video.eyebrow">Видеообращение</p>
-        <div class="video" id="video" data-video-url="">
-          <div class="video-ph">
-            <button class="video-play" id="videoPlay" aria-label="Смотреть видеообращение">
-              <svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
-            </button>
-            <span class="video-cap" data-i18n="doctor.video.cap">Личное видеообращение доктора Шурова</span>
-          </div>
-        </div>
-      </div>
     </section>
 
     <!-- ═══════════ ЧТО ВЫ ПОЛУЧАЕТЕ ═══════════ -->
@@ -234,6 +223,7 @@
           <textarea id="input" class="composer-input" rows="1" autocomplete="off" data-i18n-placeholder="chat.placeholder"></textarea>
           <div class="composer-row composer-row-sale">
             <span class="sale-mode-label" data-i18n="chat.mode.school">Подбор помощи</span>
+            <button type="button" class="lead-open-btn" id="leadOpen" data-i18n="lead.open" hidden>Оставить номер</button>
             <button id="send" class="send-btn" aria-label="Отправить">
               <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M4.4 12 3 4.3c-.2-1 .8-1.8 1.7-1.4l15.6 7.3c1 .5 1 1.9 0 2.4L4.7 20.1c-.9.4-1.9-.4-1.7-1.4L4.4 12Zm1.7-.9h6.2c.5 0 .9.4.9.9s-.4.9-.9.9H6.1l-.9 5 12.9-6-12.9-6 .9 5.2Z"/></svg>
             </button>
@@ -246,6 +236,30 @@
 
   <!-- заглушка для совместимости со скриптом (подписка в Sale не используется) -->
   <div class="modal" id="subModal" aria-hidden="true" hidden></div>
+
+  <!-- ═══════════ ЗАЯВКА / НОМЕР (EU stub → позже amo) ═══════════ -->
+  <div class="sheet" id="leadSheet" aria-hidden="true">
+    <div class="sheet-card">
+      <button class="sheet-close" id="leadClose" aria-label="Закрыть">✕</button>
+      <h3 class="modal-h" data-i18n="lead.title">Оставить номер</h3>
+      <p class="lead-hint" data-i18n="lead.hint">Менеджер позвонит в удобное время. Ссылок на оплату нет — сначала разберём ситуацию.</p>
+      <label class="lead-label"><span data-i18n="lead.name">Имя</span>
+        <input id="leadName" class="lead-input" type="text" autocomplete="name" maxlength="80" />
+      </label>
+      <label class="lead-label"><span data-i18n="lead.phone">Телефон</span>
+        <input id="leadPhone" class="lead-input" type="tel" autocomplete="tel" maxlength="40" required />
+      </label>
+      <label class="lead-label"><span data-i18n="lead.time">Когда удобно позвонить</span>
+        <input id="leadTime" class="lead-input" type="text" maxlength="120" data-i18n-placeholder="lead.time.ph" />
+      </label>
+      <label class="lead-check">
+        <input id="leadConsent" type="checkbox" />
+        <span data-i18n="lead.consent">Согласен(на), что менеджер может позвонить по этому номеру</span>
+      </label>
+      <button class="btn-primary btn-lg" id="leadSubmit" data-i18n="lead.submit">Отправить</button>
+      <p class="lead-status" id="leadStatus" hidden></p>
+    </div>
+  </div>
 
   <script src="config.js"></script>
   <script src="app.js"></script>

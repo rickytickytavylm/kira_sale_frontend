@@ -50,6 +50,7 @@
       "chat.err.generic": "Что-то пошло не так. Попробуйте ещё раз.",
       "chat.err.server": "Не удалось связаться с сервером Киры. Проверьте бэкенд и адрес в config.js.",
       "chat.err.nobackend": "Не задан адрес бэкенда в config.js.",
+      "product.open": "Открыть", "product.school": "Школа доктора Шурова",
       "sub.badge": "Пробный день бесплатно", "sub.title": "Полный доступ к Кире", "sub.period": "/ месяц",
       "sub.features.1": "Безлимитный анонимный разговор 24/7",
       "sub.features.2": "Экспертный разбор как у психолога-аддиктолога",
@@ -130,6 +131,7 @@
       "chat.err.generic": "Something went wrong. Please try again.",
       "chat.err.server": "Couldn't reach Kira's server. Check the backend and config.js.",
       "chat.err.nobackend": "Backend URL is not set in config.js.",
+      "product.open": "Open", "product.school": "Dr. Shurov's school",
       "sub.badge": "First day free", "sub.title": "Full access to Kira", "sub.period": "/ month",
       "sub.features.1": "Unlimited anonymous conversation 24/7",
       "sub.features.2": "Expert analysis like a psychologist-addictologist",
@@ -210,6 +212,7 @@
       "chat.err.generic": "Щось пішло не так. Спробуйте ще раз.",
       "chat.err.server": "Не вдалося зв'язатися із сервером Кіри. Перевірте бекенд і адресу в config.js.",
       "chat.err.nobackend": "Не задано адресу бекенду в config.js.",
+      "product.open": "Відкрити", "product.school": "Школа доктора Шурова",
       "sub.badge": "Пробний день безкоштовно", "sub.title": "Повний доступ до Кіри", "sub.period": "/ місяць",
       "sub.features.1": "Безлімітна анонімна розмова 24/7",
       "sub.features.2": "Експертний розбір як у психолога-аддиктолога",
@@ -290,6 +293,7 @@
       "chat.err.generic": "Coś poszło nie tak. Spróbuj ponownie.",
       "chat.err.server": "Nie udało się połączyć z serwerem Kiry. Sprawdź backend i adres w config.js.",
       "chat.err.nobackend": "Nie ustawiono adresu backendu w config.js.",
+      "product.open": "Otwórz", "product.school": "Szkoła doktora Szurowa",
       "sub.badge": "Pierwszy dzień bezpłatnie", "sub.title": "Pełny dostęp do Kiry", "sub.period": "/ miesiąc",
       "sub.features.1": "Nieograniczona anonimowa rozmowa 24/7",
       "sub.features.2": "Ekspercka analiza jak u psychologa-addyktologa",
@@ -370,6 +374,7 @@
       "chat.err.generic": "Algo salió mal. Inténtalo de nuevo.",
       "chat.err.server": "No se pudo contactar el servidor de Kira. Revisa el backend y config.js.",
       "chat.err.nobackend": "No hay dirección del backend en config.js.",
+      "product.open": "Abrir", "product.school": "Escuela del Dr. Shurov",
       "sub.badge": "Primer día gratis", "sub.title": "Acceso completo a Kira", "sub.period": "/ mes",
       "sub.features.1": "Conversación anónima ilimitada 24/7",
       "sub.features.2": "Análisis experto como psicóloga-adictóloga",
@@ -923,10 +928,96 @@
       .replace(/\n{3,}/g, "\n\n")
       .trim();
   }
+  function findProductByUrl(url) {
+    const list = window.KIRA_PRODUCTS || [];
+    let href = String(url || "").trim().replace(/[),.;!?]+$/g, "");
+    let parsed;
+    try { parsed = new URL(href); } catch { return null; }
+    const path = parsed.pathname || "";
+    const host = (parsed.hostname || "").toLowerCase();
+    // Более длинные match первыми (4session раньше vip_terapia)
+    const ranked = list.slice().sort((a, b) => {
+      const al = Math.max(0, ...(a.match || []).map((m) => m.length));
+      const bl = Math.max(0, ...(b.match || []).map((m) => m.length));
+      return bl - al;
+    });
+    for (const p of ranked) {
+      if ((p.exclude || []).some((ex) => path.includes(ex))) continue;
+      if ((p.match || []).some((m) => path.includes(m))) return p;
+      if ((p.matchHost || []).some((h) => host === h || host.endsWith("." + h))) return p;
+    }
+    return null;
+  }
+  function productCardHtml(product, href) {
+    const link = href || product.url;
+    const img = product.image
+      ? `<div class="pcard-media"><img src="${esc(product.image)}" alt="" loading="lazy" decoding="async" /></div>`
+      : `<div class="pcard-media pcard-media-empty" aria-hidden="true"></div>`;
+    const price = product.price
+      ? `<span class="pcard-price">${esc(product.price)}</span>`
+      : "";
+    return `<a class="pcard" href="${esc(link)}" target="_blank" rel="noopener">
+      ${img}
+      <div class="pcard-body">
+        <div class="pcard-eyebrow">${esc(t("product.school"))}</div>
+        <div class="pcard-title">${esc(product.title)}</div>
+        <div class="pcard-row">
+          ${price}
+          <span class="pcard-cta">${esc(t("product.open"))}<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M9 6l6 6-6 6"/></svg></span>
+        </div>
+      </div>
+    </a>`;
+  }
   function markup(raw) {
-    const t = stripMd(raw);
-    return esc(t).replace(/(https?:\/\/[^\s<]+)/g, (u) => `<a href="${u}" target="_blank" rel="noopener">${u}</a>`)
-      .split(/\n{2,}/).map((p) => `<p>${p.replace(/\n/g, "<br>")}</p>`).join("");
+    const cleaned = stripMd(raw);
+    // Ссылки продуктов → iOS-карточки; остальные URL остаются текстовыми.
+    const parts = [];
+    const re = /(https?:\/\/[^\s<]+)/g;
+    let last = 0;
+    let m;
+    while ((m = re.exec(cleaned)) !== null) {
+      const before = cleaned.slice(last, m.index);
+      if (before) parts.push({ type: "text", value: before });
+      const url = m[1].replace(/[),.;!?]+$/g, "");
+      const trailing = m[1].slice(url.length);
+      const product = findProductByUrl(url);
+      if (product) parts.push({ type: "card", product, url });
+      else parts.push({ type: "text", value: url });
+      if (trailing) parts.push({ type: "text", value: trailing });
+      last = m.index + m[0].length;
+    }
+    if (last < cleaned.length) parts.push({ type: "text", value: cleaned.slice(last) });
+
+    // Склеиваем: текстовые куски в <p>, карточки — отдельно (не внутри абзаца)
+    let html = "";
+    let textBuf = "";
+    const flushText = () => {
+      if (!textBuf.trim()) { textBuf = ""; return; }
+      // Убрать «осиротевшие» строки, где осталась только цена/название перед карточкой
+      const tidy = textBuf
+        .replace(/[ \t]+\n/g, "\n")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
+      if (!tidy) { textBuf = ""; return; }
+      html += tidy.split(/\n{2,}/).map((p) => {
+        const linked = esc(p).replace(/(https?:\/\/[^\s<]+)/g, (u) => {
+          const clean = u.replace(/[),.;!?]+$/g, "");
+          return `<a href="${clean}" target="_blank" rel="noopener">${clean}</a>`;
+        });
+        return `<p>${linked.replace(/\n/g, "<br>")}</p>`;
+      }).join("");
+      textBuf = "";
+    };
+    for (const part of parts) {
+      if (part.type === "card") {
+        flushText();
+        html += productCardHtml(part.product, part.url);
+      } else {
+        textBuf += part.value;
+      }
+    }
+    flushText();
+    return html || `<p>${esc(cleaned)}</p>`;
   }
   function addMessage(role, text) {
     const wrap = document.createElement("div"); wrap.className = `msg ${role}`;

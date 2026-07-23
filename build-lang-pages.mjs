@@ -48,6 +48,7 @@ function rootAssets(html) {
     "kira_background.jpg",
     "shurovv11.jpg",
     "config.js",
+    "products.js",
     "app.js",
     "sw.js",
   ];
@@ -106,8 +107,8 @@ ${hreflangBlock()}
     );
   }
 
-  out = out.replace(/styles\.css\?v=\d+/, "styles.css?v=6");
-  out = out.replace(/app\.js\?v=\d+/, "app.js?v=9");
+  out = out.replace(/styles\.css\?v=\d+/, "styles.css?v=7");
+  out = out.replace(/app\.js\?v=\d+/, "app.js?v=10");
   return out;
 }
 

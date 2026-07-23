@@ -316,9 +316,82 @@ a { color: inherit; }
   transform: translateZ(0);
   -webkit-font-smoothing: antialiased;
 }
-.msg.kira .bubble a { color: var(--accent); font-weight: 500; text-decoration: none; border-bottom: 1px solid rgba(10, 132, 255, 0.35); }
+.msg.kira .bubble a:not(.pcard) { color: var(--accent); font-weight: 500; text-decoration: none; border-bottom: 1px solid rgba(10, 132, 255, 0.35); }
 .msg.user .bubble { background: var(--ink); color: #fff; padding: 12px 16px; border-radius: 18px 18px 6px 18px; }
 .bubble p { margin: 0 0 10px; } .bubble p:last-child { margin-bottom: 0; }
+
+/* iOS-карточка продукта (вместо голой ссылки) */
+.pcard {
+  display: block;
+  max-width: min(100%, 320px);
+  margin: 10px 0 4px;
+  text-decoration: none !important;
+  border: none !important;
+  color: inherit;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 10px 28px rgba(0, 0, 0, 0.08);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.pcard:hover { transform: translateY(-1px); box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 14px 34px rgba(0, 0, 0, 0.12); }
+.pcard:active { transform: scale(0.985); }
+.pcard-media {
+  aspect-ratio: 16 / 10;
+  background: linear-gradient(160deg, #f2f2f7 0%, #e5e5ea 100%);
+  overflow: hidden;
+}
+.pcard-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.pcard-media-empty {
+  aspect-ratio: 16 / 7;
+  background:
+    radial-gradient(120% 80% at 20% 20%, rgba(10, 132, 255, 0.18), transparent 55%),
+    linear-gradient(160deg, #f2f2f7 0%, #e5e5ea 100%);
+}
+.pcard-body { padding: 12px 14px 13px; }
+.pcard-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 4px;
+}
+.pcard-title {
+  font-size: 16px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+.pcard-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.pcard-price {
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.pcard-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 14px;
+  font-weight: 650;
+  color: var(--accent);
+}
 .typing { display: inline-flex; gap: 5px; padding: 6px 2px; }
 .typing span { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-faint); animation: blink 1.3s infinite ease-in-out; }
 .typing span:nth-child(2) { animation-delay: 0.18s; } .typing span:nth-child(3) { animation-delay: 0.36s; }

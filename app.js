@@ -415,12 +415,51 @@
     return "en";
   }
 
-  // Язык браузера на входе; ручной выбор в меню сохраняется отдельно.
-  let currentLang = load("kira_sale_lang_manual", false)
-    ? (load("kira_sale_lang", null) || detectLang())
-    : detectLang();
+  // Язык в URL: / → ru, /en/ → en, … Нужен для OG-превью при пересылке.
+  function langFromPath() {
+    const metaLang = document.querySelector('meta[name="kira-lang"]');
+    if (metaLang && SUPPORTED_LANGS.includes(metaLang.content)) return metaLang.content;
+    const m = String(location.pathname || "/").match(/^\/(en|uk|pl|es)(?:\/|$)/i);
+    if (m) return m[1].toLowerCase();
+    if (/^\/(?:index\.html)?$/i.test(location.pathname || "/")) return "ru";
+    return null;
+  }
+  function pathForLang(lang) {
+    return lang === "ru" ? "/" : `/${lang}/`;
+  }
+  function navigateToLang(lang) {
+    const target = pathForLang(lang);
+    const cur = location.pathname.replace(/\/index\.html$/i, "/");
+    const norm = cur.endsWith("/") || cur === "/" ? cur : `${cur}/`;
+    const want = target === "/" ? "/" : target;
+    if (norm === want || (want !== "/" && norm === `/${lang}/`)) return false;
+    location.assign(want + (location.hash || ""));
+    return true;
+  }
+
+  // Приоритет: явный языковой URL (/en/, /pl/…) → ручной выбор → язык браузера.
+  // Краулеры JS не выполняют, поэтому превью для / всегда русское.
+  const pathLang = langFromPath();
+  const manualLang = load("kira_sale_lang_manual", false)
+    ? (load("kira_sale_lang", null) || null)
+    : null;
+  let currentLang = "en";
+  if (pathLang) {
+    currentLang = pathLang;
+  } else if (manualLang && SUPPORTED_LANGS.includes(manualLang)) {
+    currentLang = manualLang;
+    if (manualLang !== "ru") navigateToLang(manualLang);
+  } else {
+    currentLang = detectLang();
+    if (currentLang !== "ru") navigateToLang(currentLang);
+  }
+  if (!SUPPORTED_LANGS.includes(currentLang)) currentLang = "en";
+
   function t(key) { return (TRANSLATIONS[currentLang] || TRANSLATIONS.ru)[key] || (TRANSLATIONS.ru[key] || key); }
   function applyLang(lang, manual) {
+    if (!SUPPORTED_LANGS.includes(lang)) lang = "en";
+    // Смена языка в меню → переходим на /en/, /pl/… чтобы в буфере была «правильная» ссылка для OG.
+    if (manual && navigateToLang(lang)) return;
     currentLang = lang; save("kira_sale_lang", lang);
     if (manual) save("kira_sale_lang_manual", true);
     document.documentElement.lang = lang;
@@ -434,7 +473,7 @@
       const key = el.dataset.i18nPlaceholder; const val = t(key);
       if (val !== undefined) el.placeholder = val;
     });
-    // Meta title / description
+    // Meta title / description (для вкладки; OG у краулера берётся из статичного HTML URL)
     const titleEl = document.querySelector("title");
     if (titleEl) titleEl.textContent = t("meta.title");
     const descEl = document.querySelector("meta[name=description]");
@@ -449,7 +488,7 @@
     const logoSrc = lang === "ru" ? "logo_top.png" : "eng_logo.jpg";
     $$(".brand-logo, .chat-logo").forEach((el) => { if (el.getAttribute("src") !== logoSrc) el.setAttribute("src", logoSrc); });
   }
-  // Инициализировать переводы при загрузке (язык — сохранённый выбор или автоопределение)
+  // Инициализировать переводы при загрузке (язык — URL / сохранённый выбор / автоопределение)
   applyLang(currentLang);
 
   function deviceId() {

@@ -1,0 +1,40 @@
+{
+  "site": "https://kira-ai.online",
+  "langs": {
+    "ru": {
+      "locale": "ru_RU",
+      "title": "Кира — подбор помощи | Школа доктора Шурова",
+      "description": "Кира подберёт формат помощи: консультации, программы, VIP. Анонимно, 24/7, на 5 языках.",
+      "image": "promo-ru.jpg",
+      "imageAlt": "Кира — подбор помощи"
+    },
+    "en": {
+      "locale": "en_US",
+      "title": "Kira — find help | Dr. Shurov's school",
+      "description": "Kira helps choose a format of care: consultations, programs, clinic support. Anonymous, 24/7, in 5 languages.",
+      "image": "promo-en.jpg",
+      "imageAlt": "Kira — find help"
+    },
+    "uk": {
+      "locale": "uk_UA",
+      "title": "Кіра — підбір допомоги | Школа доктора Шурова",
+      "description": "Кіра підбере формат допомоги: консультації, програми, підтримка клініки. Анонімно, 24/7, 5 мовами.",
+      "image": "promo-uk.jpg",
+      "imageAlt": "Кіра — підбір допомоги"
+    },
+    "pl": {
+      "locale": "pl_PL",
+      "title": "Kira — dobierz pomoc | Szkoła doktora Szurowa",
+      "description": "Kira pomoże dobrać format pomocy: konsultacje, programy, wsparcie kliniki. Anonimowo, 24/7, w 5 językach.",
+      "image": "promo-pl.jpg",
+      "imageAlt": "Kira — dobierz pomoc"
+    },
+    "es": {
+      "locale": "es_ES",
+      "title": "Kira — encontrar ayuda | Escuela del Dr. Shurov",
+      "description": "Kira te ayuda a elegir el formato de ayuda: consultas, programas, apoyo de la clínica. Anónimo, 24/7, en 5 idiomas.",
+      "image": "promo-es.jpg",
+      "imageAlt": "Kira — encontrar ayuda"
+    }
+  }
+}

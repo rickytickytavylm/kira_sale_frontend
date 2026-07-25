@@ -44,7 +44,12 @@
       "chat.delete": "Удалить", "chat.quickStart": "Быстрый старт",
       "chat.quick.self": "Мне сложно с зависимостью", "chat.quick.relative": "Переживаю за близкого",
       "chat.quick.psychiatry": "Тревога, депрессия, сон", "chat.quick.pricing": "С чего начать",
-      "chat.online": "Кира на связи", "chat.toSite": "На сайт →",
+      "chat.online": "Кира на связи",
+      "profile.guest": "Гость", "profile.temp": "Временный аккаунт", "profile.id": "ID",
+      "profile.copy": "Копировать ID", "profile.copied": "Скопировано",
+      "profile.lang": "Язык", "profile.disclaimer": "Медицинский дисклеймер",
+      "profile.delete": "Удалить аккаунт",
+      "profile.delete.confirm": "Удалить локальные данные чатов и профиля? История на сервере сохранится. Вы вернётесь на главную.",
       "chat.mode.expert": "Разговор", "chat.mode.school": "Подбор помощи",
       "chat.placeholder": "Напишите Кире…", "chat.note": "Кира — ИИ и не заменяет врача. При угрозе жизни — 103 или 112.",
       "chat.err.retry": "Не удалось получить ответ. Попробуйте ещё раз чуть позже.",
@@ -126,7 +131,12 @@
       "chat.delete": "Delete", "chat.quickStart": "Quick start",
       "chat.quick.self": "I struggle with addiction", "chat.quick.relative": "Worried about a loved one",
       "chat.quick.psychiatry": "Anxiety, depression, sleep", "chat.quick.pricing": "Where to begin",
-      "chat.online": "Kira is online", "chat.toSite": "Back to site →",
+      "chat.online": "Kira is online",
+      "profile.guest": "Guest", "profile.temp": "Temporary account", "profile.id": "ID",
+      "profile.copy": "Copy ID", "profile.copied": "Copied",
+      "profile.lang": "Language", "profile.disclaimer": "Medical disclaimer",
+      "profile.delete": "Delete account",
+      "profile.delete.confirm": "Delete local chats and profile? Server history is kept. You will return to the home page.",
       "chat.mode.expert": "Conversation", "chat.mode.school": "Find help",
       "chat.placeholder": "Write to Kira…", "chat.note": "Kira is AI and doesn't replace a doctor. Emergency — 103 or 112.",
       "chat.err.retry": "Couldn't get a reply. Please try again in a moment.",
@@ -208,7 +218,12 @@
       "chat.delete": "Видалити", "chat.quickStart": "Швидкий старт",
       "chat.quick.self": "Мені важко із залежністю", "chat.quick.relative": "Переживаю за близького",
       "chat.quick.psychiatry": "Тривога, депресія, сон", "chat.quick.pricing": "З чого почати",
-      "chat.online": "Кіра на зв'язку", "chat.toSite": "На сайт →",
+      "chat.online": "Кіра на зв'язку",
+      "profile.guest": "Гість", "profile.temp": "Тимчасовий акаунт", "profile.id": "ID",
+      "profile.copy": "Копіювати ID", "profile.copied": "Скопійовано",
+      "profile.lang": "Мова", "profile.disclaimer": "Медичний дисклеймер",
+      "profile.delete": "Видалити акаунт",
+      "profile.delete.confirm": "Видалити локальні чати та профіль? Історія на сервері збережеться. Ви повернетесь на головну.",
       "chat.mode.expert": "Розмова", "chat.mode.school": "Підбір допомоги",
       "chat.placeholder": "Напишіть Кірі…", "chat.note": "Кіра — ІІ і не замінює лікаря. При загрозі — 103 або 112.",
       "chat.err.retry": "Не вдалося отримати відповідь. Спробуйте ще раз трохи пізніше.",
@@ -290,7 +305,12 @@
       "chat.delete": "Usuń", "chat.quickStart": "Szybki start",
       "chat.quick.self": "Mam problem z uzależnieniem", "chat.quick.relative": "Martwię się o bliską osobę",
       "chat.quick.psychiatry": "Lęk, depresja, sen", "chat.quick.pricing": "Od czego zacząć",
-      "chat.online": "Kira jest online", "chat.toSite": "Wróć do strony →",
+      "chat.online": "Kira jest online",
+      "profile.guest": "Gość", "profile.temp": "Konto tymczasowe", "profile.id": "ID",
+      "profile.copy": "Kopiuj ID", "profile.copied": "Skopiowano",
+      "profile.lang": "Język", "profile.disclaimer": "Zastrzeżenie medyczne",
+      "profile.delete": "Usuń konto",
+      "profile.delete.confirm": "Usunąć lokalne czaty i profil? Historia na serwerze zostanie. Wrócisz na stronę główną.",
       "chat.mode.expert": "Rozmowa", "chat.mode.school": "Znajdź pomoc",
       "chat.placeholder": "Napisz do Kiry…", "chat.note": "Kira to AI i nie zastępuje lekarza. W nagłych przypadkach — 103 lub 112.",
       "chat.err.retry": "Nie udało się uzyskać odpowiedzi. Spróbuj ponownie za chwilę.",
@@ -372,7 +392,12 @@
       "chat.delete": "Eliminar", "chat.quickStart": "Inicio rápido",
       "chat.quick.self": "Tengo dificultades con la adicción", "chat.quick.relative": "Me preocupa un ser querido",
       "chat.quick.psychiatry": "Ansiedad, depresión, sueño", "chat.quick.pricing": "Por dónde empezar",
-      "chat.online": "Kira está en línea", "chat.toSite": "Volver al sitio →",
+      "chat.online": "Kira está en línea",
+      "profile.guest": "Invitado", "profile.temp": "Cuenta temporal", "profile.id": "ID",
+      "profile.copy": "Copiar ID", "profile.copied": "Copiado",
+      "profile.lang": "Idioma", "profile.disclaimer": "Aviso médico",
+      "profile.delete": "Eliminar cuenta",
+      "profile.delete.confirm": "¿Borrar chats y perfil locales? El historial en el servidor se conserva. Volverás al inicio.",
       "chat.mode.expert": "Conversación", "chat.mode.school": "Encontrar ayuda",
       "chat.placeholder": "Escríbele a Kira…", "chat.note": "Kira es IA y no reemplaza a un médico. Emergencias — 103 o 112.",
       "chat.err.retry": "No se pudo obtener respuesta. Inténtalo de nuevo en un momento.",
@@ -537,7 +562,7 @@
     $$("#langMenu button[data-lang]").forEach((b) => b.classList.toggle("active", b.dataset.lang === lang));
     if (typeof syncLeadBtn === "function") syncLeadBtn();
     // Логотип с корня сайта (языковые URL /pl/ не должны ломать пути)
-    const logoSrc = lang === "ru" ? "/logo_top.png" : "/eng_logo.jpg";
+    const logoSrc = lang === "ru" ? "/logo_nav.webp" : "/eng_logo.jpg";
     $$(".brand-logo, .chat-logo").forEach((el) => { if (el.getAttribute("src") !== logoSrc) el.setAttribute("src", logoSrc); });
     // Нельзя звать renderChatList здесь напрямую: при первом applyLang chatList ещё в TDZ.
     if (typeof onLangApplied === "function") onLangApplied();
@@ -756,6 +781,7 @@
       name: draft.name || "",
     };
     save(LS.profile, profile);
+    if (typeof syncProfileUI === "function") syncProfileUI();
     closeSheet(onboarding);
     openChat(true);
   }
@@ -815,6 +841,7 @@
     if (seed) profile = Object.assign({ who: "self", category: "addiction", concern: null, name: (profile && profile.name) || "" }, seed);
     if (!profile) profile = { who: "self", category: "addiction", concern: null, name: "" };
     save(LS.profile, profile);
+    if (typeof syncProfileUI === "function") syncProfileUI();
     const c = { id: uid(), title: NEW_CHAT_MARKER, mode: mode, profile: profile, messages: [], ts: Date.now() };
     chats.unshift(c); currentId = c.id;
     messagesEl.innerHTML = "";
@@ -861,17 +888,152 @@
       e.stopPropagation(); deleteChat(el.dataset.del);
     }));
   }
-  onLangApplied = () => { renderChatList(); };
+  onLangApplied = () => { renderChatList(); syncProfileUI(); };
 
   // ─── Шторка / сайдбар ───
   function openDrawer() { chatSide.classList.add("open"); chatBackdrop.classList.add("show"); }
-  function closeDrawer() { chatSide.classList.remove("open"); chatBackdrop.classList.remove("show"); }
+  function closeDrawer() {
+    chatSide.classList.remove("open");
+    chatBackdrop.classList.remove("show");
+    closeProfileMenu();
+  }
   $("#chatMenu").addEventListener("click", openDrawer);
   $("#chatBackdrop").addEventListener("click", closeDrawer);
   $("#sideClose").addEventListener("click", closeDrawer);
   $("#chatNew").addEventListener("click", () => newConversation(null));
   $("#chatNewTop").addEventListener("click", () => newConversation(null));
-  $("#chatToSite").addEventListener("click", (e) => { e.preventDefault(); closeChat(); });
+
+  // ─── Профиль внизу шторки (как ChatGPT): ID + язык + дисклеймер + wipe ───
+  const profileBtn = $("#profileBtn");
+  const profileMenu = $("#profileMenu");
+  const profileLangList = $("#profileLangList");
+  const profileLangBtn = $("#profileLangBtn");
+
+  function shortDeviceId() {
+    return String(DEVICE || "").replace(/-/g, "").slice(0, 8).toUpperCase() || "————————";
+  }
+  function profileInitials() {
+    const name = (profile && profile.name && String(profile.name).trim()) || "";
+    if (name) {
+      const parts = name.split(/\s+/).filter(Boolean);
+      const a = (parts[0] && parts[0][0]) || "";
+      const b = (parts[1] && parts[1][0]) || (parts[0] && parts[0][1]) || "";
+      return (a + b).toUpperCase() || "K";
+    }
+    return "K";
+  }
+  function profileDisplayName() {
+    const name = profile && profile.name && String(profile.name).trim();
+    return name || t("profile.guest");
+  }
+  function syncProfileUI() {
+    const initials = profileInitials();
+    const name = profileDisplayName();
+    const short = shortDeviceId();
+    ["profileAvatar", "profileAvatarBig"].forEach((id) => {
+      const el = $("#" + id);
+      if (el) el.textContent = initials;
+    });
+    ["profileName", "profileMenuName"].forEach((id) => {
+      const el = $("#" + id);
+      if (el) el.textContent = name;
+    });
+    const shortEl = $("#profileIdShort");
+    if (shortEl) shortEl.textContent = short;
+    const fullEl = $("#profileIdFull");
+    if (fullEl) fullEl.textContent = DEVICE;
+    const langCur = $("#profileLangCur");
+    if (langCur) langCur.textContent = String(currentLang || "ru").toUpperCase();
+    if (profileLangList && !profileLangList.hidden) renderProfileLangList();
+  }
+  function closeProfileMenu() {
+    if (!profileMenu) return;
+    profileMenu.hidden = true;
+    if (profileBtn) profileBtn.setAttribute("aria-expanded", "false");
+    if (profileLangList) profileLangList.hidden = true;
+    if (profileLangBtn) profileLangBtn.setAttribute("aria-expanded", "false");
+  }
+  function openProfileMenu() {
+    if (!profileMenu) return;
+    syncProfileUI();
+    profileMenu.hidden = false;
+    if (profileBtn) profileBtn.setAttribute("aria-expanded", "true");
+  }
+  function toggleProfileMenu() {
+    if (!profileMenu) return;
+    if (profileMenu.hidden) openProfileMenu();
+    else closeProfileMenu();
+  }
+  function renderProfileLangList() {
+    if (!profileLangList) return;
+    profileLangList.innerHTML = SUPPORTED_LANGS.map((lang) => {
+      const meta = LANG_META[lang] || { flag: "", name: lang };
+      const active = lang === currentLang ? " active" : "";
+      return `<button type="button" data-set-lang="${lang}" class="${active.trim()}"><span class="lang-flag">${meta.flag}</span> ${esc(meta.name)}</button>`;
+    }).join("");
+    profileLangList.querySelectorAll("[data-set-lang]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        applyLang(btn.getAttribute("data-set-lang"));
+        closeProfileMenu();
+      });
+    });
+  }
+  function wipeLocalAccount() {
+    // deviceId НЕ трогаем — в БД тот же пользователь; чистим только локальный UX
+    try {
+      localStorage.removeItem("kira_sale_chats");
+      localStorage.removeItem("kira_sale_current");
+      localStorage.removeItem("kira_sale_profile");
+      localStorage.removeItem("kira_sale_history");
+      localStorage.removeItem("kira_sale_mode");
+    } catch { /* ignore */ }
+    chats = [];
+    currentId = null;
+    profile = null;
+    if (messagesEl) messagesEl.innerHTML = "";
+    if (chipsEl) { chipsEl.innerHTML = ""; chipsEl.style.display = "none"; }
+    closeProfileMenu();
+    closeDrawer();
+    closeChat();
+    try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch { window.scrollTo(0, 0); }
+  }
+  if (profileBtn) profileBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleProfileMenu();
+  });
+  if (profileMenu) profileMenu.addEventListener("click", (e) => e.stopPropagation());
+  document.addEventListener("click", (e) => {
+    const wrap = $("#profileWrap");
+    if (wrap && !wrap.contains(e.target)) closeProfileMenu();
+  });
+  const profileCopyId = $("#profileCopyId");
+  if (profileCopyId) profileCopyId.addEventListener("click", async () => {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) await navigator.clipboard.writeText(DEVICE);
+      else {
+        const ta = document.createElement("textarea");
+        ta.value = DEVICE; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove();
+      }
+      const label = profileCopyId.querySelector("[data-i18n]") || profileCopyId.querySelector("span:last-child");
+      if (label) {
+        label.textContent = t("profile.copied");
+        setTimeout(() => { label.textContent = t("profile.copy"); }, 1200);
+      }
+    } catch { /* ignore */ }
+  });
+  if (profileLangBtn) profileLangBtn.addEventListener("click", () => {
+    if (!profileLangList) return;
+    const open = profileLangList.hidden;
+    profileLangList.hidden = !open;
+    profileLangBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    if (open) renderProfileLangList();
+  });
+  const profileDelete = $("#profileDelete");
+  if (profileDelete) profileDelete.addEventListener("click", () => {
+    if (!window.confirm(t("profile.delete.confirm"))) return;
+    wipeLocalAccount();
+  });
+  syncProfileUI();
 
   // ─── Чипы-подсказки (только на старте, над полем ввода) ───
   function chipSet() {
@@ -1247,6 +1409,7 @@
     if (!legalSheet || !id) return;
     try { await ensureLegalLoaded(); } catch { return; }
     if (!legalPack()) return;
+    if (typeof closeProfileMenu === "function") closeProfileMenu();
     renderLegalDoc(id);
     openSheet(legalSheet);
     try {

@@ -601,17 +601,11 @@
 
   // ─── Элементы ───
   const chatWrap = $("#chatWrap"), chatScroll = $("#chatScroll"), messagesEl = $("#messages");
-  const input = $("#input"), sendBtn = $("#send"), statusDot = $("#statusDot");
+  const input = $("#input"), sendBtn = $("#send");
   const onboarding = $("#onboarding"), obBody = $("#obBody"), obProgress = $("#obProgress");
   const subModal = $("#subModal"), chipsEl = $("#chips");
   const chatSide = $("#chatSide"), chatBackdrop = $("#chatBackdrop"), chatList = $("#chatList");
   let busy = false;
-
-  // ─── Статус сервиса ───
-  fetch(`${BACKEND}/healthz`).then((r) => r.json()).then((d) => {
-    statusDot.classList.add(d.demo ? "demo" : "online");
-    statusDot.title = d.demo ? "Демо-режим" : "Онлайн";
-  }).catch(() => { statusDot.title = "Сервер недоступен"; });
 
   // ─── Оверлеи ───
   const lock = () => document.body.classList.add("locked");
@@ -1014,7 +1008,7 @@
         const ta = document.createElement("textarea");
         ta.value = DEVICE; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove();
       }
-      const label = profileCopyId.querySelector("[data-i18n]") || profileCopyId.querySelector("span:last-child");
+      const label = profileCopyId.querySelector("[data-i18n]") || profileCopyId.querySelector("span");
       if (label) {
         label.textContent = t("profile.copied");
         setTimeout(() => { label.textContent = t("profile.copy"); }, 1200);

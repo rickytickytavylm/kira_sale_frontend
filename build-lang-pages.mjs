@@ -108,8 +108,8 @@ ${hreflangBlock()}
     );
   }
 
-  out = out.replace(/styles\.css\?v=\d+/, "styles.css?v=10");
-  out = out.replace(/app\.js\?v=\d+/, "app.js?v=13");
+  out = out.replace(/styles\.css\?v=\d+/, "styles.css?v=11");
+  out = out.replace(/app\.js\?v=\d+/, "app.js?v=14");
   return out;
 }
 

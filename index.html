@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Kira" />
   <link rel="manifest" href="/manifest.webmanifest" />
-  <link rel="apple-touch-icon" href="/logo_top.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <title data-i18n-attr="title" data-i18n-attr-content="meta.title">Кира — подбор помощи | Школа доктора Шурова</title>
   <meta name="description" data-i18n-attr="description" data-i18n-attr-content="meta.description" content="Кира подберёт формат помощи: консультации, программы, VIP. Анонимно, 24/7, на 5 языках." />
 
@@ -35,8 +35,8 @@
   <meta name="kira-lang" content="ru" />
 
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
-  <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=clash-display@600,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/styles.css?v=8" />
+  <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css?v=9" />
 </head>
 <body>
   <!-- ═══════════ ФОНОВАЯ АТМОСФЕРА ═══════════ -->
@@ -45,7 +45,12 @@
   <!-- ═══════════ ПЛАВАЮЩАЯ GLASS-ШАПКА ═══════════ -->
   <header class="nav" id="nav">
     <div class="nav-pill glass">
-      <a class="brand" href="#top"><img class="brand-logo" src="/logo_top.png" alt="Школа доктора Шурова" /></a>
+      <a class="brand" href="#top">
+        <picture>
+          <source type="image/webp" srcset="/logo_nav.webp" />
+          <img class="brand-logo" src="/logo_nav.png" width="240" height="160" alt="Школа доктора Шурова" decoding="async" />
+        </picture>
+      </a>
       <nav class="nav-links">
         <a href="#doctor" data-i18n="nav.doctor">Доктор</a>
         <a href="#benefits" data-i18n="nav.benefits">Возможности</a>
@@ -82,7 +87,10 @@
           <a class="btn btn-soft" href="#ways" data-i18n="hero.cta.pricing">С чего начать</a>
         </div>
         <div class="hero-visual">
-          <img src="/kira_background.jpg" alt="Кира — ИИ-помощник доктора Шурова" />
+          <picture>
+            <source type="image/webp" srcset="/kira_background-800.webp 800w, /kira_background.webp 1280w" sizes="(max-width: 720px) 92vw, 960px" />
+            <img src="/kira_background.jpg" width="1280" height="720" alt="Кира — ИИ-помощник доктора Шурова" fetchpriority="high" decoding="async" />
+          </picture>
         </div>
       </div>
     </section>
@@ -118,7 +126,10 @@
     <!-- ═══════════ ДОКТОР ═══════════ -->
     <section class="doctor" id="doctor">
       <div class="doctor-intro">
-        <img class="doctor-photo" id="doctorPhoto" src="/shurovv11.jpg" alt="Василий Александрович Шуров" />
+        <picture>
+          <source type="image/webp" srcset="/shurovv11-640.webp 640w, /shurovv11.webp 960w" sizes="(max-width: 640px) 92vw, 640px" />
+          <img class="doctor-photo" id="doctorPhoto" src="/shurovv11.jpg" width="960" height="504" alt="Василий Александрович Шуров" loading="lazy" decoding="async" />
+        </picture>
         <h3 data-i18n="doctor.name">Василий Александрович Шуров</h3>
         <p class="doctor-role" data-i18n="doctor.role">Врач психиатр-нарколог · более 20 лет практики</p>
         <ul class="doctor-facts">
@@ -214,7 +225,7 @@
     <!-- Боковая панель (десктоп) / шторка (мобайл) -->
     <aside class="chat-side" id="chatSide">
       <div class="side-head">
-        <img class="chat-logo" src="/logo_top.png" alt="Школа доктора Шурова" />
+        <img class="chat-logo" src="/logo_nav.webp" width="240" height="160" alt="Школа доктора Шурова" decoding="async" />
         <button class="side-close" id="sideClose" aria-label="Закрыть">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
         </button>
@@ -298,10 +309,9 @@
     </div>
   </div>
 
-  <script src="/config.js?v=2"></script>
-  <script src="/products.js?v=1"></script>
-  <script src="/legal.js?v=1"></script>
-  <script src="/app.js?v=11"></script>
+  <script src="/config.js?v=2" defer></script>
+  <script src="/products.js?v=1" defer></script>
+  <script src="/app.js?v=12" defer></script>
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {

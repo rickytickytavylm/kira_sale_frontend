@@ -1,48 +1,71 @@
-/* Kira Sale PWA — кэш статики для установки как приложения */
-const CACHE = "kira-sale-v4";
-const ASSETS = [
-  "./",
-  "./index.html",
-  "./styles.css",
-  "./app.js",
-  "./config.js",
-  "./products.js",
-  "./legal.js",
-  "./logo_top.png",
-  "./kira_background.jpg",
-  "./shurovv11.jpg",
-  "./manifest.webmanifest",
+/* Kira Sale PWA — лёгкий shell + сеть для HTML/JS */
+const CACHE = "kira-sale-v5";
+const SHELL = [
+  "/manifest.webmanifest",
+  "/styles.css?v=9",
+  "/config.js?v=2",
+  "/products.js?v=1",
+  "/app.js?v=12",
+  "/logo_nav.webp",
 ];
 
 self.addEventListener("install", (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS)).then(() => self.skipWaiting()));
+  e.waitUntil(
+    caches.open(CACHE)
+      .then((c) => Promise.all(SHELL.map((u) => c.add(u).catch(() => null))))
+      .then(() => self.skipWaiting())
+  );
 });
 
 self.addEventListener("activate", (e) => {
   e.waitUntil(
-    caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim())
+    caches.keys()
+      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
+      .then(() => self.clients.claim())
   );
 });
 
+function isHtml(req, url) {
+  return req.mode === "navigate" || (url.pathname.endsWith(".html") || url.pathname.endsWith("/"));
+}
+
+function isCode(url) {
+  return /\.(?:js|css|webmanifest)$/i.test(url.pathname) || url.search.includes("v=");
+}
+
 self.addEventListener("fetch", (e) => {
   const url = new URL(e.request.url);
-  // API / прокси — всегда сеть
-  if (url.pathname.startsWith("/api") || url.hostname.startsWith("api.")) {
-    return;
-  }
+  if (url.pathname.startsWith("/api") || url.hostname.startsWith("api.")) return;
   if (e.request.method !== "GET") return;
-  e.respondWith(
-    caches.match(e.request).then((cached) => {
-      const net = fetch(e.request)
+  if (url.origin !== self.location.origin) return;
+
+  // HTML / JS / CSS — network-first (чтобы деплой подхватывался без hard refresh)
+  if (isHtml(e.request, url) || isCode(url)) {
+    e.respondWith(
+      fetch(e.request)
         .then((res) => {
-          if (res && res.ok && url.origin === self.location.origin) {
+          if (res && res.ok) {
             const copy = res.clone();
             caches.open(CACHE).then((c) => c.put(e.request, copy));
           }
           return res;
         })
-        .catch(() => cached);
-      return cached || net;
+        .catch(() => caches.match(e.request))
+    );
+    return;
+  }
+
+  // Картинки и прочее — cache-first, без прекеша тяжёлых ассетов
+  e.respondWith(
+    caches.match(e.request).then((cached) => {
+      if (cached) return cached;
+      return fetch(e.request).then((res) => {
+        if (res && res.ok) {
+          const copy = res.clone();
+          caches.open(CACHE).then((c) => c.put(e.request, copy));
+        }
+        return res;
+      });
     })
   );
 });

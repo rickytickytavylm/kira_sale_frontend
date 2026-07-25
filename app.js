@@ -781,6 +781,7 @@
   }
 
   // Клавиатура iOS: чат ровно в видимой области (над клавиатурой), без щели снизу
+  let vvRaf = 0;
   function fitViewport() {
     const vv = window.visualViewport;
     if (!vv || !chatWrap.classList.contains("open")) return;
@@ -789,9 +790,16 @@
     chatWrap.style.bottom = "auto";
     if (chatScroll) chatScroll.scrollTop = chatScroll.scrollHeight;
   }
+  function scheduleFitViewport() {
+    if (vvRaf) return;
+    vvRaf = requestAnimationFrame(() => {
+      vvRaf = 0;
+      fitViewport();
+    });
+  }
   if (window.visualViewport) {
-    window.visualViewport.addEventListener("resize", fitViewport);
-    window.visualViewport.addEventListener("scroll", fitViewport);
+    window.visualViewport.addEventListener("resize", scheduleFitViewport);
+    window.visualViewport.addEventListener("scroll", scheduleFitViewport, { passive: true });
   }
 
   function openChat(fresh) {
@@ -1053,7 +1061,12 @@
     if (streamRaf) cancelAnimationFrame(streamRaf);
     streamRaf = requestAnimationFrame(() => {
       streamRaf = 0;
-      bubble.innerHTML = markup(text) + (live ? '<span class="stream-cursor" aria-hidden="true"></span>' : "");
+      // Во время стрима — только текст (без карточек/URL-скана), иначе innerHTML + remount img на каждый кадр.
+      if (live) {
+        bubble.innerHTML = `<p>${esc(stripMd(text)).replace(/\n/g, "<br>")}</p><span class="stream-cursor" aria-hidden="true"></span>`;
+      } else {
+        bubble.innerHTML = markup(text);
+      }
       stick();
     });
   }
@@ -1194,6 +1207,23 @@
   function legalPack() {
     return window.KIRA_LEGAL || null;
   }
+  let legalLoadPromise = null;
+  function ensureLegalLoaded() {
+    if (legalPack()) return Promise.resolve(legalPack());
+    if (legalLoadPromise) return legalLoadPromise;
+    legalLoadPromise = new Promise((resolve, reject) => {
+      const s = document.createElement("script");
+      s.src = "/legal.js?v=1";
+      s.async = true;
+      s.onload = () => resolve(legalPack());
+      s.onerror = () => reject(new Error("legal_load"));
+      document.head.appendChild(s);
+    }).catch((err) => {
+      legalLoadPromise = null;
+      throw err;
+    });
+    return legalLoadPromise;
+  }
   function legalTitleFor(id) {
     const pack = legalPack();
     const titles = pack && pack.titles && pack.titles[id];
@@ -1213,8 +1243,10 @@
     legalTitle.textContent = legalTitleFor(id);
     legalBody.innerHTML = legalBodyHtml(id);
   }
-  function openLegal(id) {
-    if (!legalSheet || !id || !legalPack()) return;
+  async function openLegal(id) {
+    if (!legalSheet || !id) return;
+    try { await ensureLegalLoaded(); } catch { return; }
+    if (!legalPack()) return;
     renderLegalDoc(id);
     openSheet(legalSheet);
     try {

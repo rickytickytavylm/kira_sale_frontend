@@ -76,11 +76,11 @@
       "chip.psychiatry.1": "Постоянная тревога и плохой сон", "chip.psychiatry.2": "Кажется, у меня депрессия", "chip.psychiatry.3": "Панические атаки — что делать?",
       "chip.relative.1": "Близкий человек употребляет", "chip.relative.2": "Как поговорить, не оттолкнув?", "chip.relative.3": "Что делать родственникам?",
       "chip.self.1": "Сложно контролировать употребление", "chip.self.2": "Как понять, что это зависимость?", "chip.self.3": "Постоянная тяга и срывы",
-      "greet.prefix": "Здравствуйте", "greet.name_prefix": "Здравствуйте,", "greet.intro": "Я Кира, ИИ-помощница школы доктора Шурова — помогу подобрать формат помощи.",
-      "greet.psychiatry.concern": "Понимаю — беспокоит {c}. Это тяжело нести в одиночку, и хорошо, что вы решили поговорить. Расскажите, что происходит и как давно, — я помогу разобраться.",
-      "greet.psychiatry.default": "Хорошо, что вы решили поговорить о своём состоянии. Расскажите, что беспокоит сильнее всего, — я помогу разобраться.",
-      "greet.addiction.concern": "Вижу, что помощь нужна для {w}, и что беспокоит {c}. Говорить об этом непросто — здесь можно честно, без осуждения. Расскажите, что происходит сейчас.",
-      "greet.addiction.default": "Говорить об этом непросто — здесь можно честно, без осуждения. Расскажите, что происходит с {w} сейчас, — и я помогу разобраться.",
+      "greet.prefix": "Здравствуйте", "greet.name_prefix": "Здравствуйте,", "greet.intro": "Я Кира, ИИ-помощница школы доктора Шурова. Здесь можно говорить честно — без стыда и осуждения.",
+      "greet.psychiatry.concern": "Понимаю — беспокоит {c}. Это тяжело нести в одиночку, и хорошо, что вы решили поговорить. Расскажите, что происходит и как давно — сначала разберёмся в ситуации.",
+      "greet.psychiatry.default": "Хорошо, что вы решили поговорить о своём состоянии. Расскажите, что беспокоит сильнее всего — спокойно разберёмся вместе.",
+      "greet.addiction.concern": "Вижу, что помощь нужна для {w}, и что беспокоит {c}. Говорить об этом непросто — здесь можно честно, без осуждения. Расскажите, что происходит сейчас: что тревожит сильнее всего?",
+      "greet.addiction.default": "Говорить об этом непросто — здесь можно честно, без осуждения. Расскажите, что происходит с {w} сейчас — и с чего вам важнее начать.",
       "greet.for.self": "вас", "greet.for.relative": "близкого человека",
       "concern.label.alcohol": "тема алкоголя", "concern.label.drugs": "употребление веществ", "concern.label.both": "употребление",
       "concern.label.behavior": "зависимое поведение", "concern.label.anxiety": "тревога",
@@ -578,6 +578,31 @@
     return id;
   }
   const DEVICE = deviceId();
+
+  // Источник трафика: ?src=vk или ?utm_source=vk — first-touch в localStorage
+  const TRAFFIC_KEY = "kira_sale_traffic_source";
+  function captureTrafficSource() {
+    try {
+      const sp = new URLSearchParams(location.search);
+      const raw = sp.get("src") || sp.get("utm_source") || "";
+      const norm = String(raw).trim().toLowerCase().replace(/[^a-z0-9_-]/g, "").slice(0, 40);
+      if (!norm) return load(TRAFFIC_KEY, "") || "";
+      const prev = load(TRAFFIC_KEY, "");
+      if (!prev) save(TRAFFIC_KEY, norm);
+      // чистим URL от метки, чтобы не светить в шаринге (источник уже сохранён)
+      if (sp.has("src") || sp.has("utm_source")) {
+        sp.delete("src");
+        sp.delete("utm_source");
+        const q = sp.toString();
+        const clean = location.pathname + (q ? `?${q}` : "") + location.hash;
+        history.replaceState(null, "", clean);
+      }
+      return load(TRAFFIC_KEY, norm) || norm;
+    } catch {
+      return load(TRAFFIC_KEY, "") || "";
+    }
+  }
+  const TRAFFIC_SOURCE = captureTrafficSource();
   const uid = () => (crypto.randomUUID && crypto.randomUUID()) || ("c" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6));
   let profile = load(LS.profile, null);
   let mode = "school"; // Sale: только подбор
@@ -1248,6 +1273,7 @@
           deviceId: DEVICE,
           lang: currentLang,
           conversationId: currentId,
+          trafficSource: TRAFFIC_SOURCE || undefined,
         }),
       });
       if (!resp.ok || !resp.body) throw new Error("bad");
@@ -1334,6 +1360,7 @@
           deviceId: DEVICE,
           conversationId: currentId,
           notes: "",
+          trafficSource: TRAFFIC_SOURCE || undefined,
         }),
       });
       const data = await resp.json().catch(() => ({}));

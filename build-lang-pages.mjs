@@ -109,7 +109,7 @@ ${hreflangBlock()}
   }
 
   out = out.replace(/styles\.css\?v=\d+/, "styles.css?v=11");
-  out = out.replace(/app\.js\?v=\d+/, "app.js?v=14");
+  out = out.replace(/app\.js\?v=\d+/, "app.js?v=15");
   return out;
 }
 

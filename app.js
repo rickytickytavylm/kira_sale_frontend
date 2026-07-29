@@ -1269,36 +1269,44 @@
     return { think, answer, sum: think.querySelector("summary"), body: think.querySelector(".kira-think-body") };
   }
 
-  function paintThinking(bubble, thinkText, live) {
-    const { think, sum, body } = ensureThinkShell(bubble, live);
-    if (live) {
-      think.open = true;
-      sum.textContent = t("chat.think.live");
-    }
+  function paintThinking(bubble, thinkText) {
+    const { think, sum, body } = ensureThinkShell(bubble, true);
+    think.classList.remove("is-hidden");
+    think.open = true;
+    sum.textContent = t("chat.think.live");
     body.textContent = stripMd(thinkText);
+    // автоскролл тела мыслей вниз
+    body.scrollTop = body.scrollHeight;
     stick();
   }
 
-  function paintStream(bubble, text, live, thinkText) {
+  function hideThinking(bubble) {
+    const think = bubble.querySelector(".kira-think");
+    if (think) {
+      think.open = false;
+      think.classList.add("is-hidden");
+    }
+  }
+
+  function paintStream(bubble, text, live) {
     if (streamRaf) cancelAnimationFrame(streamRaf);
     streamRaf = requestAnimationFrame(() => {
       streamRaf = 0;
-      if (thinkText) {
-        const { think, answer, sum } = ensureThinkShell(bubble, false);
+      hideThinking(bubble);
+      let answer = bubble.querySelector(".kira-answer");
+      if (!answer) {
+        // без мыслей — обычный бабл
         if (live) {
-          // ответ пошёл — мысли сворачиваем, без акцента
-          think.open = false;
-          sum.textContent = t("chat.think.done");
+          bubble.innerHTML = `<p>${esc(stripMd(text)).replace(/\n/g, "<br>")}</p><span class="stream-cursor" aria-hidden="true"></span>`;
+        } else {
+          bubble.innerHTML = markup(text);
+        }
+      } else {
+        if (live) {
           answer.innerHTML = `<p>${esc(stripMd(text)).replace(/\n/g, "<br>")}</p><span class="stream-cursor" aria-hidden="true"></span>`;
         } else {
-          think.open = false;
-          sum.textContent = t("chat.think.done");
           answer.innerHTML = markup(text);
         }
-      } else if (live) {
-        bubble.innerHTML = `<p>${esc(stripMd(text)).replace(/\n/g, "<br>")}</p><span class="stream-cursor" aria-hidden="true"></span>`;
-      } else {
-        bubble.innerHTML = markup(text);
       }
       stick();
     });
@@ -1314,7 +1322,7 @@
     const msgs = curMsgs(); msgs.push({ role: "user", content: text });
     const ch = curChat(); if (ch && isDefaultChatTitle(ch.title)) ch.title = text.slice(0, 42);
     saveChats(); renderChatList();
-    const bubble = typing(); let acc = "", thinkAcc = "", started = false;
+    const bubble = typing(); let acc = "", thinkAcc = "", answerStarted = false;
     try {
       const resp = await fetch(`${BACKEND}/api/chat`, {
         method: "POST", headers: { "Content-Type": "application/json" },
@@ -1338,25 +1346,29 @@
           const em = block.match(/^event:\s*(.+)$/m), dm = block.match(/^data:\s*(.+)$/m);
           if (!dm) continue; let data; try { data = JSON.parse(dm[1]); } catch { continue; }
           const ev = em ? em[1].trim() : "message";
-          if (ev === "thinking" && data.text) {
-            thinkAcc = data.text;
-            if (!started) paintThinking(bubble, thinkAcc, true);
+          if (ev === "thinking" && (data.delta || data.text) && !answerStarted) {
+            if (data.delta) thinkAcc += data.delta;
+            else thinkAcc = data.text;
+            paintThinking(bubble, thinkAcc);
+          } else if (ev === "thinking_done") {
+            hideThinking(bubble);
           } else if (ev === "delta" && data.text) {
-            started = true;
+            answerStarted = true;
+            hideThinking(bubble);
             acc += data.text;
-            paintStream(bubble, acc, true, thinkAcc || null);
+            paintStream(bubble, acc, true);
           } else if (ev === "error") {
             if (streamRaf) cancelAnimationFrame(streamRaf);
             bubble.innerHTML = markup(data.message || t("chat.err.generic"));
           } else if (ev === "done") {
-            if (acc) paintStream(bubble, acc, false, thinkAcc || null);
+            if (acc) paintStream(bubble, acc, false);
           }
         }
       }
       if (!acc) bubble.innerHTML = markup(t("chat.err.retry"));
       else {
         if (streamRaf) cancelAnimationFrame(streamRaf);
-        paintStream(bubble, acc, false, thinkAcc || null);
+        paintStream(bubble, acc, false);
         // в историю — только ответ, без мыслей
         msgs.push({ role: "assistant", content: acc }); saveChats();
       }

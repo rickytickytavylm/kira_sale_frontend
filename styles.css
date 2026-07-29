@@ -577,6 +577,7 @@ a { color: inherit; }
   border: none;
   background: transparent;
 }
+.kira-think.is-hidden { display: none; }
 .kira-think-sum {
   list-style: none;
   cursor: pointer;

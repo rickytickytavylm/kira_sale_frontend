@@ -56,6 +56,8 @@
       "chat.err.generic": "Что-то пошло не так. Попробуйте ещё раз.",
       "chat.err.server": "Не удалось связаться с сервером Киры. Проверьте бэкенд и адрес в config.js.",
       "chat.err.nobackend": "Не задан адрес бэкенда в config.js.",
+      "chat.think.live": "Думаю…",
+      "chat.think.done": "Как я размышляла",
       "product.open": "Открыть", "product.school": "Школа доктора Шурова",
       "sub.badge": "Пробный день бесплатно", "sub.title": "Полный доступ к Кире", "sub.period": "/ месяц",
       "sub.features.1": "Безлимитный анонимный разговор 24/7",
@@ -143,6 +145,8 @@
       "chat.err.generic": "Something went wrong. Please try again.",
       "chat.err.server": "Couldn't reach Kira's server. Check the backend and config.js.",
       "chat.err.nobackend": "Backend URL is not set in config.js.",
+      "chat.think.live": "Thinking…",
+      "chat.think.done": "How I reasoned",
       "product.open": "Open", "product.school": "Dr. Shurov's school",
       "sub.badge": "First day free", "sub.title": "Full access to Kira", "sub.period": "/ month",
       "sub.features.1": "Unlimited anonymous conversation 24/7",
@@ -230,6 +234,8 @@
       "chat.err.generic": "Щось пішло не так. Спробуйте ще раз.",
       "chat.err.server": "Не вдалося зв'язатися із сервером Кіри. Перевірте бекенд і адресу в config.js.",
       "chat.err.nobackend": "Не задано адресу бекенду в config.js.",
+      "chat.think.live": "Думаю…",
+      "chat.think.done": "Як я міркувала",
       "product.open": "Відкрити", "product.school": "Школа доктора Шурова",
       "sub.badge": "Пробний день безкоштовно", "sub.title": "Повний доступ до Кіри", "sub.period": "/ місяць",
       "sub.features.1": "Безлімітна анонімна розмова 24/7",
@@ -317,6 +323,8 @@
       "chat.err.generic": "Coś poszło nie tak. Spróbuj ponownie.",
       "chat.err.server": "Nie udało się połączyć z serwerem Kiry. Sprawdź backend i adres w config.js.",
       "chat.err.nobackend": "Nie ustawiono adresu backendu w config.js.",
+      "chat.think.live": "Myślę…",
+      "chat.think.done": "Jak myślałam",
       "product.open": "Otwórz", "product.school": "Szkoła doktora Szurowa",
       "sub.badge": "Pierwszy dzień bezpłatnie", "sub.title": "Pełny dostęp do Kiry", "sub.period": "/ miesiąc",
       "sub.features.1": "Nieograniczona anonimowa rozmowa 24/7",
@@ -404,6 +412,8 @@
       "chat.err.generic": "Algo salió mal. Inténtalo de nuevo.",
       "chat.err.server": "No se pudo contactar el servidor de Kira. Revisa el backend y config.js.",
       "chat.err.nobackend": "No hay dirección del backend en config.js.",
+      "chat.think.live": "Pensando…",
+      "chat.think.done": "Cómo lo pensé",
       "product.open": "Abrir", "product.school": "Escuela del Dr. Shurov",
       "sub.badge": "Primer día gratis", "sub.title": "Acceso completo a Kira", "sub.period": "/ mes",
       "sub.features.1": "Conversación anónima ilimitada 24/7",
@@ -1238,12 +1248,54 @@
   }
 
   let streamRaf = 0;
-  function paintStream(bubble, text, live) {
+  function ensureThinkShell(bubble, live) {
+    let think = bubble.querySelector(".kira-think");
+    let answer = bubble.querySelector(".kira-answer");
+    if (!think) {
+      bubble.innerHTML = "";
+      think = document.createElement("details");
+      think.className = "kira-think";
+      if (live) think.open = true;
+      const sum = document.createElement("summary");
+      sum.className = "kira-think-sum";
+      sum.textContent = live ? t("chat.think.live") : t("chat.think.done");
+      const body = document.createElement("div");
+      body.className = "kira-think-body";
+      think.append(sum, body);
+      answer = document.createElement("div");
+      answer.className = "kira-answer";
+      bubble.append(think, answer);
+    }
+    return { think, answer, sum: think.querySelector("summary"), body: think.querySelector(".kira-think-body") };
+  }
+
+  function paintThinking(bubble, thinkText, live) {
+    const { think, sum, body } = ensureThinkShell(bubble, live);
+    if (live) {
+      think.open = true;
+      sum.textContent = t("chat.think.live");
+    }
+    body.textContent = stripMd(thinkText);
+    stick();
+  }
+
+  function paintStream(bubble, text, live, thinkText) {
     if (streamRaf) cancelAnimationFrame(streamRaf);
     streamRaf = requestAnimationFrame(() => {
       streamRaf = 0;
-      // Во время стрима — только текст (без карточек/URL-скана), иначе innerHTML + remount img на каждый кадр.
-      if (live) {
+      if (thinkText) {
+        const { think, answer, sum } = ensureThinkShell(bubble, false);
+        if (live) {
+          // ответ пошёл — мысли сворачиваем, без акцента
+          think.open = false;
+          sum.textContent = t("chat.think.done");
+          answer.innerHTML = `<p>${esc(stripMd(text)).replace(/\n/g, "<br>")}</p><span class="stream-cursor" aria-hidden="true"></span>`;
+        } else {
+          think.open = false;
+          sum.textContent = t("chat.think.done");
+          answer.innerHTML = markup(text);
+        }
+      } else if (live) {
         bubble.innerHTML = `<p>${esc(stripMd(text)).replace(/\n/g, "<br>")}</p><span class="stream-cursor" aria-hidden="true"></span>`;
       } else {
         bubble.innerHTML = markup(text);
@@ -1262,7 +1314,7 @@
     const msgs = curMsgs(); msgs.push({ role: "user", content: text });
     const ch = curChat(); if (ch && isDefaultChatTitle(ch.title)) ch.title = text.slice(0, 42);
     saveChats(); renderChatList();
-    const bubble = typing(); let acc = "", started = false;
+    const bubble = typing(); let acc = "", thinkAcc = "", started = false;
     try {
       const resp = await fetch(`${BACKEND}/api/chat`, {
         method: "POST", headers: { "Content-Type": "application/json" },
@@ -1286,22 +1338,26 @@
           const em = block.match(/^event:\s*(.+)$/m), dm = block.match(/^data:\s*(.+)$/m);
           if (!dm) continue; let data; try { data = JSON.parse(dm[1]); } catch { continue; }
           const ev = em ? em[1].trim() : "message";
-          if (ev === "delta" && data.text) {
-            if (!started) { bubble.innerHTML = ""; started = true; }
+          if (ev === "thinking" && data.text) {
+            thinkAcc = data.text;
+            if (!started) paintThinking(bubble, thinkAcc, true);
+          } else if (ev === "delta" && data.text) {
+            started = true;
             acc += data.text;
-            paintStream(bubble, acc, true);
+            paintStream(bubble, acc, true, thinkAcc || null);
           } else if (ev === "error") {
             if (streamRaf) cancelAnimationFrame(streamRaf);
             bubble.innerHTML = markup(data.message || t("chat.err.generic"));
           } else if (ev === "done") {
-            if (acc) paintStream(bubble, acc, false);
+            if (acc) paintStream(bubble, acc, false, thinkAcc || null);
           }
         }
       }
       if (!acc) bubble.innerHTML = markup(t("chat.err.retry"));
       else {
         if (streamRaf) cancelAnimationFrame(streamRaf);
-        bubble.innerHTML = markup(acc);
+        paintStream(bubble, acc, false, thinkAcc || null);
+        // в историю — только ответ, без мыслей
         msgs.push({ role: "assistant", content: acc }); saveChats();
       }
     } catch {

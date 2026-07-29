@@ -570,6 +570,55 @@ a { color: inherit; }
 .chip-accent:hover { border-color: var(--accent); color: var(--accent); }
 .stream-cursor { display: inline-block; width: 2px; height: 1.05em; margin-left: 2px; vertical-align: text-bottom; background: var(--accent); animation: cursor-blink 0.85s step-end infinite; }
 @keyframes cursor-blink { 50% { opacity: 0; } }
+
+/* Мысли Киры — тихая фича, без акцента на «продаже» */
+.kira-think {
+  margin: 0 0 10px;
+  border: none;
+  background: transparent;
+}
+.kira-think-sum {
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  font-size: 12.5px;
+  font-weight: 550;
+  letter-spacing: 0.01em;
+  color: var(--ink-faint);
+  padding: 2px 0;
+}
+.kira-think-sum::-webkit-details-marker { display: none; }
+.kira-think-sum::before {
+  content: "";
+  display: inline-block;
+  width: 5px; height: 5px;
+  margin-right: 7px;
+  border-radius: 50%;
+  background: var(--ink-faint);
+  vertical-align: middle;
+  opacity: 0.7;
+}
+.kira-think[open] .kira-think-sum::before {
+  background: var(--accent);
+  animation: think-pulse 1.4s ease-in-out infinite;
+}
+@keyframes think-pulse {
+  0%, 100% { opacity: 0.45; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+.kira-think-body {
+  margin-top: 6px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.035);
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  max-height: 160px;
+  overflow: auto;
+}
+.kira-answer { min-width: 0; }
 /* Чистый композер: текст слева, отправка справа — без бейджей внутри поля */
 .composer-inner {
   max-width: var(--maxw);

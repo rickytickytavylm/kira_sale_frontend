@@ -1271,7 +1271,7 @@
 
   function paintThinking(bubble, thinkText) {
     const { think, sum, body } = ensureThinkShell(bubble, true);
-    think.classList.remove("is-hidden");
+    if (think.dataset.collapsed === "1") return;
     think.open = true;
     sum.textContent = t("chat.think.live");
     body.textContent = stripMd(thinkText);
@@ -1280,19 +1280,21 @@
     stick();
   }
 
-  function hideThinking(bubble) {
+  /** Мысли дописаны — сворачиваем в плашку (её можно раскрыть). */
+  function collapseThinking(bubble) {
     const think = bubble.querySelector(".kira-think");
-    if (think) {
-      think.open = false;
-      think.classList.add("is-hidden");
-    }
+    if (!think || think.dataset.collapsed === "1") return;
+    think.dataset.collapsed = "1";
+    think.open = false;
+    const sum = think.querySelector("summary");
+    if (sum) sum.textContent = t("chat.think.done");
   }
 
   function paintStream(bubble, text, live) {
     if (streamRaf) cancelAnimationFrame(streamRaf);
     streamRaf = requestAnimationFrame(() => {
       streamRaf = 0;
-      hideThinking(bubble);
+      collapseThinking(bubble);
       let answer = bubble.querySelector(".kira-answer");
       if (!answer) {
         // без мыслей — обычный бабл
@@ -1351,10 +1353,10 @@
             else thinkAcc = data.text;
             paintThinking(bubble, thinkAcc);
           } else if (ev === "thinking_done") {
-            hideThinking(bubble);
+            collapseThinking(bubble);
           } else if (ev === "delta" && data.text) {
             answerStarted = true;
-            hideThinking(bubble);
+            collapseThinking(bubble);
             acc += data.text;
             paintStream(bubble, acc, true);
           } else if (ev === "error") {

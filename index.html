@@ -27,11 +27,7 @@
   <meta name="twitter:description" content="Кира подберёт формат помощи: консультации, программы, VIP. Анонимно, 24/7, на 5 языках." />
   <meta name="twitter:image" content="https://kira-ai.online/promo-ru.jpg" />
   <link rel="alternate" hreflang="ru" href="https://kira-ai.online/" />
-  <link rel="alternate" hreflang="en" href="https://kira-ai.online/en/" />
-  <link rel="alternate" hreflang="uk" href="https://kira-ai.online/uk/" />
-  <link rel="alternate" hreflang="pl" href="https://kira-ai.online/pl/" />
-  <link rel="alternate" hreflang="es" href="https://kira-ai.online/es/" />
-  <link rel="alternate" hreflang="x-default" href="https://kira-ai.online/en/" />
+  <link rel="alternate" hreflang="x-default" href="https://kira-ai.online/" />
   <meta name="kira-lang" content="ru" />
 
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
@@ -56,19 +52,12 @@
         <a href="#benefits" data-i18n="nav.benefits">Возможности</a>
       </nav>
       <div class="nav-right">
-        <div class="lang" id="lang">
-          <button class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false">
+        <div class="lang" id="lang" hidden aria-hidden="true">
+          <button class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false" tabindex="-1">
             <span id="langFlag" class="lang-flag" aria-hidden="true">🇷🇺</span>
             <span id="langCur">RU</span>
-            <svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
           </button>
-          <div class="lang-menu glass" id="langMenu" role="menu">
-            <button role="menuitem" data-lang="ru"><span class="lang-flag">🇷🇺</span><span class="lang-name">Русский</span><svg class="lang-check" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M9 16.2l-3.5-3.5-1.4 1.4L9 19 20 8l-1.4-1.4z"/></svg></button>
-            <button role="menuitem" data-lang="en"><span class="lang-flag">🇬🇧</span><span class="lang-name">English</span><svg class="lang-check" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M9 16.2l-3.5-3.5-1.4 1.4L9 19 20 8l-1.4-1.4z"/></svg></button>
-            <button role="menuitem" data-lang="uk"><span class="lang-flag">🇺🇦</span><span class="lang-name">Українська</span><svg class="lang-check" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M9 16.2l-3.5-3.5-1.4 1.4L9 19 20 8l-1.4-1.4z"/></svg></button>
-            <button role="menuitem" data-lang="pl"><span class="lang-flag">🇵🇱</span><span class="lang-name">Polski</span><svg class="lang-check" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M9 16.2l-3.5-3.5-1.4 1.4L9 19 20 8l-1.4-1.4z"/></svg></button>
-            <button role="menuitem" data-lang="es"><span class="lang-flag">🇪🇸</span><span class="lang-name">Español</span><svg class="lang-check" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M9 16.2l-3.5-3.5-1.4 1.4L9 19 20 8l-1.4-1.4z"/></svg></button>
-          </div>
+          <div class="lang-menu glass" id="langMenu" role="menu" hidden></div>
         </div>
         <button class="nav-cta" id="navStart" data-i18n="nav.start">Подобрать помощь</button>
       </div>
@@ -81,7 +70,7 @@
       <div class="hero-inner">
         <p class="hero-eyebrow" data-i18n="hero.eyebrow">Подбор помощи · школа доктора Шурова</p>
         <h1 class="hero-title" data-i18n="hero.title">Здравствуйте,<br>я&nbsp;Кира</h1>
-        <p class="hero-sub" data-i18n="hero.sub">Подберу подходящий формат помощи — консультацию, программу или VIP — по вашей ситуации. Анонимно, без осуждения, на связи 24/7. Как в Telegram-боте, но на сайте и на разных языках.</p>
+        <p class="hero-sub" data-i18n="hero.sub">Подберу подходящий формат помощи — консультацию, программу или VIP — по вашей ситуации. Анонимно, без осуждения, на связи 24/7. Как в Telegram-боте, только на сайте.</p>
         <div class="hero-cta">
           <button class="btn btn-dark" id="heroStart" data-i18n="hero.cta.start">Подобрать помощь</button>
           <a class="btn btn-soft" href="#ways" data-i18n="hero.cta.pricing">С чего начать</a>
@@ -253,10 +242,9 @@
                   <span data-i18n="profile.copy">Копировать ID</span>
                   <svg class="profile-chev" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M9 6l6 6-6 6"/></svg>
                 </button>
-                <button type="button" class="profile-row" id="profileLangBtn" aria-expanded="false">
+                <button type="button" class="profile-row" id="profileLangBtn" aria-expanded="false" hidden>
                   <span data-i18n="profile.lang">Язык</span>
                   <span class="profile-row-value" id="profileLangCur">RU</span>
-                  <svg class="profile-chev" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M9 6l6 6-6 6"/></svg>
                 </button>
                 <div class="profile-lang-list" id="profileLangList" hidden></div>
                 <button type="button" class="profile-row" id="profileDisclaimer" data-legal="disclaimer">

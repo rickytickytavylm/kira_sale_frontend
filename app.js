@@ -14,7 +14,7 @@
       "meta.description": "Кира подберёт формат помощи в школе и клинике доктора Шурова: консультации, программы, VIP. Анонимно, 24/7, на 5 языках.",
       "nav.doctor": "Доктор", "nav.benefits": "Возможности", "nav.pricing": "Тарифы", "nav.start": "Подобрать помощь",
       "hero.eyebrow": "Подбор помощи · школа доктора Шурова", "hero.title": "Здравствуйте,<br>я&nbsp;Кира",
-      "hero.sub": "Подберу подходящий формат помощи — консультацию, программу или VIP — по вашей ситуации. Анонимно, без осуждения, на связи 24/7. Как в Telegram-боте, но на сайте и на разных языках.",
+      "hero.sub": "Подберу подходящий формат помощи — консультацию, программу или VIP — по вашей ситуации. Анонимно, без осуждения, на связи 24/7. Как в Telegram-боте, только на сайте.",
       "hero.cta.start": "Подобрать помощь", "hero.cta.pricing": "С чего начать",
       "ways.eyebrow": "С чего начать",
       "ways.self.title": "Я зависим", "ways.self.desc": "Разберёмся, что происходит, и наметим первый шаг.",
@@ -461,69 +461,20 @@
   const load = (k, d) => { try { const r = localStorage.getItem(k); return r ? JSON.parse(r) : d; } catch { return d; } };
   const save = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
 
-  // ─── i18n ───
-  const SUPPORTED_LANGS = ["ru", "en", "uk", "pl", "es"];
-  const LANG_META = {
-    ru: { flag: "🇷🇺", name: "Русский" },
-    en: { flag: "🇬🇧", name: "English" },
-    uk: { flag: "🇺🇦", name: "Українська" },
-    pl: { flag: "🇵🇱", name: "Polski" },
-    es: { flag: "🇪🇸", name: "Español" },
-  };
+  // ─── i18n (запуск Sale: только русский) ───
+  const SUPPORTED_LANGS = ["ru"];
+  const LANG_META = { ru: { flag: "🇷🇺", name: "Русский" } };
 
-  // Автоопределение языка при первом заходе: смотрим язык(и) браузера
-  // (navigator.language/languages) — это надёжнее физической геолокации,
-  // т.к. не требует разрешения и отражает реальный язык человека, а не
-  // страну (турист/VPN не сломают определение). Если язык не входит в
-  // список поддерживаемых — по умолчанию английский, а не русский.
-  function detectLang() {
-    const cands = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || "en"]);
-    for (const c of cands) {
-      const short = String(c).slice(0, 2).toLowerCase();
-      if (SUPPORTED_LANGS.includes(short)) return short;
-    }
-    return "en";
+  // Старые /en/, /pl/… → сразу на корень.
+  if (/^\/(en|uk|pl|es)(?:\/|$)/i.test(location.pathname || "/")) {
+    location.replace("/" + (location.hash || ""));
   }
 
-  // Язык в URL: / → ru, /en/ → en, … Нужен для OG-превью при пересылке.
-  function langFromPath() {
-    const metaLang = document.querySelector('meta[name="kira-lang"]');
-    if (metaLang && SUPPORTED_LANGS.includes(metaLang.content)) return metaLang.content;
-    const m = String(location.pathname || "/").match(/^\/(en|uk|pl|es)(?:\/|$)/i);
-    if (m) return m[1].toLowerCase();
-    if (/^\/(?:index\.html)?$/i.test(location.pathname || "/")) return "ru";
-    return null;
-  }
-  function pathForLang(lang) {
-    return lang === "ru" ? "/" : `/${lang}/`;
-  }
-  function navigateToLang(lang) {
-    const target = pathForLang(lang);
-    const cur = location.pathname.replace(/\/index\.html$/i, "/");
-    const norm = cur.endsWith("/") || cur === "/" ? cur : `${cur}/`;
-    const want = target === "/" ? "/" : target;
-    if (norm === want || (want !== "/" && norm === `/${lang}/`)) return false;
-    location.assign(want + (location.hash || ""));
-    return true;
-  }
+  function pathForLang() { return "/"; }
+  function navigateToLang() { return false; }
 
-  // Приоритет: явный языковой URL (/en/, /pl/…) → ручной выбор → язык браузера.
-  // Краулеры JS не выполняют, поэтому превью для / всегда русское.
-  const pathLang = langFromPath();
-  const manualLang = load("kira_sale_lang_manual", false)
-    ? (load("kira_sale_lang", null) || null)
-    : null;
-  let currentLang = "en";
-  if (pathLang) {
-    currentLang = pathLang;
-  } else if (manualLang && SUPPORTED_LANGS.includes(manualLang)) {
-    currentLang = manualLang;
-    if (manualLang !== "ru") navigateToLang(manualLang);
-  } else {
-    currentLang = detectLang();
-    if (currentLang !== "ru") navigateToLang(currentLang);
-  }
-  if (!SUPPORTED_LANGS.includes(currentLang)) currentLang = "en";
+  let currentLang = "ru";
+  save("kira_sale_lang", "ru");
 
   function t(key) { return (TRANSLATIONS[currentLang] || TRANSLATIONS.ru)[key] || (TRANSLATIONS.ru[key] || key); }
   const NEW_CHAT_MARKER = "__new__";
@@ -539,12 +490,11 @@
     return chat.title;
   }
   function applyLang(lang, manual) {
-    if (!SUPPORTED_LANGS.includes(lang)) lang = "en";
-    // Смена языка в меню → переходим на /en/, /pl/… чтобы в буфере была «правильная» ссылка для OG.
+    lang = "ru";
     if (manual && navigateToLang(lang)) return;
-    currentLang = lang; save("kira_sale_lang", lang);
+    currentLang = "ru"; save("kira_sale_lang", "ru");
     if (manual) save("kira_sale_lang_manual", true);
-    document.documentElement.lang = lang;
+    document.documentElement.lang = "ru";
     // Обновить тексты data-i18n
     $$("[data-i18n]").forEach((el) => {
       const key = el.dataset.i18n; const val = t(key);
@@ -689,27 +639,10 @@
     });
   }, { passive: true });
 
-  // Язык
+  // Переключатель языков скрыт (Sale = только RU).
   const langBtn = $("#langBtn"), langMenu = $("#langMenu");
-  langBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const open = !langMenu.classList.contains("open");
-    langMenu.classList.toggle("open", open);
-    langBtn.setAttribute("aria-expanded", open ? "true" : "false");
-  });
-  document.addEventListener("click", (e) => {
-    if (!$("#lang") || $("#lang").contains(e.target)) return;
-    langMenu.classList.remove("open");
-    langBtn.setAttribute("aria-expanded", "false");
-  });
-  $$("#langMenu button[data-lang]").forEach((b) => b.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    applyLang(b.dataset.lang, true);
-    langMenu.classList.remove("open");
-    langBtn.setAttribute("aria-expanded", "false");
-  }));
+  if (langBtn) langBtn.hidden = true;
+  if (langMenu) langMenu.hidden = true;
 
   // Подписка в Sale не используется — CTA ведут сразу в онбординг/чат.
   function openSub() { startOnboarding(null); }
@@ -937,6 +870,7 @@
   const profileMenu = $("#profileMenu");
   const profileLangList = $("#profileLangList");
   const profileLangBtn = $("#profileLangBtn");
+  if (profileLangBtn) profileLangBtn.hidden = true;
 
   function shortDeviceId() {
     return String(DEVICE || "").replace(/-/g, "").slice(0, 8).toUpperCase() || "————————";
@@ -1269,12 +1203,32 @@
     return { think, answer, sum: think.querySelector("summary"), body: think.querySelector(".kira-think-body") };
   }
 
+  /** Убираем служебное из CoT перед показом пользователю. */
+  function scrubThinkingForUi(text) {
+    let s = String(text || "");
+    s = s
+      .replace(/\b(save_contact_data|notify_manager|tool_calls?|function[_ ]calls?|update_stage|get_products?)\b/gi, "")
+      .replace(/\b(CRM|amoCRM|system prompt|product_id|track_id|dialog_phase|reasoning)\b/gi, "")
+      .replace(/\b(konsult_|vip_|video_|kurs_|catalog_|detox_|hospital_)[a-z0-9_]+\b/gi, "")
+      .replace(/\{[^{}]{0,240}\}/g, "")
+      .replace(/\[[^\]]{0,120}\]/g, "")
+      .replace(/`[^`]{0,100}`/g, "")
+      .replace(/https?:\/\/\S+/gi, "")
+      .replace(/\s{2,}/g, " ")
+      .replace(/\n{3,}/g, "\n\n")
+      .trim();
+    // Не раздуваем плашку: максимум ~900 символов для чтения
+    if (s.length > 900) s = s.slice(0, 900).replace(/\s+\S*$/, "") + "…";
+    return s;
+  }
+
   function paintThinking(bubble, thinkText) {
     const { think, sum, body } = ensureThinkShell(bubble, true);
     if (think.dataset.collapsed === "1") return;
     think.open = true;
     sum.textContent = t("chat.think.live");
-    body.textContent = stripMd(thinkText);
+    const clean = scrubThinkingForUi(thinkText);
+    body.textContent = stripMd(clean || "Смотрю на вашу ситуацию…");
     // автоскролл тела мыслей вниз
     body.scrollTop = body.scrollHeight;
     stick();

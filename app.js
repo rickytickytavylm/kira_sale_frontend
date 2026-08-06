@@ -1048,7 +1048,7 @@
   // Ввод
   function autoGrow() { input.style.height = "auto"; input.style.height = Math.min(input.scrollHeight, 168) + "px"; sendBtn.disabled = busy || !input.value.trim(); }
   input.addEventListener("input", autoGrow);
-  input.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); } });
+  // Enter / «Ввод» — новый абзац. Отправка только кнопкой ✈ (на мобиле Enter раньше слал сообщение).
   sendBtn.addEventListener("click", submit);
 
   const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));

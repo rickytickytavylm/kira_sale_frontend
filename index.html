@@ -291,7 +291,7 @@
         <div class="chips" id="chips"></div>
         <button type="button" class="lead-open-btn" id="leadOpen" data-i18n="lead.open" hidden>Оставить номер</button>
         <div class="composer-inner">
-          <textarea id="input" class="composer-input" rows="1" autocomplete="off" data-i18n-placeholder="chat.placeholder"></textarea>
+          <textarea id="input" class="composer-input" rows="1" autocomplete="off" enterkeyhint="enter" data-i18n-placeholder="chat.placeholder"></textarea>
           <button id="send" class="send-btn" aria-label="Отправить">
             <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M4.4 12 3 4.3c-.2-1 .8-1.8 1.7-1.4l15.6 7.3c1 .5 1 1.9 0 2.4L4.7 20.1c-.9.4-1.9-.4-1.7-1.4L4.4 12Zm1.7-.9h6.2c.5 0 .9.4.9.9s-.4.9-.9.9H6.1l-.9 5 12.9-6-12.9-6 .9 5.2Z"/></svg>
           </button>
@@ -341,8 +341,8 @@
   </div>
 
   <script src="/config.js?v=2" defer></script>
-  <script src="/products.js?v=1" defer></script>
-  <script src="/app.js?v=19" defer></script>
+  <script src="/products.js?v=2" defer></script>
+  <script src="/app.js?v=20" defer></script>
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {

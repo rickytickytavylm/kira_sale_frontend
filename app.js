@@ -1182,66 +1182,33 @@
   }
 
   let streamRaf = 0;
-  function ensureThinkShell(bubble, live) {
+  // «Думаю…» — только присутствие. Сырой CoT модели пользователю НЕ показываем
+  // (там ломается четвёртая стена: «О клиенте…», «мне нужно проявить эмпатию…»).
+  function ensureThinkShell(bubble) {
     let think = bubble.querySelector(".kira-think");
     let answer = bubble.querySelector(".kira-answer");
     if (!think) {
       bubble.innerHTML = "";
-      think = document.createElement("details");
-      think.className = "kira-think";
-      if (live) think.open = true;
-      const sum = document.createElement("summary");
-      sum.className = "kira-think-sum";
-      sum.textContent = live ? t("chat.think.live") : t("chat.think.done");
-      const body = document.createElement("div");
-      body.className = "kira-think-body";
-      think.append(sum, body);
+      think = document.createElement("div");
+      think.className = "kira-think kira-think-live";
+      think.setAttribute("aria-live", "polite");
+      think.innerHTML = `<span class="kira-think-dot" aria-hidden="true"></span><span class="kira-think-label">${esc(t("chat.think.live"))}</span>`;
       answer = document.createElement("div");
       answer.className = "kira-answer";
       bubble.append(think, answer);
     }
-    return { think, answer, sum: think.querySelector("summary"), body: think.querySelector(".kira-think-body") };
+    return { think, answer };
   }
 
-  /** Убираем служебное из CoT перед показом пользователю. */
-  function scrubThinkingForUi(text) {
-    let s = String(text || "");
-    s = s
-      .replace(/\b(save_contact_data|notify_manager|tool_calls?|function[_ ]calls?|update_stage|get_products?)\b/gi, "")
-      .replace(/\b(CRM|amoCRM|system prompt|product_id|track_id|dialog_phase|reasoning)\b/gi, "")
-      .replace(/\b(konsult_|vip_|video_|kurs_|catalog_|detox_|hospital_)[a-z0-9_]+\b/gi, "")
-      .replace(/\{[^{}]{0,240}\}/g, "")
-      .replace(/\[[^\]]{0,120}\]/g, "")
-      .replace(/`[^`]{0,100}`/g, "")
-      .replace(/https?:\/\/\S+/gi, "")
-      .replace(/\s{2,}/g, " ")
-      .replace(/\n{3,}/g, "\n\n")
-      .trim();
-    // Не раздуваем плашку: максимум ~900 символов для чтения
-    if (s.length > 900) s = s.slice(0, 900).replace(/\s+\S*$/, "") + "…";
-    return s;
-  }
-
-  function paintThinking(bubble, thinkText) {
-    const { think, sum, body } = ensureThinkShell(bubble, true);
-    if (think.dataset.collapsed === "1") return;
-    think.open = true;
-    sum.textContent = t("chat.think.live");
-    const clean = scrubThinkingForUi(thinkText);
-    body.textContent = stripMd(clean || "Смотрю на вашу ситуацию…");
-    // автоскролл тела мыслей вниз
-    body.scrollTop = body.scrollHeight;
+  function paintThinking(bubble) {
+    ensureThinkShell(bubble);
     stick();
   }
 
-  /** Мысли дописаны — сворачиваем в плашку (её можно раскрыть). */
+  /** Ответ пошёл — индикатор «думаю» убираем целиком. */
   function collapseThinking(bubble) {
     const think = bubble.querySelector(".kira-think");
-    if (!think || think.dataset.collapsed === "1") return;
-    think.dataset.collapsed = "1";
-    think.open = false;
-    const sum = think.querySelector("summary");
-    if (sum) sum.textContent = t("chat.think.done");
+    if (think) think.remove();
   }
 
   function paintStream(bubble, text, live) {
@@ -1278,7 +1245,7 @@
     const msgs = curMsgs(); msgs.push({ role: "user", content: text });
     const ch = curChat(); if (ch && isDefaultChatTitle(ch.title)) ch.title = text.slice(0, 42);
     saveChats(); renderChatList();
-    const bubble = typing(); let acc = "", thinkAcc = "", answerStarted = false;
+    const bubble = typing(); let acc = "", answerStarted = false;
     try {
       const resp = await fetch(`${BACKEND}/api/chat`, {
         method: "POST", headers: { "Content-Type": "application/json" },
@@ -1302,12 +1269,10 @@
           const em = block.match(/^event:\s*(.+)$/m), dm = block.match(/^data:\s*(.+)$/m);
           if (!dm) continue; let data; try { data = JSON.parse(dm[1]); } catch { continue; }
           const ev = em ? em[1].trim() : "message";
-          if (ev === "thinking" && (data.delta || data.text) && !answerStarted) {
-            if (data.delta) thinkAcc += data.delta;
-            else thinkAcc = data.text;
-            paintThinking(bubble, thinkAcc);
+          if (ev === "thinking" && !answerStarted) {
+            paintThinking(bubble);
           } else if (ev === "thinking_done") {
-            collapseThinking(bubble);
+            // ждём первую дельту ответа — индикатор держим до неё
           } else if (ev === "delta" && data.text) {
             answerStarted = true;
             collapseThinking(bubble);

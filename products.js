@@ -90,7 +90,7 @@ window.KIRA_PRODUCTS = [
     price: "53 990 ₽",
     url: "https://shurovhelp.com",
     matchHost: ["shurovhelp.com", "www.shurovhelp.com"],
-    image: "/products/kurs_zavisimyh.webp",
+    image: "/products/kurs_zavisimyh.webp?v=2",
   },
   {
     id: "video_zavisimyh",
@@ -98,7 +98,7 @@ window.KIRA_PRODUCTS = [
     price: "9 900 ₽",
     url: "https://shurovsos.ru",
     matchHost: ["shurovsos.ru", "www.shurovsos.ru"],
-    image: "/products/video_zavisimyh.webp",
+    image: "/products/video_zavisimyh.webp?v=2",
   },
   {
     id: "video_sozavisimyh",
@@ -106,7 +106,7 @@ window.KIRA_PRODUCTS = [
     price: "9 900 ₽",
     url: "https://tvoi-shag.online/perviyshag_12",
     match: ["/perviyshag_12"],
-    image: "/products/video_sozavisimyh.webp",
+    image: "/products/video_sozavisimyh.webp?v=2",
   },
   {
     id: "video_trevoga",
@@ -115,7 +115,7 @@ window.KIRA_PRODUCTS = [
     url: "https://school.shurovhelp.ru/panic_lending",
     match: ["/panic_lending"],
     matchHost: ["school.shurovhelp.ru"],
-    image: "/products/video_trevoga.webp",
+    image: "/products/video_trevoga.webp?v=2",
   },
   {
     id: "catalog_all",

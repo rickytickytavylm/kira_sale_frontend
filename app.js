@@ -54,8 +54,8 @@
       "chat.placeholder": "Напишите Кире…", "chat.note": "Кира — ИИ и не заменяет врача. При угрозе жизни — 103 или 112.",
       "chat.err.retry": "Не удалось получить ответ. Попробуйте ещё раз чуть позже.",
       "chat.err.generic": "Что-то пошло не так. Попробуйте ещё раз.",
-      "chat.err.server": "Не удалось связаться с сервером Киры. Проверьте бэкенд и адрес в config.js.",
-      "chat.err.nobackend": "Не задан адрес бэкенда в config.js.",
+      "chat.err.server": "Связь прервалась. Попробуйте отправить сообщение ещё раз.",
+      "chat.err.nobackend": "Сервис временно недоступен. Попробуйте чуть позже.",
       "chat.think.live": "Думаю…",
       "chat.think.done": "Как я размышляла",
       "product.open": "Открыть", "product.school": "Школа доктора Шурова",
@@ -143,8 +143,8 @@
       "chat.placeholder": "Write to Kira…", "chat.note": "Kira is AI and doesn't replace a doctor. Emergency — 103 or 112.",
       "chat.err.retry": "Couldn't get a reply. Please try again in a moment.",
       "chat.err.generic": "Something went wrong. Please try again.",
-      "chat.err.server": "Couldn't reach Kira's server. Check the backend and config.js.",
-      "chat.err.nobackend": "Backend URL is not set in config.js.",
+      "chat.err.server": "The connection was interrupted. Please send your message again.",
+      "chat.err.nobackend": "The service is temporarily unavailable. Please try again later.",
       "chat.think.live": "Thinking…",
       "chat.think.done": "How I reasoned",
       "product.open": "Open", "product.school": "Dr. Shurov's school",
@@ -232,8 +232,8 @@
       "chat.placeholder": "Напишіть Кірі…", "chat.note": "Кіра — ІІ і не замінює лікаря. При загрозі — 103 або 112.",
       "chat.err.retry": "Не вдалося отримати відповідь. Спробуйте ще раз трохи пізніше.",
       "chat.err.generic": "Щось пішло не так. Спробуйте ще раз.",
-      "chat.err.server": "Не вдалося зв'язатися із сервером Кіри. Перевірте бекенд і адресу в config.js.",
-      "chat.err.nobackend": "Не задано адресу бекенду в config.js.",
+      "chat.err.server": "Зв’язок перервався. Спробуйте надіслати повідомлення ще раз.",
+      "chat.err.nobackend": "Сервіс тимчасово недоступний. Спробуйте трохи пізніше.",
       "chat.think.live": "Думаю…",
       "chat.think.done": "Як я міркувала",
       "product.open": "Відкрити", "product.school": "Школа доктора Шурова",
@@ -321,8 +321,8 @@
       "chat.placeholder": "Napisz do Kiry…", "chat.note": "Kira to AI i nie zastępuje lekarza. W nagłych przypadkach — 103 lub 112.",
       "chat.err.retry": "Nie udało się uzyskać odpowiedzi. Spróbuj ponownie za chwilę.",
       "chat.err.generic": "Coś poszło nie tak. Spróbuj ponownie.",
-      "chat.err.server": "Nie udało się połączyć z serwerem Kiry. Sprawdź backend i adres w config.js.",
-      "chat.err.nobackend": "Nie ustawiono adresu backendu w config.js.",
+      "chat.err.server": "Połączenie zostało przerwane. Wyślij wiadomość ponownie.",
+      "chat.err.nobackend": "Usługa jest chwilowo niedostępna. Spróbuj ponownie później.",
       "chat.think.live": "Myślę…",
       "chat.think.done": "Jak myślałam",
       "product.open": "Otwórz", "product.school": "Szkoła doktora Szurowa",
@@ -410,8 +410,8 @@
       "chat.placeholder": "Escríbele a Kira…", "chat.note": "Kira es IA y no reemplaza a un médico. Emergencias — 103 o 112.",
       "chat.err.retry": "No se pudo obtener respuesta. Inténtalo de nuevo en un momento.",
       "chat.err.generic": "Algo salió mal. Inténtalo de nuevo.",
-      "chat.err.server": "No se pudo contactar el servidor de Kira. Revisa el backend y config.js.",
-      "chat.err.nobackend": "No hay dirección del backend en config.js.",
+      "chat.err.server": "La conexión se interrumpió. Envía el mensaje de nuevo.",
+      "chat.err.nobackend": "El servicio no está disponible temporalmente. Inténtalo más tarde.",
       "chat.think.live": "Pensando…",
       "chat.think.done": "Cómo lo pensé",
       "product.open": "Abrir", "product.school": "Escuela del Dr. Shurov",
@@ -1245,10 +1245,14 @@
     const msgs = curMsgs(); msgs.push({ role: "user", content: text });
     const ch = curChat(); if (ch && isDefaultChatTitle(ch.title)) ch.title = text.slice(0, 42);
     saveChats(); renderChatList();
-    const bubble = typing(); let acc = "", answerStarted = false;
+    const bubble = typing(); let acc = "", answerStarted = false, streamFailed = false;
+    const controller = new AbortController();
+    // Не держим пользователя в бесконечном «Думаю…» при обрыве мобильной сети.
+    const requestTimer = setTimeout(() => controller.abort(), 75000);
     try {
       const resp = await fetch(`${BACKEND}/api/chat`, {
         method: "POST", headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
         body: JSON.stringify({
           messages: msgs,
           profile,
@@ -1280,14 +1284,16 @@
             paintStream(bubble, acc, true);
           } else if (ev === "error") {
             if (streamRaf) cancelAnimationFrame(streamRaf);
+            streamFailed = true;
             bubble.innerHTML = markup(data.message || t("chat.err.generic"));
           } else if (ev === "done") {
             if (acc) paintStream(bubble, acc, false);
           }
         }
       }
-      if (!acc) bubble.innerHTML = markup(t("chat.err.retry"));
-      else {
+      if (!acc) {
+        if (!streamFailed) bubble.innerHTML = markup(t("chat.err.retry"));
+      } else {
         if (streamRaf) cancelAnimationFrame(streamRaf);
         paintStream(bubble, acc, false);
         // в историю — только ответ, без мыслей
@@ -1296,7 +1302,11 @@
     } catch {
       if (streamRaf) cancelAnimationFrame(streamRaf);
       bubble.innerHTML = markup(BACKEND ? t("chat.err.server") : t("chat.err.nobackend"));
-    } finally { setBusy(false); input.focus(); }
+    } finally {
+      clearTimeout(requestTimer);
+      setBusy(false);
+      input.focus();
+    }
   }
   function setBusy(v) { busy = v; sendBtn.disabled = v || !input.value.trim(); }
 

@@ -508,7 +508,8 @@ a { color: inherit; }
 .pcard:hover { transform: translateY(-1px); box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 14px 34px rgba(0, 0, 0, 0.12); }
 .pcard:active { transform: scale(0.985); }
 .pcard-media {
-  aspect-ratio: 16 / 10;
+  /* Обложки квадратные, с текстом сверху/слева — 16:10 обрезал заголовки. */
+  aspect-ratio: 1 / 1;
   background: linear-gradient(160deg, #f2f2f7 0%, #e5e5ea 100%);
   overflow: hidden;
 }
@@ -516,10 +517,11 @@ a { color: inherit; }
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: left top;
   display: block;
 }
 .pcard-media-empty {
-  aspect-ratio: 16 / 7;
+  aspect-ratio: 1 / 1;
   background:
     radial-gradient(120% 80% at 20% 20%, rgba(10, 132, 255, 0.18), transparent 55%),
     linear-gradient(160deg, #f2f2f7 0%, #e5e5ea 100%);

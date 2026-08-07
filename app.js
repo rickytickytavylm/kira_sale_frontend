@@ -1117,8 +1117,80 @@
       </div>
     </a>`;
   }
-  function markup(raw) {
-    const cleaned = stripMd(raw);
+
+  /** Кира всегда о себе в женском роде — страховка на клиенте. */
+  const FEM_SELF = [
+    ["показал", "показала"], ["предложил", "предложила"], ["рассказал", "рассказала"],
+    ["подобрал", "подобрала"], ["сказал", "сказала"], ["написал", "написала"],
+    ["ответил", "ответила"], ["рекомендовал", "рекомендовала"], ["объяснил", "объяснила"],
+    ["выбрал", "выбрала"], ["уточнил", "уточнила"], ["спросил", "спросила"],
+    ["отправил", "отправила"], ["нашёл", "нашла"], ["нашел", "нашла"],
+    ["увидел", "увидела"], ["сделал", "сделала"], ["помог", "помогла"],
+    ["отметил", "отметила"], ["описал", "описала"], ["назвал", "назвала"],
+    ["понял", "поняла"], ["дал", "дала"], ["указал", "указала"],
+  ];
+  function fixKiraFeminine(text) {
+    let out = String(text || "");
+    if (!out) return out;
+    for (const [masc, fem] of FEM_SELF) {
+      const withYa = new RegExp(`((?:^|[^\\p{L}])я\\s+)${masc}(?![\\p{L}])`, "giu");
+      out = out.replace(withYa, (_, p) => p + fem);
+      const bare = new RegExp(`(?<![\\p{L}])${masc}(?![\\p{L}])`, "giu");
+      out = out.replace(bare, (match, offset, whole) => {
+        const before = String(whole).slice(Math.max(0, offset - 24), offset);
+        if (/(?:^|[^\p{L}])(он|они|клиент|человек|доктор|куратор|менеджер)\s+$/iu.test(before)) {
+          return match;
+        }
+        return fem;
+      });
+    }
+    return out;
+  }
+
+  function escapeRe(s) {
+    return String(s || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  }
+
+  /** Убрать дубль «Название — цена» перед карточкой — это уже на карточке. */
+  function stripLeadInForCard(text, product) {
+    if (!product || !text) return text;
+    let t = text;
+    const title = escapeRe(product.title);
+    const price = escapeRe(product.price || "");
+    if (title && price) {
+      t = t.replace(new RegExp(`(^|\\n)\\s*${title}\\s*[—\\-]\\s*${price}\\s*(?=\\n|$)`, "gi"), "$1");
+    }
+    if (title) {
+      t = t.replace(new RegExp(`(^|\\n)\\s*${title}\\s*(?=\\n|$)`, "gi"), "$1");
+    }
+    return t;
+  }
+
+  /**
+   * Во время стрима: готовые product-URL → сразу карточки;
+   * недопечатанный хвост https://… прячем, чтобы пользователь не видел сырые ссылки.
+   */
+  function prepareForRender(raw, live) {
+    let text = fixKiraFeminine(stripMd(raw));
+    if (live) {
+      text = text.replace(/(^|\s)(https?:\/\/\S*)$/i, (full, sp, url) => {
+        if (findProductByUrl(url)) return full;
+        const ours = /^https?:\/\/(tvoi-shag|shurov|school\.shurov)/i.test(url);
+        if (ours) return sp;
+        try {
+          const host = new URL(url).hostname.toLowerCase();
+          if (host && [...PRODUCT_HOSTS].some((h) => host === h || host.endsWith("." + h) || h.startsWith(host))) {
+            return sp;
+          }
+        } catch { /* ignore */ }
+        return full;
+      });
+    }
+    return text;
+  }
+
+  function markup(raw, live = false) {
+    const cleaned = prepareForRender(raw, live);
     // Ссылки продуктов → iOS-карточки; остальные URL остаются текстовыми.
     const parts = [];
     const re = /(https?:\/\/[^\s<]+)/g;
@@ -1142,7 +1214,6 @@
     let textBuf = "";
     const flushText = () => {
       if (!textBuf.trim()) { textBuf = ""; return; }
-      // Убрать «осиротевшие» строки, где осталась только цена/название перед карточкой
       const tidy = textBuf
         .replace(/[ \t]+\n/g, "\n")
         .replace(/\n{3,}/g, "\n\n")
@@ -1159,6 +1230,7 @@
     };
     for (const part of parts) {
       if (part.type === "card") {
+        textBuf = stripLeadInForCard(textBuf, part.product);
         flushText();
         html += productCardHtml(part.product, part.url);
       } else {
@@ -1166,7 +1238,7 @@
       }
     }
     flushText();
-    return html || `<p>${esc(cleaned)}</p>`;
+    return html || (cleaned ? `<p>${esc(cleaned)}</p>` : "");
   }
   function addMessage(role, text) {
     const wrap = document.createElement("div"); wrap.className = `msg ${role}`;
@@ -1216,20 +1288,13 @@
     streamRaf = requestAnimationFrame(() => {
       streamRaf = 0;
       collapseThinking(bubble);
+      // И live, и финал — через markup: карточки сразу, сырые product-URL не мелькают.
+      const html = markup(text, live) + (live ? '<span class="stream-cursor" aria-hidden="true"></span>' : "");
       let answer = bubble.querySelector(".kira-answer");
       if (!answer) {
-        // без мыслей — обычный бабл
-        if (live) {
-          bubble.innerHTML = `<p>${esc(stripMd(text)).replace(/\n/g, "<br>")}</p><span class="stream-cursor" aria-hidden="true"></span>`;
-        } else {
-          bubble.innerHTML = markup(text);
-        }
+        bubble.innerHTML = html;
       } else {
-        if (live) {
-          answer.innerHTML = `<p>${esc(stripMd(text)).replace(/\n/g, "<br>")}</p><span class="stream-cursor" aria-hidden="true"></span>`;
-        } else {
-          answer.innerHTML = markup(text);
-        }
+        answer.innerHTML = html;
       }
       stick();
     });
@@ -1295,9 +1360,10 @@
         if (!streamFailed) bubble.innerHTML = markup(t("chat.err.retry"));
       } else {
         if (streamRaf) cancelAnimationFrame(streamRaf);
-        paintStream(bubble, acc, false);
+        const finalText = fixKiraFeminine(acc);
+        paintStream(bubble, finalText, false);
         // в историю — только ответ, без мыслей
-        msgs.push({ role: "assistant", content: acc }); saveChats();
+        msgs.push({ role: "assistant", content: finalText }); saveChats();
       }
     } catch {
       if (streamRaf) cancelAnimationFrame(streamRaf);

@@ -679,17 +679,47 @@ a { color: inherit; }
 }
 .lead-open-btn:hover { transform: translateY(-1px); border-color: rgba(0, 0, 0, 0.2); color: var(--ink); }
 .lead-open-btn[hidden] { display: none !important; }
+.sheet-card.lead-card {
+  max-width: 440px;
+  max-height: min(88vh, 720px);
+  display: flex;
+  flex-direction: column;
+  padding: 28px 24px 18px;
+  overflow: hidden;
+}
+.lead-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding-right: 2px;
+}
+.lead-actions {
+  flex: none;
+  padding-top: 12px;
+  margin-top: 4px;
+  border-top: 1px solid var(--line);
+  background: #fff;
+}
+.lead-actions .btn-primary { width: 100%; }
 .lead-hint { color: var(--ink-soft); font-size: 14px; line-height: 1.45; margin: 0 0 16px; }
 .lead-label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: var(--ink-soft); margin-bottom: 12px; }
 .lead-input {
   font: inherit;
-  font-size: 16px;
+  font-size: 16px; /* 16px — без зума iOS при фокусе */
   font-weight: 500;
   color: var(--ink);
   border: 1px solid var(--line-2);
   border-radius: 12px;
   padding: 12px 14px;
   background: rgba(255, 255, 255, 0.9);
+  width: 100%;
+}
+.lead-input:focus {
+  outline: none;
+  border-color: rgba(0, 0, 0, 0.28);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
 }
 .lead-check {
   display: flex;
@@ -698,13 +728,13 @@ a { color: inherit; }
   font-size: 13px;
   line-height: 1.4;
   color: var(--ink-soft);
-  margin: 8px 0 18px;
+  margin: 8px 0 12px;
 }
-.lead-check input { margin-top: 3px; width: 18px; height: 18px; }
-.lead-legal-link { margin: -8px 0 16px; font-size: 12.5px; }
+.lead-check input { margin-top: 3px; width: 18px; height: 18px; flex: none; }
+.lead-legal-link { margin: 0 0 8px; font-size: 12.5px; }
 .lead-legal-link a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 2px; }
 .lead-legal-link a:hover { color: var(--ink); }
-.lead-status { margin-top: 12px; font-size: 14px; color: var(--ink-soft); }
+.lead-status { margin: 4px 0 8px; font-size: 14px; color: var(--ink-soft); }
 .sheet-card.legal-card {
   max-width: 560px;
   max-height: min(86vh, 740px);
@@ -818,13 +848,42 @@ a { color: inherit; }
   .tabbar { display: flex; }
   body.locked .tabbar { display: none; }
 
-  /* ── Онбординг и модалка подписки → bottom sheet ── */
+  /* ── Онбординг и модалки → bottom sheet ── */
   .sheet { align-items: flex-end; padding: 0; }
   .sheet-card {
     max-width: 100%;
     border-radius: 28px 28px 0 0;
     padding: 32px 22px calc(28px + env(safe-area-inset-bottom));
     animation: slide-up 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .sheet-card.lead-card {
+    max-width: 100%;
+    max-height: min(92dvh, 100%);
+    height: auto;
+    padding: 18px 18px 0;
+    border-radius: 28px 28px 0 0;
+  }
+  .sheet-card.lead-card .sheet-close {
+    top: 12px;
+    right: 12px;
+  }
+  .sheet-card.lead-card .modal-h {
+    font-size: 22px;
+    margin-right: 36px;
+  }
+  .lead-scroll {
+    padding-bottom: 8px;
+  }
+  .lead-actions {
+    position: sticky;
+    bottom: 0;
+    padding: 12px 0 calc(14px + env(safe-area-inset-bottom));
+    margin: 0 -2px;
+  }
+  .lead-open-btn {
+    margin-bottom: 8px;
+    font-size: 12.5px;
+    padding: 7px 12px;
   }
   .modal { align-items: flex-end; padding: 0; }
   .modal-card {

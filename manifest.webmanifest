@@ -1,14 +1,14 @@
 {
-  "name": "Kira — help matching",
-  "short_name": "Kira",
-  "description": "Kira helps choose a format of care. Anonymous, 24/7, multiple languages.",
+  "name": "Кира — подбор помощи",
+  "short_name": "Кира",
+  "description": "Кира подберёт формат помощи. Анонимно, 24/7.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#f7f7f8",
   "theme_color": "#ffffff",
-  "lang": "en",
+  "lang": "ru",
   "icons": [
     {
       "src": "icon-192.png",

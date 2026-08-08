@@ -1,9 +1,9 @@
 /**
- * Генерирует языковые entry-страницы для OG-превью в мессенджерах.
+ * OG-шеллы для /en /uk /pl /es (шаринг в мессенджерах).
+ * Sale сейчас RU-only: эти страницы только превью + редирект на /.
+ * Корневой index.html НИКОГДА не перезаписывается.
  *
- * Править разметку: корневой index.html (тело страницы).
  * Мета/картинки: share-meta.json + promo-{lang}.jpg
- *
  * Запуск: node build-lang-pages.mjs
  */
 import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync } from "node:fs";
@@ -13,23 +13,6 @@ import { fileURLToPath } from "node:url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const SITE = "https://kira-ai.online";
 const meta = JSON.parse(readFileSync(join(__dirname, "share-meta.json"), "utf8"));
-const langs = Object.keys(meta.langs);
-
-let template = readFileSync(join(__dirname, "index.html"), "utf8");
-template = template
-  .replace(/\s*<base href="\/"\s*\/?>/g, "")
-  .replace(/\s*<link rel="alternate" hreflang="[^"]+" href="[^"]+"\s*\/?>/g, "")
-  .replace(/\s*<meta name="kira-lang" content="[^"]*"\s*\/?>/g, "")
-  .replace(/\s*<meta property="og:locale" content="[^"]*"\s*\/?>/g, "");
-
-function hreflangBlock() {
-  const links = langs.map((lang) => {
-    const href = lang === "ru" ? `${SITE}/` : `${SITE}/${lang}/`;
-    return `  <link rel="alternate" hreflang="${lang}" href="${href}" />`;
-  });
-  links.push(`  <link rel="alternate" hreflang="x-default" href="${SITE}/en/" />`);
-  return links.join("\n");
-}
 
 function escapeAttr(s) {
   return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;");
@@ -38,54 +21,22 @@ function escapeHtml(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-/** Ассеты с корня — без <base>, чтобы #якоря не сбрасывали /pl/ → / */
-function rootAssets(html) {
-  const files = [
-    "manifest.webmanifest",
-    "logo_top.png",
-    "eng_logo.jpg",
-    "styles.css",
-    "kira_background.jpg",
-    "shurovv11.jpg",
-    "config.js",
-    "products.js",
-    "legal.js",
-    "app.js",
-    "sw.js",
-  ];
-  let out = html;
-  for (const f of files) {
-    const re = new RegExp(`(href|src)="(${f.replace(".", "\\.")}[^"]*)"`, "g");
-    out = out.replace(re, `$1="/$2"`);
-  }
-  out = out.replace(
-    /navigator\.serviceWorker\.register\(["']\.\/sw\.js["']\)/,
-    'navigator.serviceWorker.register("/sw.js")'
-  );
-  return out;
-}
-
-function injectHead(html, lang) {
+function shellHtml(lang) {
   const m = meta.langs[lang];
-  const url = lang === "ru" ? `${SITE}/` : `${SITE}/${lang}/`;
+  if (!m) throw new Error(`нет мета для ${lang}`);
+  const url = `${SITE}/${lang}/`;
   const image = `${SITE}/${m.image}`;
-
-  let out = rootAssets(html);
-  out = out.replace(/<html\s+lang="[^"]*"/, `<html lang="${lang}"`);
-
-  out = out.replace(
-    /<title[^>]*>[\s\S]*?<\/title>/,
-    `<title data-i18n-attr="title" data-i18n-attr-content="meta.title">${escapeHtml(m.title)}</title>`
-  );
-  out = out.replace(
-    /<meta\s+name="description"[^>]*>/,
-    `<meta name="description" data-i18n-attr="description" data-i18n-attr-content="meta.description" content="${escapeAttr(m.description)}" />`
-  );
-
-  const ogBlock = `<!-- Превью при пересылке в соцсетях / мессенджерах (${lang}) -->
+  return `<!DOCTYPE html>
+<html lang="${lang}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex,follow" />
+  <title>${escapeHtml(m.title)}</title>
+  <meta name="description" content="${escapeAttr(m.description)}" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Kira" />
-  <meta property="og:locale" content="${m.locale}" />
+  <meta property="og:locale" content="${escapeAttr(m.locale)}" />
   <meta property="og:title" content="${escapeAttr(m.title)}" />
   <meta property="og:description" content="${escapeAttr(m.description)}" />
   <meta property="og:url" content="${url}" />
@@ -96,53 +47,35 @@ function injectHead(html, lang) {
   <meta name="twitter:title" content="${escapeAttr(m.title)}" />
   <meta name="twitter:description" content="${escapeAttr(m.description)}" />
   <meta name="twitter:image" content="${image}" />
-${hreflangBlock()}
-  <meta name="kira-lang" content="${lang}" />`;
-
-  if (/<!-- Превью при пересылке[\s\S]*?<meta name="twitter:image"[^>]*>/.test(out)) {
-    out = out.replace(/<!-- Превью при пересылке[\s\S]*?<meta name="twitter:image"[^>]*>/, ogBlock);
-  } else {
-    out = out.replace(
-      /<meta name="description"[^>]*>/,
-      (match) => `${match}\n\n  ${ogBlock}`
-    );
-  }
-
-  out = out.replace(/styles\.css\?v=\d+/, "styles.css?v=14");
-  out = out.replace(/app\.js\?v=\d+/, "app.js?v=19");
-  return out;
+  <link rel="canonical" href="${SITE}/" />
+  <meta http-equiv="refresh" content="0; url=/" />
+  <script>location.replace("/");</script>
+</head>
+<body>
+  <p><a href="/">Kira</a></p>
+</body>
+</html>
+`;
 }
 
 const fallback = join(__dirname, "promo.jpg");
-if (existsSync(fallback)) {
-  for (const lang of langs) {
-    const name = meta.langs[lang].image;
-    const dest = join(__dirname, name);
-    if (!existsSync(dest)) {
-      copyFileSync(fallback, dest);
-      console.log("created placeholder", name);
-    } else {
-      console.log("keep existing", name);
-    }
+for (const lang of Object.keys(meta.langs)) {
+  if (lang === "ru") continue; // корень правим руками, не этим скриптом
+  const name = meta.langs[lang].image;
+  const dest = join(__dirname, name);
+  if (existsSync(fallback) && !existsSync(dest)) {
+    copyFileSync(fallback, dest);
+    console.log("created placeholder", name);
   }
-} else {
-  console.warn("promo.jpg не найден — og:image файлы не скопированы");
+  const dir = join(__dirname, lang);
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, "index.html"), shellHtml(lang), "utf8");
+  console.log(`updated ./${lang}/index.html (OG shell → /)`);
 }
 
-for (const lang of langs) {
-  const html = injectHead(template, lang);
-  if (lang === "ru") {
-    writeFileSync(join(__dirname, "index.html"), html, "utf8");
-    console.log("updated ./index.html (ru)");
-  } else {
-    const dir = join(__dirname, lang);
-    mkdirSync(dir, { recursive: true });
-    writeFileSync(join(dir, "index.html"), html, "utf8");
-    console.log(`updated ./${lang}/index.html`);
-  }
-}
-
-console.log("Share URLs:");
-for (const lang of langs) {
-  console.log(lang === "ru" ? `  ${SITE}/` : `  ${SITE}/${lang}/`);
+console.log("Root ./index.html not touched.");
+console.log("Share URLs (redirect to /):");
+for (const lang of Object.keys(meta.langs)) {
+  if (lang === "ru") console.log(`  ${SITE}/`);
+  else console.log(`  ${SITE}/${lang}/`);
 }

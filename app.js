@@ -11,7 +11,7 @@
   const TRANSLATIONS = {
     ru: {
       "meta.title": "Кира — подбор помощи | Школа доктора Шурова",
-      "meta.description": "Кира подберёт формат помощи в школе и клинике доктора Шурова: консультации, программы, VIP. Анонимно, 24/7, на 5 языках.",
+      "meta.description": "Кира подберёт формат помощи в школе и клинике доктора Шурова: консультации, программы, VIP. Анонимно, 24/7.",
       "nav.doctor": "Доктор", "nav.benefits": "Возможности", "nav.pricing": "Тарифы", "nav.start": "Подобрать помощь",
       "hero.eyebrow": "Подбор помощи · школа доктора Шурова", "hero.title": "Здравствуйте,<br>я&nbsp;Кира",
       "hero.sub": "Подберу подходящий формат помощи — консультацию, программу или VIP — по вашей ситуации. Анонимно, без осуждения, на связи 24/7. Как в Telegram-боте, только на сайте.",
@@ -29,8 +29,8 @@
       "benefits.title": "Что вы получаете",
       "benefits.1": "Подбор формата под вашу ситуацию", "benefits.2": "Точные цены и ссылки на программы",
       "benefits.3": "Для себя или близкого — без стыда", "benefits.4": "Зависимость, созависимость, тревога",
-      "benefits.5": "Переход к куратору и клиникам Шурова", "benefits.6": "Работает на 5 языках",
-      "benefits.7": "Анонимно, 24/7", "benefits.8": "Тот же подход, что у Telegram-Киры",
+      "benefits.5": "Переход к куратору и клиникам Шурова", "benefits.6": "Тот же подход, что у Telegram-Киры",
+      "benefits.7": "Анонимно, 24/7", "benefits.8": "Можно оставить номер куратору в один клик",
       "benefits.quote": "Иногда самый сложный шаг — не лечение, а первый честный разговор. Кира поможет понять, какой формат подходит именно вам.",
       "benefits.cta": "Подобрать помощь",
       "legal.text": "Кира не является заменой врача, не ставит диагнозы и не оказывает медицинскую услугу. Информация носит справочный и поддерживающий характер. При угрозе жизни, передозировке, психозе, суицидальных мыслях или резком ухудшении состояния необходимо срочно обратиться за медицинской помощью по телефонам <b>112</b> или <b>103</b>.",
@@ -89,11 +89,11 @@
       "concern.label.depression": "подавленное состояние", "concern.label.sleep": "сон",
       "concern.label.panic": "панические атаки", "concern.label.other": "ваше состояние",
       "lead.open": "Оставить номер", "lead.title": "Оставить номер",
-      "lead.hint": "Менеджер позвонит в удобное время. Ссылок на оплату нет — сначала разберём ситуацию.",
+      "lead.hint": "Куратор позвонит в удобное время. Можно и без формы — просто напишите номер в чат Кире.",
       "lead.name": "Имя", "lead.phone": "Телефон", "lead.time": "Когда удобно позвонить",
       "lead.time.ph": "Например: сегодня после 18:00",
-      "lead.consent": "Согласен(на), что менеджер может позвонить по этому номеру",
-      "lead.submit": "Отправить", "lead.ok": "Спасибо! Менеджер свяжется в указанное время.",
+      "lead.consent": "Согласен(на), что куратор может позвонить по этому номеру",
+      "lead.submit": "Отправить", "lead.ok": "Спасибо! Куратор свяжется в указанное время.",
       "lead.err": "Не удалось отправить. Проверьте номер и согласие.",
       "lead.err.phone": "Укажите номер телефона", "lead.err.consent": "Нужно согласие на звонок",
       "chat.you": "Вы",
@@ -1129,19 +1129,29 @@
     ["отметил", "отметила"], ["описал", "описала"], ["назвал", "назвала"],
     ["понял", "поняла"], ["дал", "дала"], ["указал", "указала"],
   ];
+  const FEM_FILLER =
+    "(?:не|уже|ещё|еще|тоже|также|сразу|просто|только|лишь|же|ведь|честно|специально|коротко|выше|ниже|вам|вас|тебе|тебя|их|это|этого|про|тут|здесь)";
+  // Правим только там, где подлежащее — Кира: «ваш муж не понял» остаётся как есть.
   function fixKiraFeminine(text) {
     let out = String(text || "");
     if (!out) return out;
     for (const [masc, fem] of FEM_SELF) {
-      const withYa = new RegExp(`((?:^|[^\\p{L}])я\\s+)${masc}(?![\\p{L}])`, "giu");
-      out = out.replace(withYa, (_, p) => p + fem);
-      const bare = new RegExp(`(?<![\\p{L}])${masc}(?![\\p{L}])`, "giu");
-      out = out.replace(bare, (match, offset, whole) => {
-        const before = String(whole).slice(Math.max(0, offset - 24), offset);
-        if (/(?:^|[^\p{L}])(он|они|клиент|человек|доктор|куратор|менеджер)\s+$/iu.test(before)) {
-          return match;
-        }
-        return fem;
+      const withYa = new RegExp(
+        `((?:^|[^\\p{L}])я(?:\\s+${FEM_FILLER})*\\s+)${masc}(?![\\p{L}])`,
+        "giu"
+      );
+      out = out.replace(withYa, (_, prefix) => prefix + fem);
+
+      const sentenceStart = new RegExp(
+        `((?:^|[.!?…]\\s+|\\n\\s*)(?:${FEM_FILLER}\\s+)?)${masc}(?![\\p{L}])(?!\\s+ли(?![\\p{L}]))`,
+        "gmiu"
+      );
+      out = out.replace(sentenceStart, (match, prefix) => {
+        const head = match.slice(prefix.length);
+        const cased = head[0] === head[0].toUpperCase()
+          ? fem[0].toUpperCase() + fem.slice(1)
+          : fem;
+        return prefix + cased;
       });
     }
     return out;
@@ -1376,13 +1386,13 @@
   }
   function setBusy(v) { busy = v; sendBtn.disabled = v || !input.value.trim(); }
 
-  // ═══════════ LEAD STUB (EU / не-ru) → позже amo ═══════════
+  // Кнопка «Оставить номер» — запасной путь рядом с чатом (телефон + согласие → amo).
   // Важно: syncLeadBtn вызывается из applyLang ещё до этого блока —
   // поэтому только $("#…"), без const leadOpen (иначе TDZ и мёртвый весь app.js).
   function syncLeadBtn() {
     const btn = $("#leadOpen");
     if (!btn) return;
-    btn.hidden = currentLang === "ru";
+    btn.hidden = false;
   }
   syncLeadBtn();
   const leadSheet = $("#leadSheet");
@@ -1392,6 +1402,8 @@
     if (st) { st.hidden = true; st.textContent = ""; st.className = "lead-status"; }
     if (profile && profile.name && $("#leadName") && !$("#leadName").value) $("#leadName").value = profile.name;
     openSheet(leadSheet);
+    const phone = $("#leadPhone");
+    if (phone) setTimeout(() => phone.focus({ preventScroll: true }), 80);
   }
   const leadOpenBtn = $("#leadOpen");
   if (leadOpenBtn) leadOpenBtn.addEventListener("click", openLead);

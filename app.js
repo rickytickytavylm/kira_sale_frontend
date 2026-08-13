@@ -35,7 +35,7 @@
       "benefits.cta": "Подобрать помощь",
       "legal.text": "Кира не является заменой врача, не ставит диагнозы и не оказывает медицинскую услугу. Информация носит справочный и поддерживающий характер. При угрозе жизни, передозировке, психозе, суицидальных мыслях или резком ухудшении состояния необходимо срочно обратиться за медицинской помощью по телефонам <b>112</b> или <b>103</b>.",
       "footer.privacy": "Политика конфиденциальности", "footer.terms": "Пользовательское соглашение",
-      "footer.consent": "Согласие на обработку персональных данных", "footer.refund": "Правила оплаты и возврата",
+      "footer.consent": "Согласие на обработку персональных данных", "footer.refund": "О сервисе",
       "footer.legal": "Юридическая информация", "footer.contacts": "Контакты", "footer.disclaimer": "Медицинский дисклеймер",
       "footer.sos": "Экстренная помощь: <b>112</b> или <b>103</b>", "footer.copy": "© Онлайн-школа доктора Шурова",
       "legal.close": "Закрыть", "lead.consent.link": "Текст согласия и политика",
@@ -124,7 +124,7 @@
       "benefits.cta": "Find help",
       "legal.text": "Kira is not a substitute for a doctor, does not diagnose and does not provide medical services. Information is advisory and supportive. In case of life-threatening situations — call <b>112</b> or <b>103</b>.",
       "footer.privacy": "Privacy Policy", "footer.terms": "Terms of Service",
-      "footer.consent": "Data processing consent", "footer.refund": "Payment & Refund Policy",
+      "footer.consent": "Data processing consent", "footer.refund": "About the service",
       "footer.legal": "Legal information", "footer.contacts": "Contacts", "footer.disclaimer": "Medical disclaimer",
       "footer.sos": "Emergency: <b>112</b> or <b>103</b>", "footer.copy": "© Dr. Shurov Online School",
       "legal.close": "Close", "lead.consent.link": "Consent text and privacy policy",
@@ -213,7 +213,7 @@
       "benefits.cta": "Підібрати допомогу",
       "legal.text": "Кіра не є заміною лікаря, не ставить діагнози і не надає медичну послугу. При загрозі життю — <b>112</b> або <b>103</b>.",
       "footer.privacy": "Політика конфіденційності", "footer.terms": "Угода користувача",
-      "footer.consent": "Згода на обробку персональних даних", "footer.refund": "Правила оплати та повернення",
+      "footer.consent": "Згода на обробку персональних даних", "footer.refund": "Про сервіс",
       "footer.legal": "Юридична інформація", "footer.contacts": "Контакти", "footer.disclaimer": "Медичний дисклеймер",
       "footer.sos": "Екстрена допомога: <b>112</b> або <b>103</b>", "footer.copy": "© Онлайн-школа доктора Шурова",
       "legal.close": "Закрити", "lead.consent.link": "Текст згоди та політика",
@@ -267,7 +267,7 @@
       "concern.label.depression": "пригнічений стан", "concern.label.sleep": "сон",
       "concern.label.panic": "панічні атаки", "concern.label.other": "ваш стан",
       "lead.open": "Залишити номер", "lead.title": "Залишити номер",
-      "lead.hint": "Менеджер зателефонує у зручний час. Без посилань на оплату — спочатку розберемо ситуацію.",
+      "lead.hint": "Менеджер зателефонує у зручний час. Можна і без форми — просто напишіть номер у чат Кірі.",
       "lead.name": "Імʼя", "lead.phone": "Телефон", "lead.time": "Коли зручно зателефонувати",
       "lead.time.ph": "Наприклад: сьогодні після 18:00",
       "lead.consent": "Погоджуюсь, що менеджер може зателефонувати на цей номер",
@@ -302,7 +302,7 @@
       "benefits.cta": "Dobierz pomoc",
       "legal.text": "Kira nie zastępuje lekarza, nie stawia diagnoz i nie świadczy usług medycznych. W nagłych przypadkach — <b>112</b> lub <b>103</b>.",
       "footer.privacy": "Polityka prywatności", "footer.terms": "Regulamin",
-      "footer.consent": "Zgoda na przetwarzanie danych", "footer.refund": "Zasady płatności i zwrotów",
+      "footer.consent": "Zgoda na przetwarzanie danych", "footer.refund": "O usłudze",
       "footer.legal": "Informacje prawne", "footer.contacts": "Kontakt", "footer.disclaimer": "Zastrzeżenie medyczne",
       "footer.sos": "Pomoc doraźna: <b>112</b> lub <b>103</b>", "footer.copy": "© Szkoła Online doktora Szurowa",
       "legal.close": "Zamknij", "lead.consent.link": "Tekst zgody i polityka prywatności",
@@ -391,7 +391,7 @@
       "benefits.cta": "Encontrar ayuda",
       "legal.text": "Kira no reemplaza a un médico, no diagnostica ni presta servicios médicos. En caso de emergencia — <b>112</b> o <b>103</b>.",
       "footer.privacy": "Política de privacidad", "footer.terms": "Términos de servicio",
-      "footer.consent": "Consentimiento de datos", "footer.refund": "Política de pago y devolución",
+      "footer.consent": "Consentimiento de datos", "footer.refund": "Sobre el servicio",
       "footer.legal": "Información legal", "footer.contacts": "Contacto", "footer.disclaimer": "Aviso médico",
       "footer.sos": "Emergencias: <b>112</b> o <b>103</b>", "footer.copy": "© Escuela Online del Dr. Shurov",
       "legal.close": "Cerrar", "lead.consent.link": "Texto de consentimiento y política",
@@ -1473,7 +1473,7 @@
     if (legalLoadPromise) return legalLoadPromise;
     legalLoadPromise = new Promise((resolve, reject) => {
       const s = document.createElement("script");
-      s.src = "/legal.js?v=1";
+      s.src = "/legal.js?v=2";
       s.async = true;
       s.onload = () => resolve(legalPack());
       s.onerror = () => reject(new Error("legal_load"));

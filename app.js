@@ -566,7 +566,8 @@
         guideClick = isGuideSource(norm);
         const prev = load(TRAFFIC_KEY, "");
         if (!prev || guideClick) save(TRAFFIC_KEY, norm);
-        if (sp.has("src") || sp.has("utm_source")) {
+        // Гайд-ссылку не чистим: иначе при старом кэше хвост пропадает, а чат не открывается.
+        if (!guideClick && (sp.has("src") || sp.has("utm_source"))) {
           sp.delete("src");
           sp.delete("utm_source");
           const q = sp.toString();
@@ -1605,9 +1606,13 @@
   };
   // Ссылка с хвостом guide — сразу в чат, без онбординга (как /start guide в Telegram).
   if (GUIDE_CLICK) {
-    if (!profile) profile = { who: "self", category: "addiction", concern: null, name: "" };
-    save(LS.profile, profile);
-    newConversation(profile, { guide: true });
+    try {
+      if (!profile) profile = { who: "self", category: "addiction", concern: null, name: "" };
+      save(LS.profile, profile);
+      newConversation(profile, { guide: true });
+    } catch (err) {
+      console.error("guide entry", err);
+    }
   } else if (chats.length || profile) {
     openChat(false);
   }

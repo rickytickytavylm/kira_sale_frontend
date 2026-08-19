@@ -817,6 +817,7 @@
     const c = curChat() || chats[0];
     currentId = c.id; profile = c.profile || profile; mode = c.mode || mode;
     renderMessages(); setMode(mode); renderChatList(); updateChips(); input.focus();
+    if (typeof syncLeadBtn === "function") syncLeadBtn();
   }
 
   // Новый разговор (+ приветствие). seed — частичный профиль для быстрых кнопок.
@@ -832,6 +833,7 @@
     if (c.guide) greetGuide();
     else greet();
     saveChats(); renderChatList(); updateChips(); closeDrawer();
+    if (typeof syncLeadBtn === "function") syncLeadBtn();
     input.value = ""; autoGrow(); openChatUI(); input.focus();
   }
 
@@ -840,6 +842,7 @@
     currentId = id; profile = c.profile || profile; mode = c.mode || mode;
     save(LS.profile, profile); save("kira_sale_current", id);
     renderMessages(); setMode(mode); renderChatList(); updateChips(); closeDrawer(); input.focus();
+    if (typeof syncLeadBtn === "function") syncLeadBtn();
   }
 
   function deleteChat(id) {
@@ -1482,7 +1485,8 @@
   function syncLeadBtn() {
     const btn = $("#leadOpen");
     if (!btn) return;
-    btn.hidden = false;
+    const inGuide = Boolean(GUIDE_CLICK || (curChat() && curChat().guide));
+    btn.hidden = inGuide;
   }
   syncLeadBtn();
   const leadSheet = $("#leadSheet");

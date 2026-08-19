@@ -1074,6 +1074,21 @@
     addMessage("kira", WEBINAR_INTRO, { image: GUIDE_IMAGE });
     curMsgs().push({ role: "assistant", content: WEBINAR_INTRO, image: GUIDE_IMAGE });
     saveChats();
+    pingWebinarOpen();
+  }
+
+  function pingWebinarOpen() {
+    if (!BACKEND) return;
+    fetch(`${BACKEND}/api/webinar-open`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        deviceId: DEVICE,
+        conversationId: currentId,
+        trafficSource: TRAFFIC_SOURCE || undefined,
+        lang: currentLang,
+      }),
+    }).catch(() => {});
   }
 
   // Ввод

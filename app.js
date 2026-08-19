@@ -1258,6 +1258,7 @@
       const url = m[1].replace(/[),.;!?]+$/g, "");
       const trailing = m[1].slice(url.length);
       if (isGuidePdfUrl(url)) parts.push({ type: "file", url });
+      else if (isBizonUrl(url)) parts.push({ type: "bizon", url });
       else {
         const product = findProductByUrl(url);
         if (product) parts.push({ type: "card", product, url });
@@ -1295,6 +1296,9 @@
       } else if (part.type === "file") {
         flushText();
         html += guideFileHtml(part.url);
+      } else if (part.type === "bizon") {
+        flushText();
+        html += bizonRoomHtml(part.url);
       } else {
         textBuf += part.value;
       }
@@ -1315,6 +1319,20 @@
     return `<a class="guide-file" href="${esc(link)}" target="_blank" rel="noopener" download="${esc(GUIDE_PDF_NAME)}">
       <span class="guide-file-icon" aria-hidden="true">PDF</span>
       <span class="guide-file-name">${esc(GUIDE_PDF_NAME)}</span>
+    </a>`;
+  }
+  function isBizonUrl(url) {
+    try {
+      const u = new URL(url);
+      return /(^|\.)bizon365\.ru$/i.test(u.hostname);
+    } catch {
+      return false;
+    }
+  }
+  function bizonRoomHtml(href) {
+    return `<a class="guide-file" href="${esc(href)}" target="_blank" rel="noopener">
+      <span class="guide-file-icon webinar-room-icon" aria-hidden="true">LIVE</span>
+      <span class="guide-file-name">Открыть комнату эфира</span>
     </a>`;
   }
   function addMessage(role, text, extra) {

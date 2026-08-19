@@ -1485,8 +1485,23 @@
   function syncLeadBtn() {
     const btn = $("#leadOpen");
     if (!btn) return;
-    const inGuide = Boolean(GUIDE_CLICK || (curChat() && curChat().guide));
-    btn.hidden = inGuide;
+    // Нельзя трогать GUIDE_CLICK / curChat здесь вслепую: applyLang зовёт
+    // эту функцию до их инициализации — иначе падает весь app.js.
+    let hide = false;
+    try {
+      const raw = String(
+        new URLSearchParams(location.search).get("src") ||
+        new URLSearchParams(location.search).get("utm_source") ||
+        ""
+      );
+      hide = /(?:^|[_-])(web|webinar|wb|guide|gid|pdf)(?:[_-]|$)/i.test(
+        raw.toLowerCase().replace(/[^a-z0-9_-]+/g, "_")
+      );
+    } catch { /* ignore */ }
+    try {
+      hide = hide || Boolean(chats && chats.find((c) => c.id === currentId && c.guide));
+    } catch { /* чаты ещё не готовы */ }
+    btn.hidden = hide;
   }
   syncLeadBtn();
   const leadSheet = $("#leadSheet");

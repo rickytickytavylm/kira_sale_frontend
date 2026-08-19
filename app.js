@@ -539,30 +539,49 @@
   }
   const DEVICE = deviceId();
 
-  // Источник трафика: ?src=vk или ?utm_source=vk — first-touch в localStorage
+  // Источник трафика: ?src=vk или ?utm_source=vk — first-touch в localStorage.
+  // Хвост guide/web/webinar — как в Telegram: сразу в чат, регистрация на эфир.
   const TRAFFIC_KEY = "kira_sale_traffic_source";
+  const GUIDE_TOKENS = new Set(["web", "webinar", "wb", "guide", "gid", "pdf"]);
+  const GUIDE_IMAGE = "/guide.jpg";
+  const WEBINAR_INTRO =
+    "Вы регистрируетесь на эфир «Это не любовь! " +
+    "Почему мы не можем уйти от тех, кто нас разрушает?».\n\n" +
+    "Эфир пройдёт 27 августа в 19:00. Чтобы открыть комнату без повторного " +
+    "ввода данных, напишите, пожалуйста, как к вам обращаться — имя.";
+  const GUIDE_PDF_NAME =
+    "7 причин, которые удерживают нас в отношениях, где нам плохо.pdf";
+  function isGuideSource(raw) {
+    const s = String(raw || "").trim().toLowerCase().replace(/[^a-z0-9_-]+/g, "_").replace(/^[_-]+|[_-]+$/g, "");
+    if (!s) return false;
+    return s.split(/[_-]+/).some((tok) => GUIDE_TOKENS.has(tok));
+  }
   function captureTrafficSource() {
+    let guideClick = false;
     try {
       const sp = new URLSearchParams(location.search);
       const raw = sp.get("src") || sp.get("utm_source") || "";
       const norm = String(raw).trim().toLowerCase().replace(/[^a-z0-9_-]/g, "").slice(0, 40);
-      if (!norm) return load(TRAFFIC_KEY, "") || "";
-      const prev = load(TRAFFIC_KEY, "");
-      if (!prev) save(TRAFFIC_KEY, norm);
-      // чистим URL от метки, чтобы не светить в шаринге (источник уже сохранён)
-      if (sp.has("src") || sp.has("utm_source")) {
-        sp.delete("src");
-        sp.delete("utm_source");
-        const q = sp.toString();
-        const clean = location.pathname + (q ? `?${q}` : "") + location.hash;
-        history.replaceState(null, "", clean);
+      if (norm) {
+        guideClick = isGuideSource(norm);
+        const prev = load(TRAFFIC_KEY, "");
+        if (!prev || guideClick) save(TRAFFIC_KEY, norm);
+        if (sp.has("src") || sp.has("utm_source")) {
+          sp.delete("src");
+          sp.delete("utm_source");
+          const q = sp.toString();
+          const clean = location.pathname + (q ? `?${q}` : "") + location.hash;
+          history.replaceState(null, "", clean);
+        }
       }
-      return load(TRAFFIC_KEY, norm) || norm;
+      return { source: load(TRAFFIC_KEY, "") || norm || "", guideClick };
     } catch {
-      return load(TRAFFIC_KEY, "") || "";
+      return { source: load(TRAFFIC_KEY, "") || "", guideClick: false };
     }
   }
-  const TRAFFIC_SOURCE = captureTrafficSource();
+  const TRAFFIC = captureTrafficSource();
+  const TRAFFIC_SOURCE = TRAFFIC.source;
+  const GUIDE_CLICK = TRAFFIC.guideClick;
   const uid = () => (crypto.randomUUID && crypto.randomUUID()) || ("c" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6));
   let profile = load(LS.profile, null);
   let mode = "school"; // Sale: только подбор
@@ -615,7 +634,8 @@
     else window.scrollTo({ top: 0, behavior: "smooth" });
   }
   function openChatEntry() {
-    if (chats.length || profile) openChat(false);
+    if (GUIDE_CLICK || (curChat() && curChat().guide)) openChat(false);
+    else if (chats.length || profile) openChat(false);
     else startOnboarding(null);
   }
   $$(".tabbar-item").forEach((b) => b.addEventListener("click", () => {
@@ -792,23 +812,24 @@
 
   function openChat(fresh) {
     openChatUI();
-    if (fresh || !chats.length) { newConversation(profile); return; }
+    if (fresh || !chats.length) { newConversation(profile, GUIDE_CLICK ? { guide: true } : null); return; }
     const c = curChat() || chats[0];
     currentId = c.id; profile = c.profile || profile; mode = c.mode || mode;
     renderMessages(); setMode(mode); renderChatList(); updateChips(); input.focus();
   }
 
   // Новый разговор (+ приветствие). seed — частичный профиль для быстрых кнопок.
-  function newConversation(seed) {
+  function newConversation(seed, opts) {
     if (seed) profile = Object.assign({ who: "self", category: "addiction", concern: null, name: (profile && profile.name) || "" }, seed);
     if (!profile) profile = { who: "self", category: "addiction", concern: null, name: "" };
     save(LS.profile, profile);
     if (typeof syncProfileUI === "function") syncProfileUI();
-    const c = { id: uid(), title: NEW_CHAT_MARKER, mode: mode, profile: profile, messages: [], ts: Date.now() };
+    const c = { id: uid(), title: NEW_CHAT_MARKER, mode: mode, profile: profile, messages: [], ts: Date.now(), guide: Boolean(opts && opts.guide) };
     chats.unshift(c); currentId = c.id;
     messagesEl.innerHTML = "";
     setMode(mode);
-    greet();
+    if (c.guide) greetGuide();
+    else greet();
     saveChats(); renderChatList(); updateChips(); closeDrawer();
     input.value = ""; autoGrow(); openChatUI(); input.focus();
   }
@@ -830,7 +851,7 @@
 
   function renderMessages() {
     messagesEl.innerHTML = "";
-    curMsgs().forEach((m) => addMessage(m.role === "user" ? "user" : "kira", m.content));
+    curMsgs().forEach((m) => addMessage(m.role === "user" ? "user" : "kira", m.content, m));
     stick();
   }
 
@@ -1008,6 +1029,9 @@
     return keys.map((k) => ({ text: t(k) }));
   }
   function updateChips() {
+    if (curChat() && curChat().guide) {
+      chipsEl.style.display = "none"; chipsEl.innerHTML = ""; return;
+    }
     const hasUser = curMsgs().some((m) => m.role === "user");
     if (hasUser) { chipsEl.style.display = "none"; chipsEl.innerHTML = ""; return; }
     chipsEl.innerHTML = chipSet().map((c) => {
@@ -1042,6 +1066,12 @@
     }
     addMessage("kira", `${hi} ${t("greet.intro")} ${body}`);
     curMsgs().push({ role: "assistant", content: messagesEl.lastChild.querySelector(".bubble").textContent });
+    saveChats();
+  }
+
+  function greetGuide() {
+    addMessage("kira", WEBINAR_INTRO, { image: GUIDE_IMAGE });
+    curMsgs().push({ role: "assistant", content: WEBINAR_INTRO, image: GUIDE_IMAGE });
     saveChats();
   }
 
@@ -1211,9 +1241,12 @@
       if (before) parts.push({ type: "text", value: before });
       const url = m[1].replace(/[),.;!?]+$/g, "");
       const trailing = m[1].slice(url.length);
-      const product = findProductByUrl(url);
-      if (product) parts.push({ type: "card", product, url });
-      else parts.push({ type: "text", value: url });
+      if (isGuidePdfUrl(url)) parts.push({ type: "file", url });
+      else {
+        const product = findProductByUrl(url);
+        if (product) parts.push({ type: "card", product, url });
+        else parts.push({ type: "text", value: url });
+      }
       if (trailing) parts.push({ type: "text", value: trailing });
       last = m.index + m[0].length;
     }
@@ -1243,6 +1276,9 @@
         textBuf = stripLeadInForCard(textBuf, part.product);
         flushText();
         html += productCardHtml(part.product, part.url);
+      } else if (part.type === "file") {
+        flushText();
+        html += guideFileHtml(part.url);
       } else {
         textBuf += part.value;
       }
@@ -1250,10 +1286,29 @@
     flushText();
     return html || (cleaned ? `<p>${esc(cleaned)}</p>` : "");
   }
-  function addMessage(role, text) {
+  function isGuidePdfUrl(url) {
+    try {
+      const u = new URL(url, location.origin);
+      return /\/guide\.pdf$/i.test(u.pathname || "");
+    } catch {
+      return false;
+    }
+  }
+  function guideFileHtml(href) {
+    const link = href || "/guide.pdf";
+    return `<a class="guide-file" href="${esc(link)}" target="_blank" rel="noopener" download="${esc(GUIDE_PDF_NAME)}">
+      <span class="guide-file-icon" aria-hidden="true">PDF</span>
+      <span class="guide-file-name">${esc(GUIDE_PDF_NAME)}</span>
+    </a>`;
+  }
+  function addMessage(role, text, extra) {
     const wrap = document.createElement("div"); wrap.className = `msg ${role}`;
     const b = document.createElement("div"); b.className = "bubble";
-    if (text) b.innerHTML = role === "user" ? `<p>${esc(text).replace(/\n/g, "<br>")}</p>` : markup(text);
+    const image = extra && extra.image;
+    let html = "";
+    if (image) html += `<img class="msg-photo" src="${esc(image)}" alt="" />`;
+    if (text) html += role === "user" ? `<p>${esc(text).replace(/\n/g, "<br>")}</p>` : markup(text);
+    if (html) b.innerHTML = html;
     wrap.append(b); messagesEl.append(wrap); stick(); return b;
   }
   function typing() { const b = addMessage("kira", ""); b.innerHTML = '<div class="aurora"><span></span><span></span><span></span></div>'; return b; }
@@ -1336,6 +1391,7 @@
           lang: currentLang,
           conversationId: currentId,
           trafficSource: TRAFFIC_SOURCE || undefined,
+          guideFlow: Boolean(curChat() && curChat().guide),
         }),
       });
       if (!resp.ok || !resp.body) throw new Error("bad");
@@ -1547,8 +1603,12 @@
     if (typeof prevOnLang === "function") prevOnLang();
     if (openLegalId && legalSheet && legalSheet.classList.contains("open")) renderLegalDoc(openLegalId);
   };
-  // После перезагрузки сразу вернуть в чат, если уже был профиль / диалоги
-  if (chats.length || profile) {
+  // Ссылка с хвостом guide — сразу в чат, без онбординга (как /start guide в Telegram).
+  if (GUIDE_CLICK) {
+    if (!profile) profile = { who: "self", category: "addiction", concern: null, name: "" };
+    save(LS.profile, profile);
+    newConversation(profile, { guide: true });
+  } else if (chats.length || profile) {
     openChat(false);
   }
   const hashMatch = /^#legal-([a-z]+)$/.exec(location.hash || "");

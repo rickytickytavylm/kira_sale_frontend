@@ -540,15 +540,20 @@
   const DEVICE = deviceId();
 
   // Источник трафика: ?src=vk или ?utm_source=vk — first-touch в localStorage.
-  // Хвост guide/web/webinar — как в Telegram: сразу в чат, регистрация на эфир.
+  // Хвост guide/web/webinar — как в Telegram: сразу в чат, ссылка на открытую неделю.
   const TRAFFIC_KEY = "kira_sale_traffic_source";
   const GUIDE_TOKENS = new Set(["web", "webinar", "wb", "guide", "gid", "pdf"]);
   const GUIDE_IMAGE = "/guide.jpg";
+  const WEEK_URL = "https://shurov7.ru/";
   const WEBINAR_INTRO =
-    "Вы регистрируетесь на эфир «Это не любовь! " +
-    "Почему мы не можем уйти от тех, кто нас разрушает?».\n\n" +
-    "Эфир пройдёт 27 августа в 19:00. Чтобы открыть комнату без повторного " +
-    "ввода данных, напишите, пожалуйста, как к вам обращаться — имя.";
+    "Эфир 27 августа уже прошёл.\n\n" +
+    "Если вы открыли эту ссылку за материалом или чтобы попасть на эфир — спасибо. " +
+    "Дальше по теме можно присоединиться к открытой неделе «Созависимые отношения»: " +
+    "шесть дней, три эфира 7, 9 и 12 сентября и чат поддержки. " +
+    "Записаться ещё можно до 7 сентября.\n\n" +
+    WEEK_URL + "\n\n" +
+    "Если хотите, напишите своими словами, что сейчас происходит — " +
+    "разберём и подскажу, с чего начать.";
   const GUIDE_PDF_NAME =
     "7 причин, которые удерживают нас в отношениях, где нам плохо.pdf";
   function isGuideSource(raw) {
@@ -1123,6 +1128,7 @@
     "shurovhelp.com", "www.shurovhelp.com",
     "shurovsos.ru", "www.shurovsos.ru",
     "school.shurovhelp.ru",
+    "shurov7.ru", "www.shurov7.ru",
   ]);
   function findProductByUrl(url) {
     const list = window.KIRA_PRODUCTS || [];

@@ -101,6 +101,14 @@ window.KIRA_PRODUCTS = [
     image: "/products/video_zavisimyh.webp?v=3",
   },
   {
+    id: "open_week_sozavisim",
+    title: "Открытая неделя «Созависимые отношения»",
+    price: "2 990 ₽",
+    url: "https://shurov7.ru/",
+    matchHost: ["shurov7.ru", "www.shurov7.ru"],
+    image: "/products/open_week.jpg",
+  },
+  {
     id: "video_sozavisimyh",
     title: "Видеокурс для созависимых",
     price: "9 900 ₽",

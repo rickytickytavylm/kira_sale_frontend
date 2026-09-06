@@ -55,6 +55,7 @@
       "chat.err.retry": "Не удалось получить ответ. Попробуйте ещё раз чуть позже.",
       "chat.err.generic": "Что-то пошло не так. Попробуйте ещё раз.",
       "chat.err.server": "Связь прервалась. Попробуйте отправить сообщение ещё раз.",
+      "chat.err.blocked": "Не удалось связаться с сервером. Если включён VPN или прокси — отключите его и отправьте сообщение ещё раз.",
       "chat.err.nobackend": "Сервис временно недоступен. Попробуйте чуть позже.",
       "chat.think.live": "Думаю…",
       "chat.think.done": "Как я размышляла",
@@ -144,6 +145,7 @@
       "chat.err.retry": "Couldn't get a reply. Please try again in a moment.",
       "chat.err.generic": "Something went wrong. Please try again.",
       "chat.err.server": "The connection was interrupted. Please send your message again.",
+      "chat.err.blocked": "Could not reach the server. If a VPN or proxy is on, turn it off and send the message again.",
       "chat.err.nobackend": "The service is temporarily unavailable. Please try again later.",
       "chat.think.live": "Thinking…",
       "chat.think.done": "How I reasoned",
@@ -233,6 +235,7 @@
       "chat.err.retry": "Не вдалося отримати відповідь. Спробуйте ще раз трохи пізніше.",
       "chat.err.generic": "Щось пішло не так. Спробуйте ще раз.",
       "chat.err.server": "Зв’язок перервався. Спробуйте надіслати повідомлення ще раз.",
+      "chat.err.blocked": "Не вдалося зв’язатися із сервером. Якщо увімкнено VPN або проксі — вимкніть його та надішліть повідомлення ще раз.",
       "chat.err.nobackend": "Сервіс тимчасово недоступний. Спробуйте трохи пізніше.",
       "chat.think.live": "Думаю…",
       "chat.think.done": "Як я міркувала",
@@ -322,6 +325,7 @@
       "chat.err.retry": "Nie udało się uzyskać odpowiedzi. Spróbuj ponownie za chwilę.",
       "chat.err.generic": "Coś poszło nie tak. Spróbuj ponownie.",
       "chat.err.server": "Połączenie zostało przerwane. Wyślij wiadomość ponownie.",
+      "chat.err.blocked": "Nie udało się połączyć z serwerem. Jeśli masz włączony VPN lub proxy — wyłącz go i wyślij wiadomość ponownie.",
       "chat.err.nobackend": "Usługa jest chwilowo niedostępna. Spróbuj ponownie później.",
       "chat.think.live": "Myślę…",
       "chat.think.done": "Jak myślałam",
@@ -411,6 +415,7 @@
       "chat.err.retry": "No se pudo obtener respuesta. Inténtalo de nuevo en un momento.",
       "chat.err.generic": "Algo salió mal. Inténtalo de nuevo.",
       "chat.err.server": "La conexión se interrumpió. Envía el mensaje de nuevo.",
+      "chat.err.blocked": "No se pudo conectar con el servidor. Si tienes una VPN o proxy activo, desactívalo y envía el mensaje de nuevo.",
       "chat.err.nobackend": "El servicio no está disponible temporalmente. Inténtalo más tarde.",
       "chat.think.live": "Pensando…",
       "chat.think.done": "Cómo lo pensé",
@@ -1474,9 +1479,16 @@
         // в историю — только ответ, без мыслей
         msgs.push({ role: "assistant", content: finalText }); saveChats();
       }
-    } catch {
+    } catch (err) {
       if (streamRaf) cancelAnimationFrame(streamRaf);
-      bubble.innerHTML = markup(BACKEND ? t("chat.err.server") : t("chat.err.nobackend"));
+      // TypeError из fetch = соединение не установилось вообще (VPN/прокси/DNS),
+      // а не оборванный ответ. Подсказываем выключить VPN, иначе человек думает,
+      // что сломалась Кира.
+      const blocked = err instanceof TypeError && !answerStarted;
+      let key = "chat.err.server";
+      if (!BACKEND) key = "chat.err.nobackend";
+      else if (blocked) key = "chat.err.blocked";
+      bubble.innerHTML = markup(t(key));
     } finally {
       clearTimeout(requestTimer);
       setBusy(false);

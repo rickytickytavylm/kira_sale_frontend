@@ -1,0 +1,13 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Kira//Webinar//RU
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+DTSTAMP:20260921T120000Z
+DTSTART;TZID=Europe/Moscow:20261004T190000
+DTEND;TZID=Europe/Moscow:20261004T203000
+SUMMARY:Как лечить зависимость
+DESCRIPTION:Василий Шуров и Александр Некрасов. Ссылка на вход уже в чате Киры.
+LOCATION:https://start.bizon365.ru/room/tvoi-shag/lechenie_zavisimosti
+END:VEVENT
+END:VCALENDAR

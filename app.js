@@ -548,7 +548,7 @@
   // Хвост guide/web/webinar — как в Telegram: сразу регистрация на эфир, без обычного приветствия.
   const TRAFFIC_KEY = "kira_sale_traffic_source";
   const GUIDE_TOKENS = new Set(["web", "webinar", "wb", "guide", "gid", "pdf"]);
-  const GUIDE_IMAGE = "/guide.jpg?v=2";
+  const GUIDE_IMAGE = "/guide.jpg?v=3";
   const WEBINAR_INTRO =
     "Вы регистрируетесь на эфир «Как лечить зависимость».\n\n" +
     "Эфир пройдёт 4 октября в 19:00. Ведут доктор Шуров и Некрасов.\n" +

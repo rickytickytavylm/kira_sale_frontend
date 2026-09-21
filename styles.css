@@ -514,7 +514,7 @@ a { color: inherit; }
 .msg-photo {
   display: block;
   width: 100%;
-  max-width: min(100%, 420px);
+  max-width: min(100%, 560px);
   border-radius: 16px;
   margin: 0 0 12px;
 }

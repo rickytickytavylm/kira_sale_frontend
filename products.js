@@ -103,7 +103,7 @@ window.KIRA_PRODUCTS = [
   {
     id: "kurs_terplu",
     title: "Курс «Почему я терплю»",
-    price: "",
+    price: "29 990 ₽",
     url: "https://shurovprogram.ru/",
     matchHost: ["shurovprogram.ru", "www.shurovprogram.ru"],
     image: "/products/kurs_terplu.webp",

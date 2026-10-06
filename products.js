@@ -101,11 +101,12 @@ window.KIRA_PRODUCTS = [
     image: "/products/video_zavisimyh.webp?v=3",
   },
   {
-    id: "kurs_sozavisim",
-    title: "Курс «Любить, не теряя себя»",
-    price: "29 990 ₽",
-    url: "https://shurov7.ru/",
-    matchHost: ["shurov7.ru", "www.shurov7.ru"],
+    id: "kurs_terplu",
+    title: "Курс «Почему я терплю»",
+    price: "",
+    url: "https://shurovprogram.ru/",
+    matchHost: ["shurovprogram.ru", "www.shurovprogram.ru"],
+    image: "/products/kurs_terplu.webp",
   },
   {
     id: "video_sozavisimyh",

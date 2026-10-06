@@ -1,11 +1,11 @@
 /* Kira Sale PWA — лёгкий shell + сеть для HTML/JS */
-const CACHE = "kira-sale-v29";
+const CACHE = "kira-sale-v30";
 const SHELL = [
   "/manifest.webmanifest",
   "/styles.css?v=21",
   "/config.js?v=3",
-  "/products.js?v=6",
-  "/app.js?v=39",
+  "/products.js?v=7",
+  "/app.js?v=40",
   "/logo_nav.webp",
 ];
 

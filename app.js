@@ -545,16 +545,23 @@
   const DEVICE = deviceId();
 
   // Источник трафика: ?src=vk или ?utm_source=vk — first-touch в localStorage.
-  // Хвост guide/web/webinar — как в Telegram: сразу регистрация на эфир, без обычного приветствия.
+  // Хвост guide/web/webinar — старые ссылки на эфир: как в Telegram, говорим, что он прошёл, и даём выбор.
   const TRAFFIC_KEY = "kira_sale_traffic_source";
   const GUIDE_TOKENS = new Set(["web", "webinar", "wb", "guide", "gid", "pdf"]);
-  const GUIDE_IMAGE = "/guide.jpg?v=4";
-  const WEBINAR_INTRO =
-    "Регистрация на вебинар «Как лечить зависимость»\n\n" +
-    "4 октября в 19:00 вебинар проведут Василий Шуров и Александр Некрасов.\n\n" +
-    "Чтобы зарегистрироваться и получить персональную ссылку для входа, " +
-    "укажите имя, e-mail и номер телефона.\n\n" +
-    "Начнём с имени. Как к вам обращаться?";
+  // Сервер узнаёт это сообщение по фразе «регистрация на него закрыта» (webinar.js).
+  const WEBINAR_OVER =
+    "Здравствуйте. Я Кира, ИИ-ассистентка школы доктора Шурова.\n\n" +
+    "Вебинар «Как лечить зависимость» прошёл 4 октября, регистрация на него закрыта.\n\n" +
+    "Но с вашим вопросом не нужно ждать следующего эфира. Выберите, как удобнее:\n\n" +
+    "1 — поговорить со мной. Напишите, что происходит — с вами или с близким, " +
+    "и я разберу вашу ситуацию.\n" +
+    "2 — связаться с менеджером школы. Он ответит на вопросы и поможет " +
+    "подобрать формат помощи.\n\n" +
+    "Напишите 1 или 2 — или сразу расскажите, что случилось.";
+  const GUIDE_CHIPS = [
+    { text: "Поговорить с Кирой", action: "chat" },
+    { text: "Связаться с менеджером", action: "manager" },
+  ];
   const GUIDE_PDF_NAME =
     "7 причин, которые удерживают нас в отношениях, где нам плохо.pdf";
   function isGuideSource(raw) {
@@ -1039,10 +1046,23 @@
     return keys.map((k) => ({ text: t(k) }));
   }
   function updateChips() {
+    const msgs = curMsgs();
+    const hasUser = msgs.some((m) => m.role === "user");
     if (curChat() && curChat().guide) {
-      chipsEl.style.display = "none"; chipsEl.innerHTML = ""; return;
+      const last = msgs[msgs.length - 1];
+      if (hasUser || !last || last.content !== WEBINAR_OVER) {
+        chipsEl.style.display = "none"; chipsEl.innerHTML = ""; return;
+      }
+      chipsEl.innerHTML = GUIDE_CHIPS.map((c) => {
+        return `<button type="button" class="chip" data-guide="${c.action}">${esc(c.text)}</button>`;
+      }).join("");
+      chipsEl.style.display = "flex";
+      chipsEl.querySelectorAll(".chip").forEach((c) => c.addEventListener("click", () => {
+        if (c.dataset.guide === "manager") openLead();
+        else submit(c.textContent);
+      }));
+      return;
     }
-    const hasUser = curMsgs().some((m) => m.role === "user");
     if (hasUser) { chipsEl.style.display = "none"; chipsEl.innerHTML = ""; return; }
     chipsEl.innerHTML = chipSet().map((c) => {
       return `<button type="button" class="chip">${esc(c.text)}</button>`;
@@ -1080,8 +1100,8 @@
   }
 
   function greetGuide() {
-    addMessage("kira", WEBINAR_INTRO, { image: GUIDE_IMAGE });
-    curMsgs().push({ role: "assistant", content: WEBINAR_INTRO, image: GUIDE_IMAGE });
+    addMessage("kira", WEBINAR_OVER);
+    curMsgs().push({ role: "assistant", content: WEBINAR_OVER });
     saveChats();
     pingWebinarOpen();
   }
@@ -1129,7 +1149,7 @@
     "shurovhelp.com", "www.shurovhelp.com",
     "shurovsos.ru", "www.shurovsos.ru",
     "school.shurovhelp.ru",
-    "shurov7.ru", "www.shurov7.ru",
+    "shurovprogram.ru", "www.shurovprogram.ru",
   ]);
   function findProductByUrl(url) {
     const list = window.KIRA_PRODUCTS || [];
@@ -1498,24 +1518,7 @@
   // поэтому только $("#…"), без const leadOpen (иначе TDZ и мёртвый весь app.js).
   function syncLeadBtn() {
     const btn = $("#leadOpen");
-    if (!btn) return;
-    // Нельзя трогать GUIDE_CLICK / curChat здесь вслепую: applyLang зовёт
-    // эту функцию до их инициализации — иначе падает весь app.js.
-    let hide = false;
-    try {
-      const raw = String(
-        new URLSearchParams(location.search).get("src") ||
-        new URLSearchParams(location.search).get("utm_source") ||
-        ""
-      );
-      hide = /(?:^|[_-])(web|webinar|wb|guide|gid|pdf)(?:[_-]|$)/i.test(
-        raw.toLowerCase().replace(/[^a-z0-9_-]+/g, "_")
-      );
-    } catch { /* ignore */ }
-    try {
-      hide = hide || Boolean(chats && chats.find((c) => c.id === currentId && c.guide));
-    } catch { /* чаты ещё не готовы */ }
-    btn.hidden = hide;
+    if (btn) btn.hidden = false;
   }
   syncLeadBtn();
   const leadSheet = $("#leadSheet");
@@ -1570,6 +1573,7 @@
         addMessage("kira", t("lead.ok"));
         const msgs = curMsgs();
         if (msgs) { msgs.push({ role: "assistant", content: t("lead.ok") }); saveChats(); }
+        updateChips();
       }
       setTimeout(() => closeSheet(leadSheet), 1200);
     } catch {

@@ -574,7 +574,8 @@
     try {
       const sp = new URLSearchParams(location.search);
       const raw = sp.get("src") || sp.get("utm_source") || "";
-      const norm = String(raw).trim().toLowerCase().replace(/[^a-z0-9_-]/g, "").slice(0, 40);
+      // Точку в дате не выкидываем: ?src=yappy_13.10 должен доехать до сервера как есть.
+      const norm = String(raw).trim().toLowerCase().replace(/\s+/g, "").replace(/[^a-z0-9_.\-/]/g, "").slice(0, 48);
       if (norm) {
         guideClick = isGuideSource(norm);
         const prev = load(TRAFFIC_KEY, "");

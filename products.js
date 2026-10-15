@@ -87,7 +87,7 @@ window.KIRA_PRODUCTS = [
   {
     id: "kurs_zavisimyh",
     title: "Курс для зависимых",
-    price: "53 990 ₽",
+    price: "39 990 ₽",
     url: "https://shurovhelp.com",
     matchHost: ["shurovhelp.com", "www.shurovhelp.com"],
     image: "/products/kurs_zavisimyh.webp?v=3",

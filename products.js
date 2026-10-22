@@ -36,7 +36,7 @@ window.KIRA_PRODUCTS = [
   {
     id: "vip_terapia_8",
     title: "VIP сопровождение психиатра (8 сессий)",
-    price: "113 990 ₽",
+    price: "94 990 ₽",
     url: "https://tvoi-shag.online/vip_terapia",
     match: ["/vip_terapia"],
     exclude: ["/vip_terapia_4session"],
@@ -45,7 +45,7 @@ window.KIRA_PRODUCTS = [
   {
     id: "vip_terapia_4",
     title: "VIP сопровождение психиатра (4 сессии)",
-    price: "65 990 ₽",
+    price: "54 990 ₽",
     url: "https://tvoi-shag.online/vip_terapia_4session",
     match: ["/vip_terapia_4session"],
     image: "/products/vip_med.webp",
@@ -53,7 +53,7 @@ window.KIRA_PRODUCTS = [
   {
     id: "vip_zavisim_8",
     title: "VIP сопровождение зависимых (8 сессий)",
-    price: "113 990 ₽",
+    price: "94 990 ₽",
     url: "https://tvoi-shag.online/vip_zavisim",
     match: ["/vip_zavisim"],
     exclude: ["/vip_zavisim_4session"],
@@ -62,7 +62,7 @@ window.KIRA_PRODUCTS = [
   {
     id: "vip_zavisim_4",
     title: "VIP сопровождение зависимых (4 сессии)",
-    price: "65 990 ₽",
+    price: "54 990 ₽",
     url: "https://tvoi-shag.online/vip_zavisim_4session",
     match: ["/vip_zavisim_4session"],
     image: "/products/vip_addiction.webp",
@@ -70,7 +70,7 @@ window.KIRA_PRODUCTS = [
   {
     id: "vip_sozavisim_8",
     title: "VIP сопровождение созависимых (8 сессий)",
-    price: "113 990 ₽",
+    price: "94 990 ₽",
     url: "https://tvoi-shag.online/vip_sozavisim",
     match: ["/vip_sozavisim"],
     exclude: ["/vip_sozavisim_4session"],
@@ -79,7 +79,7 @@ window.KIRA_PRODUCTS = [
   {
     id: "vip_sozavisim_4",
     title: "VIP сопровождение созависимых (4 сессии)",
-    price: "65 990 ₽",
+    price: "54 990 ₽",
     url: "https://tvoi-shag.online/vip_sozavisim_4session",
     match: ["/vip_sozavisim_4session"],
     image: "/products/vip_codependency.webp",
